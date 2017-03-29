@@ -1,3 +1,4 @@
+/*
 body {
     font-size: 13px;
 }
@@ -35,6 +36,7 @@ th, td {
     padding: .5em 5px;
     vertical-align: top;
 }
+*/
 
 p span.count {
     float: right;
@@ -187,12 +189,14 @@ td.dataValue > input[type="text"] {
     background: url('../images/sort_desc.png') no-repeat center right;
 }
 
+/*
 #maxItems {
     height: 22px;
     font-size: 11px;
     line-height: 18px;
     margin-bottom: 4px;
 }
+*/
 
 #list-meta-data {
     margin-bottom: 15px;

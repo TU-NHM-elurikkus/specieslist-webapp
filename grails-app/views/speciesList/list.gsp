@@ -26,42 +26,72 @@
 <body class="yui-skin-sam nav-species">
 <script type="text/javascript">
     window.onload=init
-    function init(){
-        if(document.getElementById("speciesList") != null)
+
+    function init() {
+        if(document.getElementById("speciesList") != null) {
             document.getElementById("speciesList").style.display = "block";
+        }
     }
 </script>
+
 <div id="content" class="container">
     <header id="page-header2">
-        <div class="innerZ row-fluid">
-            <div id="breadcrumb" class="span12">
+        <div class="innerZ row">
+            <div id="breadcrumb" class="col-12">
                 <ol class="breadcrumb">
-                    <li><a href="${grailsApplication.config.ala.baseURL}">Home</a> <span class="divider"><i class="fa fa-arrow-right"></i></span></li>
-                    <li><a href="${request.contextPath}/public/speciesLists">Species lists</a> <span class="divider"><i class="fa fa-arrow-right"></i></span></li>
-                    <li class="current">${request.getUserPrincipal()?.attributes?.firstname} ${request.getUserPrincipal()?.attributes?.lastname}&apos;s Species Lists</li>
+                    <li>
+                        <a href="${grailsApplication.config.ala.baseURL}">Home</a>&nbsp;
+
+                        <span class="divider">
+                            <i class="fa fa-arrow-right"></i>
+                        </span>
+                    </li>
+
+                    <li>
+                        <a href="${request.contextPath}/public/speciesLists">Species lists</a>&nbsp;
+
+                        <span class="divider">
+                            <i class="fa fa-arrow-right"></i>
+                        </span>
+                    </li>
+
+                    <li class="current">
+                        ${request.getUserPrincipal()?.attributes?.firstname} ${request.getUserPrincipal()?.attributes?.lastname}&apos;s Species Lists
+                    </li>
                 </ol>
             </div>
         </div>
-        <div class="row-fluid">
-            <hgroup class="span8">
-                <h1>My species lists</h1>
+
+        <div class="row">
+            <hgroup class="col-8">
+                <h1>
+                    My species lists
+                </h1>
             </hgroup>
-            <div class="span4 header-btns">
-                <g:link controller="speciesList" action="upload" class="btn btn-ala pull-right" title="Add Species List">Upload a list</g:link>
+
+            <div class="col-4">
+                <g:link controller="speciesList" action="upload" class="btn btn-ala float-right" title="Add Species List">
+                    Upload a list
+                </g:link>
             </div>
-        </div><!--inner-->
+        </div>
     </header>
 
     <div class="inner">
-            <g:if test="${lists && total > 0}">
-                <p>Below is a listing of species lists that you have provided. You can use these lists to work with parts of the Atlas.
-                    Click on the "delete" button next to a list to remove it from the Atlas.</p>
-                <g:render template="/speciesList"/>
-            </g:if>
-            <g:else>
-                <p>You do not have any available species lists.</p>
-            </g:else>
+        <g:if test="${lists && total > 0}">
+            <p>
+                Below is a listing of species lists that you have provided. You can use these lists to work with parts of the Atlas.
+                Click on the "delete" button next to a list to remove it from the Atlas.
+            </p>
+
+            <g:render template="/speciesList"/>
+        </g:if>
+        <g:else>
+            <p>
+                You do not have any available species lists.
+            </p>
+        </g:else>
     </div>
-</div> <!--content-->
+</div>
 </body>
 </html>
