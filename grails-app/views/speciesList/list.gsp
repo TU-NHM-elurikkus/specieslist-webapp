@@ -36,10 +36,10 @@
 
 <div id="content" class="container">
     <header id="page-header2">
-        <div class="innerZ row">
+        <div class="row">
             <div id="breadcrumb" class="col-12">
                 <ol class="breadcrumb">
-                    <li>
+                    <li class="breadcrumb-item">
                         <a href="${grailsApplication.config.ala.baseURL}">Home</a>&nbsp;
 
                         <span class="divider">
@@ -47,7 +47,7 @@
                         </span>
                     </li>
 
-                    <li>
+                    <li class="breadcrumb-item">
                         <a href="${request.contextPath}/public/speciesLists">Species lists</a>&nbsp;
 
                         <span class="divider">
@@ -55,7 +55,8 @@
                         </span>
                     </li>
 
-                    <li class="current">
+                    %{-- XXX --}%
+                    <li class="breadcrumb-item">
                         ${request.getUserPrincipal()?.attributes?.firstname} ${request.getUserPrincipal()?.attributes?.lastname}&apos;s Species Lists
                     </li>
                 </ol>
@@ -63,35 +64,46 @@
         </div>
 
         <div class="row">
-            <hgroup class="col-8">
+            <hgroup class="col">
                 <h1>
                     My species lists
+
+                    <g:link controller="speciesList" action="upload" class="btn float-right" title="Add Species List">
+                        Upload a list
+                    </g:link>
                 </h1>
             </hgroup>
-
-            <div class="col-4">
-                <g:link controller="speciesList" action="upload" class="btn btn-ala float-right" title="Add Species List">
-                    Upload a list
-                </g:link>
-            </div>
         </div>
     </header>
 
-    <div class="inner">
-        <g:if test="${lists && total > 0}">
-            <p>
-                Below is a listing of species lists that you have provided. You can use these lists to work with parts of the Atlas.
-                Click on the "delete" button next to a list to remove it from the Atlas.
-            </p>
+    <g:if test="${lists && total > 0}">
+        <div class="row">
+            <div class="col">
+                <p>
+                    Below is a listing of species lists that you have provided. You can use these lists to work with parts of the Atlas.
+                    Click on the "delete" button next to a list to remove it from the Atlas.
+                </p>
 
-            <g:render template="/speciesList"/>
-        </g:if>
-        <g:else>
-            <p>
-                You do not have any available species lists.
-            </p>
-        </g:else>
-    </div>
-</div>
+                <div class="float-right">
+                    <g:render template="/pageSize"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <g:render template="/speciesList"/>
+            </div>
+        </div>
+    </g:if>
+    <g:else>
+        <div class="row">
+            <div class="col">
+                <p>
+                    You do not have any available species lists.
+                </p>
+            </div>
+        </div>
+    </g:else>
 </body>
 </html>
