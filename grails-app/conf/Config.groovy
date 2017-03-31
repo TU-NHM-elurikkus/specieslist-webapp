@@ -36,7 +36,7 @@ updateUserDetailsOnStartup = false
 iconicSpecies.uid = "dr781"
 
 skin.orgNameLong = "Atlas of Living Australia"
-skin.layout = "main"
+skin.layout = "generic"
 
  //the number of species to limit downloads to
 /*** End config specific for species list ***/

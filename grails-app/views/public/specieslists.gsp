@@ -19,71 +19,115 @@
     <title>Species lists |${grailsApplication.config.skin.orgNameLong}</title>
     <r:require modules="application"/>
 </head>
+
 <body class="">
 <div id="content" class="container">
     <header id="page-header">
-        <div class="inner row-fluid" style="display: block;">
-            <div id="breadcrumb" class="span12">
-                <ol class="breadcrumb">
-                    <li><a href="${request.contextPath}">Home</a> <span class="divider"><i class="fa fa-arrow-right"></i></span></li>
-                    <li><a class="current" href="${request.contextPath}/admin/speciesLists">Species lists</a></li>
-                </ol>
+        <div class="row">
+            <div class="col">
+                <div id="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="${request.contextPath}">
+                                Home
+                            </a>
+
+                            <span class="divider">
+                                <i class="fa fa-arrow-right"></i>
+                            </span>
+                        </li>
+
+                        <li class="breadcrumb-item">
+                            <a class="current" href="${request.contextPath}/admin/speciesLists">
+                                Species lists
+                            </a>
+                        </li>
+                    </ol>
+                </div>
             </div>
         </div>
-        <div class="row-fluid">
-            <hgroup class="span8">
-                <h1>Species lists</h1>
-            </hgroup>
-            <div class="span4 header-btns">
-                <span class="pull-right">
-                    <a class="btn btn-ala" title="Add Species List" href="${request.contextPath}/speciesList/upload">Upload a list</a>
-                    <a class="btn btn-ala" title="My Lists" href="${request.contextPath}/speciesList/list">My Lists</a>
-                </span>
-            </div>
-        </div><!--.row-fluid-->
 
+        <div class="row">
+            <hgroup class="col">
+                <h1>
+                    Species lists
+
+                    <span class="float-right">
+                        <a class="btn" title="Add Species List" href="${request.contextPath}/speciesList/upload">Upload a list</a>
+                        <a class="btn" title="My Lists" href="${request.contextPath}/speciesList/list">My Lists</a>
+                    </span>
+                </h1>
+            </hgroup>
+        </div>
     </header>
-    <div class="inner row-fluid" id="public-specieslist">
-        <g:if test="${flash.message}">
-            <div class="message alert alert-info">
-                <button type="button" class="close" onclick="$(this).parent().hide()">×</button>
-                <b>Alert:</b> ${flash.message}
-            </div>
-        </g:if>
+
+    <div class="row" id="public-specieslist">
+        <div class="col">
+            <g:if test="${flash.message}">
+                <div class="message alert alert-info">
+                    <button type="button" class="close" onclick="$(this).parent().hide()">×</button>
+                    <strong>Alert:</strong> ${flash.message}
+                </div>
+            </g:if>
+
             <p>
                 This tool allows you to upload a list of species, and work with that list within the Atlas.
                 <br/>
                 Click "Upload a list" to upload your own list of taxa.
             </p>
-        <g:if test="${lists && total>0}">
-            <p>
-                Below is a listing of user provided species lists. You can use these lists to work
-                with parts of the Atlas.
-            </p>
-            <form class="listSearchForm" >
-                <div class="input-append" id="searchLists">
-                    <input class="input-xlarge" id="appendedInputButton" name="q" type="text" value="${params.q}" placeholder="Search in list name, description or owner">
-                    <button class="btn" type="submit">Search</button>
+
+            <g:if test="${lists && total>0}">
+                <div class="row">
+                    <div class="col-12">
+                        <p>
+                            Below is a listing of user provided species lists. You can use these lists to work with parts of the Atlas.
+                        </p>
+
+                        <form class="listSearchForm" >
+                            <div class="input-plus">
+                                <input class="input-plus" id="appendedInputButton" name="q" type="text" value="${params.q}" placeholder="Search in list name, description or owner">
+
+                                <button class="btn btn-dark input-plus__addon" type="submit">
+                                    Search
+                                </button>
+                            </div>
+                        </form>
+
+                        <form class="listSearchForm" >
+                            <g:if test="${params.q}">
+                                %{--<input type="hidden" name="q" value=""/>--}%
+                                <button class="btn btn-primary" type="submit">
+                                    Clear search
+                                </button>
+                            </g:if>
+                        </form>
+
+                        <div class="float-right">
+                            <g:render template="/pageSize"/>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <g:render template="/speciesList"/>
+                    </div>
                 </div>
-            </form>
-            <form class="listSearchForm" >
-                <g:if test="${params.q}">
-                %{--<input type="hidden" name="q" value=""/>--}%
+            </g:if>
+            <g:elseif test="${params.q}">
+                <form class="listSearchForm" >
+                    <p>
+                        No Species Lists found for: <strong>${params.q}</strong>
+                    </p>
+
                     <button class="btn btn-primary" type="submit">Clear search</button>
-                </g:if>
-            </form>
-            <g:render template="/speciesList"/>
-        </g:if>
-        <g:elseif test="${params.q}">
-            <form class="listSearchForm" >
-                <p>No Species Lists found for: <b>${params.q}</b></p>
-                <button class="btn btn-primary" type="submit">Clear search</button>
-            </form>
-        </g:elseif>
-        <g:else>
-            <p>There are no Species Lists available</p>
-        </g:else>
+                </form>
+            </g:elseif>
+            <g:else>
+                <p>
+                    There are no Species Lists available
+                </p>
+            </g:else>
+        </div>
     </div>
-</div> <!-- content div -->
+</div>
 </body>
 </html>

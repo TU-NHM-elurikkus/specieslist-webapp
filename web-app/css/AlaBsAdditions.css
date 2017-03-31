@@ -1,3 +1,4 @@
+/*
 body {
     font-size: 13px;
 }
@@ -35,19 +36,16 @@ th, td {
     padding: .5em 5px;
     vertical-align: top;
 }
+*/
 
 p span.count {
     float: right;
 }
 
-.header-btns {
-    padding-top:16px;
-    padding-right:4px;
-    text-align: right;
+#page-header, #page-header2 {
+    margin-bottom: 1rem;
 }
 
-#page-header, #page-header2 {
-    /*margin-bottom: 10px;*/
 }
 
 .tableList thead th {
@@ -72,12 +70,6 @@ p span.count {
 
 #facets-column {
     /*margin-top: 5px;*/
-}
-
-#refine {
-    margin-top: 22px;
-    padding-top: 8px;
-    border-top: 1px solid #ccc;
 }
 
 div#download {
@@ -113,11 +105,6 @@ div#download {
     text-align:left; padding-bottom:15px;
 }
 
-/*a.removeLink {*/
-    /*display: inline-block;*/
-    /*float: right;*/
-/*}*/
-
 #currentFilters {
     margin-bottom: 15px;
 }
@@ -140,27 +127,9 @@ div#download {
     text-indent: 0;
 }
 
-.refine ul {
-    list-style: none;
-    margin-left: 10px;
-}
-
-.refine p {
-    margin-bottom: 0;
-}
-
 .showHide {
     margin-left: -6px;
     font-size: 13px;
-}
-
-table.scrollTable {
-    border: 1px solid #ccc;
-    width: auto;
-}
-
-#content div.pagination span.gap {
-    cursor: default;
 }
 
 table#editRecordTable {
@@ -187,12 +156,14 @@ td.dataValue > input[type="text"] {
     background: url('../images/sort_desc.png') no-repeat center right;
 }
 
+/*
 #maxItems {
     height: 22px;
     font-size: 11px;
     line-height: 18px;
     margin-bottom: 4px;
 }
+*/
 
 #list-meta-data {
     margin-bottom: 15px;
@@ -220,11 +191,6 @@ td.dataValue > input[type="text"] {
     float: right;
     margin: 22px 0;
     text-align: right;
-}
-
-#content div#searchNavBar.pagination.listPagination {
-    width: 80%;
-    float: left;
 }
 
 #edit-meta-div {
@@ -308,15 +274,13 @@ img.smallSpeciesImage {
     display: inline-block;
 }
 
-#searchLists {
-    margin-bottom: 5px;
-}
-
 .listSearchForm {
     display: inline-block;
     float: left;
+    /*
     margin-right: 10px;
     margin-bottom: 10px;
+    */
 }
 
 #listItemView {
@@ -324,10 +288,6 @@ img.smallSpeciesImage {
 }
 #listItemView .btn {
     font-weight: bold;
-}
-
-#gridView {
-    margin-top: 15px;
 }
 
 /* Grid view */
@@ -373,6 +333,3 @@ img.smallSpeciesImage {
 .borderless td, .borderless th {
     border: none;
 }
-
-h3 { margin-top: 20px; }
-h2 { margin-top: 30px; }

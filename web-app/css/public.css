@@ -17,17 +17,8 @@ div.fhtable {
     display: inline-block
 }
 
-.species #page-header {
-    background:#faf8ed url(../images/peewee-banner-alc.jpg) center center no-repeat;
-    padding-bottom:12px;
-    border-bottom:1px solid #d1d1d1;
-}
-
-
-#page-header hgroup h2, table.bvp-expeditions div.button-nav h2 {
-    font-size: 1.6em;
-    max-width: 250px;
-    padding-bottom: 0;
+#page-header {
+    margin-bottom: 1rem;
 }
 
 .attached {
@@ -77,11 +68,8 @@ div.fhtable {
      font-weight: bold;
      margin-left: 2px;
 }
-.matchStats h3 {
-    /*font-size: 1.5em; */
-    padding-bottom:4px;
-}
 
+/* TODO: Remove. */
 .tableList {
     border: 1px solid #CCCCCC;
     width: 100%;
@@ -180,6 +168,7 @@ td.parse { font-size: 11px; border-collapse: collapse; border: 1px solid #000000
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
 }
 
+/* TODO: Remove this class. */
 .yui-skin-sam .yui-dialog .ft span.default button {
     color: #000000;
     font-weight: bold;

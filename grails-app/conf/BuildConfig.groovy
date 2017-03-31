@@ -69,5 +69,7 @@ grails.project.dependency.resolution = {
                 ":release:3.0.1") {
             export = false
         }
+
+        runtime ":elurikkus-commons:0.2-SNAPSHOT"
     }
 }
