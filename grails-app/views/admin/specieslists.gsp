@@ -24,16 +24,10 @@
                             <a href="http://www.ala.org.au">
                                 Home
                             </a>
-
-                            <span class="divider">
-                                <i class="fa fa-arrow-right"></i>
-                            </span>
                         </li>
 
                         <li class="breadcrumb-item">
-                            <a class="current" href="${request.contextPath}/public/speciesLists">
-                                Species lists
-                            </a>
+                            <a class="current" href="${request.contextPath}/public/speciesLists">Species lists</a>
                         </li>
                     </ol>
                 </div>
@@ -46,15 +40,15 @@
                     Species lists
 
                     <span class="float-right">
-                        <a class="btn" title="Add Species List" href="${request.contextPath}/speciesList/upload">
+                        <a class="erk-button erk-button--light" title="Add Species List" href="${request.contextPath}/speciesList/upload">
                             Upload a list
                         </a>
 
-                        <a class="btn" title="My Lists" href="${request.contextPath}/speciesList/list">
+                        <a class="erk-button erk-button--light" title="My Lists" href="${request.contextPath}/speciesList/list">
                             My Lists
                         </a>
 
-                        <a class="btn" title="Rematch" href="${request.contextPath}/speciesList/rematch">
+                        <a class="erk-button erk-button--light" title="Rematch" href="${request.contextPath}/speciesList/rematch">
                             Rematch All
                         </a>
                     </span>
@@ -72,7 +66,7 @@
             <g:if test="${lists && total>0}">
                 <div class="row">
                     <div class="col-12">
-                        <a href="${g.createLink(action: 'updateListsWithUserIds')}" class="btn btn-primary">
+                        <a href="${g.createLink(action: 'updateListsWithUserIds')}" class="erk-button erk-button--light">
                             Update List user details (name & email address)
                         </a>
 

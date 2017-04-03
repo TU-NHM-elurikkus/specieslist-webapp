@@ -3,58 +3,78 @@
     Created on : Feb 25, 2011, 4:20:32 PM
     Author     : "Nick dos Remedios <Nick.dosRemedios@csiro.au>"
 --%>
-%{--<%@ include file="/common/taglibs.jsp" %>--}%
-%{--<%@page contentType="text/html" pageEncoding="UTF-8"%>--}%
-<div id="download">
-    <p id="termsOfUseDownload">
+
+<div>
+    <p>
         By downloading this content you are agreeing to use it in accordance with the Atlas of Living Australia
-        <a href="http://www.ala.org.au/about/terms-of-use/#TOUusingcontent">Terms of Use</a> and any Data Provider
-    Terms associated with the data download.
-        <br/><br/>
+        <a href="http://www.ala.org.au/about/terms-of-use/#TOUusingcontent">Terms of Use</a> and any Data Provider Terms associated with the data download.
+    </p>
+
+    <p>
         Please provide the following details before downloading (* required):
     </p>
-    <form id="downloadForm">
 
+    <form>
+        <div class="form-group row">
+            <label for="email" class="col-sm-4 col-md-3 col-lg-2 col-form-label">
+                Email
+            </label>
 
-        <fieldset>
-            <p><label for="email">Email</label>
-                <input type="text" name="email" id="email" value="${request.remoteUser}" size="30"  />
-            </p>
-            <p><label for="filename">File Name</label>
-                <input type="text" name="filename" id="filename" value="${speciesList?.listName?.replaceAll(~/\s+/, "_")?:"data"}" size="30"  />
-            </p>
-            <p><label for="reasonTypeId" style="">Download Reason *</label>
-                <select name="reasonTypeId" id="reasonTypeId">
-                    <option value="">-- select a reason --</option>
-                    <g:each in="${downloadReasons}" var="reason">
-                        <option value="${reason.key}">${reason.value}</option>
-                    </g:each>
-                </select>
-            </p>
+            <input type="text" name="email" id="email" value="${request.remoteUser}" size="30" class="col-sm-8 col-md-6 col-lg-4"/>
+        </div>
 
-            <br/>
-            %{--<input type="hidden" name="sourceTypeId" id="sourceTypeId" value="${sourceId}"/>--}%
-            <input type="submit" value="Download All Records" class="actionButton btn btn-small" id="downloadSubmitButton" onclick="return downloadOccurrences()"/>
-            <g:if test="${grailsApplication.config.fieldGuide.baseURL}">
-                <input type="submit" value="Download Species Field Guide" class="actionButton btn btn-small" id="downloadFieldGuideSubmitButton"/>
-            </g:if>
-            <input type="submit" value="Download Species List" class="actionButton btn btn-small" id="downloadSpeciesListSubmitButton"/>
-            %{--<c:if test="${skin != 'avh'}">--}%
-            %{--<input type="submit" value="Download Species Field Guide" id="downloadFieldGuideSubmitButton"/>&nbsp;--}%
-            %{--</c:if>--}%
-            <!--
-            <input type="reset" value="Cancel" onClick="$.fancybox.close();"/>
-            -->
-            <g:if test="${grailsApplication.config.fieldGuide.baseURL}">
-                <p style="margin-top:10px;">
-                    <strong>Note</strong>: The field guide may take several minutes to prepare and download.
-                </p>
-            </g:if>
-            <div id="statusMsg" style="text-align: center; font-weight: bold; "></div>
-        </fieldset>
+        <div class="form-group row">
+            <label for="filename" class="col-sm-4 col-md-3 col-lg-2 col-form-label">
+                File Name
+            </label>
+
+            <input type="text" name="filename" id="filename" value="${speciesList?.listName?.replaceAll(~/\s+/, "_")?:"data"}" size="30" class="col-sm-8 col-md-6 col-lg-4"/>
+        </div>
+
+        <div class="form-group row">
+            <label for="reasonTypeId" class="col-sm-4 col-md-3 col-lg-2 col-form-label">
+                Download Reason *
+            </label>
+
+            <select name="reasonTypeId" id="reasonTypeId" class="col-sm-8 col-md-6 col-lg-4">
+                <option value="">-- select a reason --</option>
+
+                <g:each in="${downloadReasons}" var="reason">
+                    <option value="${reason.key}">
+                        ${reason.value}
+                    </option>
+                </g:each>
+            </select>
+        </div>
+
+        <div class="form-group row">
+            <div class="col">
+                <button type="button" class="actionButton erk-button erk-button--light" id="downloadSubmitButton" onclick="return downloadOccurrences()">
+                    Download All Records
+                </button>
+
+                <g:if test="${grailsApplication.config.fieldGuide.baseURL}">
+                    <button type="button" class="actionButton erk-button erk-button--light" id="downloadFieldGuideSubmitButton">
+                        Download Species Field Guide
+                    </button>
+                </g:if>
+
+                <button type="button" class="actionButton erk-button erk-button--light" id="downloadSpeciesListSubmitButton">
+                    Download Species List
+                </button>
+            </div>
+        </div>
     </form>
-    <script type="text/javascript">
 
+    <g:if test="${grailsApplication.config.fieldGuide.baseURL}">
+        <p>
+            <strong>Note</strong>: The field guide may take several minutes to prepare and download.
+        </p>
+    </g:if>
+
+    <div id="statusMsg" style="text-align: center; font-weight: bold; "></div>
+
+    <script type="text/javascript">
         $(document).ready(function() {
             // catch download submit button
             // Note the unbind().bind() syntax - due to Jquery ready being inside <body> tag.

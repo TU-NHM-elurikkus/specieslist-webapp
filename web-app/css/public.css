@@ -174,10 +174,6 @@ td.parse { font-size: 11px; border-collapse: collapse; border: 1px solid #000000
     font-weight: bold;
 }
 
-/*div#download {*/
-    /*    display: none;*/
-    /*font-size: 13px;*/
-/*}*/
 .yui-dialog {
     text-align: left;
 }
@@ -189,34 +185,8 @@ td.parse { font-size: 11px; border-collapse: collapse; border: 1px solid #000000
     color: #444;
 }
 
-/*#download {*/
-    /*line-height: 1.4em;*/
-/*}*/
 .yui-dialog input {
     float: none;
-}
-div#download {
-    font-size: 13px;
-}
-#downloadForm {
-    text-align: left;
-}
-#downloadForm label {
-    color: #444444;
-    display: inline-block;
-    padding-right: 10px;
-    text-align: right;
-    width: 35%;
-}
-#download {
-    line-height: 1.4em;
-}
-#downloadForm input {
-    float: none;
-}
-
-#termsOfUseDownload {
-    text-align:left; padding-bottom:15px;
 }
 .yui-dialog p {
     margin-bottom:10px;

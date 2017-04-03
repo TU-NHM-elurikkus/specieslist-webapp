@@ -9,15 +9,13 @@
             <g:layoutTitle />
         </title>
 
-        <r:require modules="jquery, menu"/>
+        <r:require modules="jquery, fontawesome, menu"/>
 
         <!-- Resources -->
         <r:layoutResources/>
 
         <!-- Head -->
         <g:layoutHead />
-
-        <![endif]-->
     </head>
 
     <body>

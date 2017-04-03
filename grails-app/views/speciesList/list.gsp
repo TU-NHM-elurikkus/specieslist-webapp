@@ -40,19 +40,15 @@
             <div id="breadcrumb" class="col-12">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="${grailsApplication.config.ala.baseURL}">Home</a>&nbsp;
-
-                        <span class="divider">
-                            <i class="fa fa-arrow-right"></i>
-                        </span>
+                        <a href="${grailsApplication.config.ala.baseURL}">
+                            Home
+                        </a>
                     </li>
 
                     <li class="breadcrumb-item">
-                        <a href="${request.contextPath}/public/speciesLists">Species lists</a>&nbsp;
-
-                        <span class="divider">
-                            <i class="fa fa-arrow-right"></i>
-                        </span>
+                        <a href="${request.contextPath}/public/speciesLists">
+                            Species lists
+                        </a>
                     </li>
 
                     %{-- XXX --}%
@@ -68,9 +64,11 @@
                 <h1>
                     My species lists
 
-                    <g:link controller="speciesList" action="upload" class="btn float-right" title="Add Species List">
-                        Upload a list
-                    </g:link>
+                    <span class="float-right">
+                        <g:link controller="speciesList" action="upload" class="erk-button erk-button--light" title="Add Species List">
+                            Upload a list
+                        </g:link>
+                    </span>
                 </h1>
             </hgroup>
         </div>

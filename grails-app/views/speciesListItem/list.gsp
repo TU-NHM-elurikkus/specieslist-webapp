@@ -338,15 +338,9 @@
                         <a href="${request.contextPath}/public/speciesLists">
                             Species lists
                         </a>
-
-                        <span class="divider">
-                            <i class="fa fa-arrow-right"></i>
-                        </span>
                     </li>
 
-                    <li class="breadcrumb-item">
-                        ${speciesList?.listName?:"Species list items"}
-                    </li>
+                    <li class="breadcrumb-item">${speciesList?.listName?:"Species list items"}</li>
                 </ol>
             </div>
         </div>
@@ -360,14 +354,14 @@
                     </a>
                     &nbsp;&nbsp;
                     <div id="listActionButtons">
-                        <a href="#" id="toggleListInfo" class="btn">
+                        <a href="#" id="toggleListInfo" class="erk-button erk-button--light">
                             <i class="icon-info-sign "></i> List info
                         </a>
 
                         <g:if test="${userCanEditPermissions}">
                             <a
                                 href="#"
-                                class="btn btn-small"
+                                class="erk-button erk-button--light"
                                 data-remote="${createLink(controller: 'editor', action: 'editPermissions', id: params.id)}"
                                 data-target="#modal"
                                 data-toggle="modal"
@@ -379,7 +373,7 @@
                         <g:if test="${userCanEditData}">
                             <a
                                 href="#"
-                                class="btn btn-small"
+                                class="erk-button erk-button--light"
                                 data-remote="${createLink(controller: 'editor', action: 'addRecordScreen', id: params.id)}"
                                 data-target="#addRecord"
                                 data-toggle="modal"
@@ -390,12 +384,12 @@
                     </div>
 
                     <span class="float-right">
-                        <a href="#download" class="btn" title="View the download options for this species list." id="downloadLink">Download</a>
+                        <a href="#download" class="erk-button erk-button--light" title="View the download options for this species list." id="downloadLink">Download</a>
 
-                        <a class="btn" title="View occurrences for up to ${maxDownload} species on the list"
+                        <a class="erk-button erk-button--light" title="View occurrences for up to ${maxDownload} species on the list"
                            href="${request.contextPath}/speciesList/occurrences/${params.id}${params.toQueryString()}&type=Search">View occurrence records</a>
 
-                        <a href="${request.contextPath}/speciesList/spatialPortal/${params.id}${params.toQueryString()}&type=Search" class="btn" title="View the spatial portal." id="downloadLink">View in spatial portal</a>
+                        <a href="${request.contextPath}/speciesList/spatialPortal/${params.id}${params.toQueryString()}&type=Search" class="erk-button erk-button--light" title="View the spatial portal." id="downloadLink">View in spatial portal</a>
                     </span>
                 </h2>
             </div>
@@ -421,11 +415,11 @@
                             </div>
 
                             <div class="modal-footer">
-                                <button class="btn" data-dismiss="modal" aria-hidden="true">
+                                <button class="erk-button erk-button--light" data-dismiss="modal" aria-hidden="true">
                                     Close
                                 </button>
 
-                                <button class="btn btn-primary" id="saveEditors">
+                                <button class="erk-button erk-button--light" id="saveEditors">
                                     Save changes
                                 </button>
                             </div>
@@ -455,11 +449,11 @@
                             </div>
 
                             <div class="modal-footer">
-                                <button class="btn" data-dismiss="modal" aria-hidden="true">
+                                <button class="erk-button erk-button--light" data-dismiss="modal" aria-hidden="true">
                                     Close
                                 </button>
 
-                                <button class="btn btn-primary" id="saveNewRecord" data-id="${speciesList.id}" data-modal="#addRecord">
+                                <button class="erk-button erk-button--light" id="saveNewRecord" data-id="${speciesList.id}" data-modal="#addRecord">
                                     Save changes
                                 </button>
                             </div>
@@ -480,7 +474,7 @@
         <button type="button" class="close" onclick="$(this).parent().slideUp()">&times;</button>
 
         <g:if test="${userCanEditPermissions}">
-            <a href="#" class="btn btn-small" id="edit-meta-button"><i class="icon-pencil"></i> Edit</a>
+            <a href="#" class="erk-button erk-button--light" id="edit-meta-button"><i class="icon-pencil"></i> Edit</a>
         </g:if>
 
         <dl class="row" id="show-meta-dl">
@@ -697,8 +691,8 @@
 
                     <div class="control-group">
                         <div class="controls">
-                            <button type="submit" id="edit-meta-submit" class="btn btn-primary">Save</button>
-                            <button class="btn" onclick="toggleEditMeta(false);return false;">Cancel</button>
+                            <button type="submit" id="edit-meta-submit" class="erk-button erk-button--light">Save</button>
+                            <button class="erk-button erk-button--light" onclick="toggleEditMeta(false);return false;">Cancel</button>
                         </div>
                     </div>
                 </form>
@@ -737,7 +731,7 @@
                         </g:if>
 
                         <li>
-                            <g:link controller="speciesList" action="list" class="btn" title="My Lists">
+                            <g:link controller="speciesList" action="list" class="wrk-button" title="My Lists">
                                 My Lists
                             </g:link>
                         </li>
@@ -754,9 +748,9 @@
                             <g:set var="fqs" value="${params.list('fq')}" />
                             <g:if test="${fqs.size()>0&& fqs.get(0).length()>0}">
                                 <div id="currentFilter">
-                                    <p>
-                                        <span class="FieldName">Current Filters</span>
-                                    </p>
+                                    <div class="FieldName">
+                                        Current Filters
+                                    </div>
 
                                     <div id="currentFilters" class="subnavlist">
                                         <ul>
@@ -843,30 +837,31 @@
 
                                     <tr class="${(i % 2) == 0 ? 'odd' : 'even'}" id="row_${recId}">
                                         <td class="action">
-                                            <div class="btn-group">
-                                                <a class="btn btn-small viewRecordButton" href="#viewRecord" title="view record" data-id="${recId}">
-                                                    <i class="icon-info-sign"></i>
+                                            <center>
+                                                <a class="viewRecordButton" href="#viewRecord" title="view record" data-id="${recId}">
+                                                    <i class="fa fa-info-circle"></i>
                                                 </a>
 
                                                 <g:if test="${userCanEditData}">
-                                                    <a class="btn btn-small" href="#" title="edit" data-remote="${createLink(controller: 'editor', action: 'editRecordScreen', id: result.id)}"
+                                                    <a href="#" title="edit" data-remote="${createLink(controller: 'editor', action: 'editRecordScreen', id: result.id)}"
                                                         data-target="#editRecord_${recId}" data-toggle="modal" >
-                                                        <i class="icon-pencil"></i>
+                                                        <i class="fa fa-pencil"></i>
                                                     </a>
 
-                                                    <a class="btn btn-small" href="#" title="delete" data-target="#deleteRecord_${recId}" data-toggle="modal">
-                                                        <i class="icon-trash"></i>
+                                                    <a href="#" title="delete" data-target="#deleteRecord_${recId}" data-toggle="modal">
+                                                        <i class="fa fa-trash-o"></i>
                                                     </a>
                                                 </g:if>
-                                            </div>
+                                            </center>
                                         </td>
 
                                         <td class="rawScientificName">
                                             ${fieldValue(bean: result, field: "rawScientificName")}
 
                                             <g:if test="${result.guid == null}">
-                                                <br/>(unmatched - try <a href="http://google.com/search?q=${fieldValue(bean: result, field: "rawScientificName").trim()}" target="google" clas="btn btn-primary btn-mini">Google</a>,
-                                                <a href="${grailsApplication.config.biocache.baseURL}/occurrences/search?q=${fieldValue(bean: result, field: "rawScientificName").trim()}" target="biocache" clas="btn btn-success btn-mini">
+                                                %{-- XXX TODO: tag properties were proken and did not work, test and fix. --}%
+                                                <br/>(unmatched - try <a href="http://google.com/search?q=${fieldValue(bean: result, field: "rawScientificName").trim()}" target="google" class="erk-button erk-button--light btn-mini">Google</a>,
+                                                <a href="${grailsApplication.config.biocache.baseURL}/occurrences/search?q=${fieldValue(bean: result, field: "rawScientificName").trim()}" target="biocache" class="erk-button erk-button--light btn-mini">
                                                     Occurrences
                                                 </a>)
                                             </g:if>
@@ -952,8 +947,6 @@
                                     <g:if test="${result.commonName}">
                                         <br>${result.commonName}
                                     </g:if>
-
-                                    %{--<div class="btn-group btn-group float-right">--}%
 
                                     <div class="float-right" style="display:inline-block; padding: 5px;">
                                         <a href="#viewRecord" class="viewRecordButton" title="view record" data-id="${recId}">
@@ -1042,9 +1035,9 @@
 
                             <div class="modal-footer">
                                 %{-- TODO: .hide class. --}%
-                                <button class="btn btn-primary hide" data-id="${recId}">Previous</button>
-                                <button class="btn btn-primary hide" data-id="${recId}">Next</button>
-                                <button class="btn" onclick="$('#viewRecord .modal-body').scrollTop(0);" data-dismiss="modal" aria-hidden="true">Close</button>
+                                <button class="erk-button erk-button--light hide" data-id="${recId}">Previous</button>
+                                <button class="erk-button erk-button--light hide" data-id="${recId}">Next</button>
+                                <button class="erk-button erk-button--light" onclick="$('#viewRecord .modal-body').scrollTop(0);" data-dismiss="modal" aria-hidden="true">Close</button>
                             </div>
                         </div>
                     </div>
@@ -1069,11 +1062,11 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button class="btn" data-dismiss="modal" aria-hidden="true">
+                            <button class="erk-button erk-button--light" data-dismiss="modal" aria-hidden="true">
                                 Cancel
                             </button>
 
-                            <button class="btn btn-primary saveRecord" data-modal="#editRecord_${recId}" data-id="${recId}">
+                            <button class="erk-button erk-button--light saveRecord" data-modal="#editRecord_${recId}" data-id="${recId}">
                                 Save changes
                             </button>
                         </div>
@@ -1093,11 +1086,11 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button class="btn" data-dismiss="modal" aria-hidden="true">
+                            <button class="erk-button erk-button--light" data-dismiss="modal" aria-hidden="true">
                                 Cancel
                             </button>
 
-                            <button class="btn btn-primary deleteSpecies" data-modal="#deleteRecord_${recId}" data-id="${recId}">
+                            <button class="erk-button erk-button--light deleteSpecies" data-modal="#deleteRecord_${recId}" data-id="${recId}">
                                 Delete
                             </button>
                         </div>

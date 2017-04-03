@@ -64,7 +64,7 @@ p span.count {
 }
 
 #speciesList {
-    margin-top: 20px;
+    margin-top: 1rem;
     clear: both;
 }
 
@@ -72,43 +72,9 @@ p span.count {
     /*margin-top: 5px;*/
 }
 
-div#download {
-    font-size: 13px;
-}
-#downloadForm {
-    text-align: left;
-}
-#downloadForm label {
-    color: #444444;
-    font-size: 13px;
-    display: inline-block;
-    padding-right: 10px;
-    text-align: right;
-    width: 35%;
-}
-#download {
-    line-height: 1.4em;
-}
-#downloadForm input  {
-    float: none;
-    margin-bottom: 2px;
-    font-size: 13px;
-}
-
-#downloadForm select  {
-    float: none;
-    margin-bottom: 0px;
-    font-size: 13px;
-}
-
-#termsOfUseDownload {
-    text-align:left; padding-bottom:15px;
-}
-
 #currentFilters {
     margin-bottom: 15px;
 }
-
 
 #currentFilters > ul {
     list-style: none;
@@ -277,10 +243,7 @@ img.smallSpeciesImage {
 .listSearchForm {
     display: inline-block;
     float: left;
-    /*
-    margin-right: 10px;
-    margin-bottom: 10px;
-    */
+    margin-right: 1rem;
 }
 
 #listItemView {

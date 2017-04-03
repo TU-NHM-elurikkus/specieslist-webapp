@@ -307,19 +307,19 @@
                                 <i class="icon-file fileupload-exists"></i>
                                 <span class="fileupload-preview"></span>
                             </div>
-                            <span class="btn btn-default btn-file">
+                            <span class="erk-button erk-button--light btn-file">
                                 <span class="fileupload-new">Select file</span>
                                 <span class="fileupload-exists">Change</span>
                                 <input type="file" name="csvFile" id="csvFileUpload"/>
                             </span>
-                            <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
+                            <a href="#" class="erk-button erk-button--light fileupload-exists" data-dismiss="fileupload">Remove</a>
                         </div>
                     </div>
                 </g:uploadForm>
 
                 <div style="clear: both"></div>
 
-                <g:submitButton id="checkData2" class="actionButton btn" name="checkData" value="Check Data"
+                <g:submitButton id="checkData2" class="actionButton erk-button erk-button--light" name="checkData" value="Check Data"
                                 onclick="javascript:parseColumns();"/>
 
                 <h3>Option 2: Paste your species list here</h3>
@@ -332,7 +332,7 @@
                         name="copyPasteData" rows="10" cols="120" style="width:100%;"
                         onkeyup="javascript:window.setTimeout('parseColumns()', 500, true);"></g:textArea>
 
-                <g:submitButton id="checkData" class="actionButton btn" name="checkData" value="Check Data"
+                <g:submitButton id="checkData" class="actionButton erk-button erk-button--light" name="checkData" value="Check Data"
                                 onclick="javascript:parseColumns();"/>
                 <p id="processingInfo"></p>
 
@@ -436,7 +436,7 @@
                         </tr>
                         </tbody>
                     </table>
-                    <input id="uploadButton" class="datasetName actionButton btn btn-primary" type="button" value="Upload"
+                    <input id="uploadButton" class="datasetName actionButton erk-button erk-button--light" type="button" value="Upload"
                            onclick="javascript:uploadSpeciesList();"/>
                 </div>
             </div>
