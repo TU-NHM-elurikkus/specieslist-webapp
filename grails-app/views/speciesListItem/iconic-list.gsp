@@ -210,7 +210,7 @@
             <form class="search-form" role="search" action="${bieUrl}/search" method="get" style="margin-bottom: 0">
                 <div class="input-append">
                     <input class="general-search"  type="text" name="q" placeholder="Search Australia's Species">
-                    <button class="btn btn-primary" type="submit">Search</button>
+                    <button class="erk-button" type="submit">Search</button>
                 </div>
             </form>
         </div>

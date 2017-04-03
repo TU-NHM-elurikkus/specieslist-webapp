@@ -21,7 +21,7 @@ in turn, allows those <strong>editors</strong> to edit and delete entries in thi
 <form class="form-inline" id="userEditForm">
     <label class="control-label" for="search">User's email address </label>
     <input id="search" type="text" class="input-xlarge" data-provide="typeahead" placeholder="Enter user's email address" autocomplete="off">
-    <button type="submit" class="btn">Add</button>
+    <button type="submit" class="erk-button">Add</button>
 </form>
 <table id="userTable" class="table table-bordered" style="margin-top: 10px;">
     <thead>

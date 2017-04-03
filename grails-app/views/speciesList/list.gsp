@@ -68,9 +68,11 @@
                 <h1>
                     My species lists
 
-                    <g:link controller="speciesList" action="upload" class="btn float-right" title="Add Species List">
-                        Upload a list
-                    </g:link>
+                    <span class="float-right">
+                        <g:link controller="speciesList" action="upload" class="erk-button" title="Add Species List">
+                            Upload a list
+                        </g:link>
+                    </span>
                 </h1>
             </hgroup>
         </div>

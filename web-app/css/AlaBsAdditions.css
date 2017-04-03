@@ -64,7 +64,7 @@ p span.count {
 }
 
 #speciesList {
-    margin-top: 20px;
+    margin-top: 1rem;
     clear: both;
 }
 
@@ -277,10 +277,7 @@ img.smallSpeciesImage {
 .listSearchForm {
     display: inline-block;
     float: left;
-    /*
-    margin-right: 10px;
-    margin-bottom: 10px;
-    */
+    margin-right: 1rem;
 }
 
 #listItemView {

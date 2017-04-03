@@ -73,13 +73,17 @@
                     We have detected species properties within the list. <br/>
                     It is possible to map your properties to a controlled vocabulary.<br/>
                     This step is <strong>optional</strong>.
-                    <input id="viewVocabButton" class="datasetName actionButton btn" type="button"
+                    <input id="viewVocabButton" class="datasetName actionButton erk-button" type="button"
                            value="Click here to map..." onclick="javascript:viewVocab();"/>
                 </p>
 
                 <div class="allVocabs well" id="listvocab">
 
-                    <div class="pull-right"><button class="btn" onclick="javascript:hideVocab();">Close</button></div>
+                    <div class="pull-right">
+                        <button class="erk-button" onclick="javascript:hideVocab();">
+                            Close
+                        </button>
+                    </div>
 
                     <g:each in="${listProperties.keySet()}" var="key">
                         <div class="vocabDiv">
@@ -104,7 +108,7 @@
                         </div><!-- #vocabDiv -->
                     </g:each>
 
-                    <div class="pull-right"><button class="btn" onclick="javascript:hideVocab();">Close</button></div>
+                    <div class="pull-right"><button class="erk-button" onclick="javascript:hideVocab();">Close</button></div>
                 </div><!-- #listvocab -->
             </g:if>
         </g:else>

@@ -93,7 +93,7 @@
                             </div>
 
                             <div class="modal-footer" style="text-align: left;">
-                                <button class="btn btn-small" data-dismiss="modal" aria-hidden="true" style="float:right;">Close</button>
+                                <button class="erk-button" data-dismiss="modal" aria-hidden="true" style="float:right;">Close</button>
                             </div>
                         </div>
                     </div>

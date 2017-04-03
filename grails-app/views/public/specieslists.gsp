@@ -53,8 +53,8 @@
                     Species lists
 
                     <span class="float-right">
-                        <a class="btn" title="Add Species List" href="${request.contextPath}/speciesList/upload">Upload a list</a>
-                        <a class="btn" title="My Lists" href="${request.contextPath}/speciesList/list">My Lists</a>
+                        <a class="erk-button" title="Add Species List" href="${request.contextPath}/speciesList/upload">Upload a list</a>
+                        <a class="erk-button" title="My Lists" href="${request.contextPath}/speciesList/list">My Lists</a>
                     </span>
                 </h1>
             </hgroup>
@@ -87,7 +87,7 @@
                             <div class="input-plus">
                                 <input class="input-plus" id="appendedInputButton" name="q" type="text" value="${params.q}" placeholder="Search in list name, description or owner">
 
-                                <button class="btn btn-dark input-plus__addon" type="submit">
+                                <button class="erk-button erk-button--dark input-plus__addon" type="submit">
                                     Search
                                 </button>
                             </div>
@@ -96,7 +96,7 @@
                         <form class="listSearchForm" >
                             <g:if test="${params.q}">
                                 %{--<input type="hidden" name="q" value=""/>--}%
-                                <button class="btn btn-primary" type="submit">
+                                <button class="erk-button" type="submit">
                                     Clear search
                                 </button>
                             </g:if>
@@ -118,7 +118,7 @@
                         No Species Lists found for: <strong>${params.q}</strong>
                     </p>
 
-                    <button class="btn btn-primary" type="submit">Clear search</button>
+                    <button class="erk-button" type="submit">Clear search</button>
                 </form>
             </g:elseif>
             <g:else>

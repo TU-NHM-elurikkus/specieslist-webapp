@@ -16,8 +16,6 @@
 
         <!-- Head -->
         <g:layoutHead />
-
-        <![endif]-->
     </head>
 
     <body>
