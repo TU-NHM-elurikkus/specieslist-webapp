@@ -229,7 +229,7 @@
                     <g:if test="${group.getKey() == 'group'}">
                         <g:each in="${group.getValue().sort{it[1]}}" var="arr" status="i">
                             <g:set var="active" value="${fqs.any{ it.contains(arr[1])} ? "active" : ""}"/>
-                            <li class="${active}"><a href="?fq=kvp ${arr[0]}:${arr[1]}">${arr[1]} (${arr[3]})<i class="icon-chevron-right"></i> </a></li>
+                            <li class="${active}"><a href="?fq=kvp ${arr[0]}:${arr[1]}">${arr[1]} (${arr[3]})<i class="fa fa-chevron-right"></i> </a></li>
                         </g:each>
                     </g:if>
                 </g:each>
