@@ -338,15 +338,9 @@
                         <a href="${request.contextPath}/public/speciesLists">
                             Species lists
                         </a>
-
-                        <span class="divider">
-                            <i class="fa fa-arrow-right"></i>
-                        </span>
                     </li>
 
-                    <li class="breadcrumb-item">
-                        ${speciesList?.listName?:"Species list items"}
-                    </li>
+                    <li class="breadcrumb-item">${speciesList?.listName?:"Species list items"}</li>
                 </ol>
             </div>
         </div>
@@ -843,22 +837,22 @@
 
                                     <tr class="${(i % 2) == 0 ? 'odd' : 'even'}" id="row_${recId}">
                                         <td class="action">
-                                            <div class="erk-btn-group">
-                                                <a class="erk-button erk-button--light viewRecordButton" href="#viewRecord" title="view record" data-id="${recId}">
-                                                    <i class="icon-info-sign"></i>
+                                            <center>
+                                                <a class="viewRecordButton" href="#viewRecord" title="view record" data-id="${recId}">
+                                                    <i class="fa fa-info-circle"></i>
                                                 </a>
 
                                                 <g:if test="${userCanEditData}">
-                                                    <a class="erk-button erk-button--light" href="#" title="edit" data-remote="${createLink(controller: 'editor', action: 'editRecordScreen', id: result.id)}"
+                                                    <a href="#" title="edit" data-remote="${createLink(controller: 'editor', action: 'editRecordScreen', id: result.id)}"
                                                         data-target="#editRecord_${recId}" data-toggle="modal" >
-                                                        <i class="icon-pencil"></i>
+                                                        <i class="fa fa-pencil"></i>
                                                     </a>
 
-                                                    <a class="erk-button erk-button--light" href="#" title="delete" data-target="#deleteRecord_${recId}" data-toggle="modal">
-                                                        <i class="icon-trash"></i>
+                                                    <a href="#" title="delete" data-target="#deleteRecord_${recId}" data-toggle="modal">
+                                                        <i class="fa fa-trash-o"></i>
                                                     </a>
                                                 </g:if>
-                                            </div>
+                                            </center>
                                         </td>
 
                                         <td class="rawScientificName">

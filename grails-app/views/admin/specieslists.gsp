@@ -24,16 +24,10 @@
                             <a href="http://www.ala.org.au">
                                 Home
                             </a>
-
-                            <span class="divider">
-                                <i class="fa fa-arrow-right"></i>
-                            </span>
                         </li>
 
                         <li class="breadcrumb-item">
-                            <a class="current" href="${request.contextPath}/public/speciesLists">
-                                Species lists
-                            </a>
+                            <a class="current" href="${request.contextPath}/public/speciesLists">Species lists</a>
                         </li>
                     </ol>
                 </div>

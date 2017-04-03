@@ -31,10 +31,6 @@
                             <a href="${request.contextPath}">
                                 Home
                             </a>
-
-                            <span class="divider">
-                                <i class="fa fa-arrow-right"></i>
-                            </span>
                         </li>
 
                         <li class="breadcrumb-item">
