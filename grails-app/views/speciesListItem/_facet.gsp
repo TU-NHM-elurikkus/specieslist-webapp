@@ -35,7 +35,7 @@
 
         <g:if test="${values.size() > 4}">
             <div class="showHide">
-                <i class="icon icon-hand-right"></i>
+                <i class="fa fa-hand-o-right"></i>
 
                 <a href="${sl.facetAsId(key:key, prefix:"#div")}" class="multipleFacetsLinkZ" id="${sl.facetAsId(key:key, prefix:"multi")}"
                    role="button" data-toggle="modal"  title="See full list of values">choose more...</a>

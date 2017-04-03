@@ -355,7 +355,8 @@
                     &nbsp;&nbsp;
                     <div id="listActionButtons">
                         <a href="#" id="toggleListInfo" class="erk-button erk-button--light">
-                            <i class="icon-info-sign "></i> List info
+                            <i class="fa fa-info-circle"></i>
+                            List info
                         </a>
 
                         <g:if test="${userCanEditPermissions}">
@@ -366,7 +367,7 @@
                                 data-target="#modal"
                                 data-toggle="modal"
                             >
-                                <i class="icon-user "></i> Edit permissions
+                                <i class="fa fa-user-o"></i> Edit permissions
                             </a>
                         </g:if>
 
@@ -378,7 +379,7 @@
                                 data-target="#addRecord"
                                 data-toggle="modal"
                             >
-                                <i class="icon-plus-sign "></i> Add species
+                                <i class="fa fa-plus"></i> Add species
                             </a>
                         </g:if>
                     </div>
@@ -474,7 +475,7 @@
         <button type="button" class="close" onclick="$(this).parent().slideUp()">&times;</button>
 
         <g:if test="${userCanEditPermissions}">
-            <a href="#" class="erk-button erk-button--light" id="edit-meta-button"><i class="icon-pencil"></i> Edit</a>
+            <a href="#" class="erk-button erk-button--light" id="edit-meta-button"><i class="fa fa-pencil"></i> Edit</a>
         </g:if>
 
         <dl class="row" id="show-meta-dl">
@@ -758,7 +759,7 @@
                                                 <g:if test="${fq.length() >0}">
                                                     <li>
                                                         <g:link action="list" id="${params.id}" params="${[fq:sl.excludedFqList(fqs:fqs, fq:fq), max:params.max]}" class="removeLink" title="Uncheck (remove filter)">
-                                                            <i class="icon-check"></i>
+                                                            <i class="fa fa-check"></i>
                                                         </g:link>
 
                                                         <g:message code="facet.${fq.replaceFirst("kvp ","")}" default="${fq.replaceFirst("kvp ","")}"/>
@@ -801,13 +802,13 @@
             <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" data-toggle="tab" href="#list-tab" role="tab" title="View as detailed list">
-                        <i class="icon icon-th-list"></i> List
+                        <i class="fa fa-th-list"></i> List
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#grid-tab" role="tab" title="View as tumbnail image grid">
-                        <i class="icon icon-th"></i> Grid
+                        <i class="fa fa-th"></i> Grid
                     </a>
                 </li>
             </ul>
@@ -950,17 +951,17 @@
 
                                     <div class="float-right" style="display:inline-block; padding: 5px;">
                                         <a href="#viewRecord" class="viewRecordButton" title="view record" data-id="${recId}">
-                                            <i class="icon-info-sign icon-white"></i>
+                                            <i class="fa fa-info-circle"></i>
                                         </a>&nbsp;
 
                                         <g:if test="${userCanEditData}">
                                             <a href="#" title="edit" data-remote="${createLink(controller: 'editor', action: 'editRecordScreen', id: result.id)}"
                                                data-target="#editRecord_${recId}" data-toggle="modal" >
-                                               <i class="icon-pencil icon-white"></i>
+                                               <i class="fa fa-pencil"></i>
                                             </a>&nbsp;
 
                                             <a href="#" title="delete" data-target="#deleteRecord_${recId}" data-toggle="modal">
-                                                <i class="icon-trash icon-white"></i>
+                                                <i class="fa fa-trash-o"></i>
                                             </a>&nbsp;
                                         </g:if>
                                     </div>
