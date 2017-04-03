@@ -69,7 +69,7 @@
                     My species lists
 
                     <span class="float-right">
-                        <g:link controller="speciesList" action="upload" class="erk-button" title="Add Species List">
+                        <g:link controller="speciesList" action="upload" class="erk-button erk-button--light" title="Add Species List">
                             Upload a list
                         </g:link>
                     </span>

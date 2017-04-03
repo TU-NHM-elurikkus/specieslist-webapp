@@ -53,8 +53,8 @@
                     Species lists
 
                     <span class="float-right">
-                        <a class="erk-button" title="Add Species List" href="${request.contextPath}/speciesList/upload">Upload a list</a>
-                        <a class="erk-button" title="My Lists" href="${request.contextPath}/speciesList/list">My Lists</a>
+                        <a class="erk-button erk-button--light" title="Add Species List" href="${request.contextPath}/speciesList/upload">Upload a list</a>
+                        <a class="erk-button erk-button--light" title="My Lists" href="${request.contextPath}/speciesList/list">My Lists</a>
                     </span>
                 </h1>
             </hgroup>
@@ -96,7 +96,7 @@
                         <form class="listSearchForm" >
                             <g:if test="${params.q}">
                                 %{--<input type="hidden" name="q" value=""/>--}%
-                                <button class="erk-button" type="submit">
+                                <button class="erk-button erk-button--light" type="submit">
                                     Clear search
                                 </button>
                             </g:if>
@@ -118,7 +118,7 @@
                         No Species Lists found for: <strong>${params.q}</strong>
                     </p>
 
-                    <button class="erk-button" type="submit">Clear search</button>
+                    <button class="erk-button erk-button--light" type="submit">Clear search</button>
                 </form>
             </g:elseif>
             <g:else>

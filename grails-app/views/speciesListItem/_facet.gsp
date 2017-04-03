@@ -1,11 +1,9 @@
 <%@page defaultCodec="html" %>
 %{-- Template for diplaying a single facet for a species list. --}%
 <g:set var="facetId" value="${sl.facetAsId(key:key, prefix:"facet")}"/>
-<p>
-    <span class="FieldName">
-        ${key}
-    </span>
-</p>
+<div class="FieldName">
+    ${key}
+</div>
 
 <div id="${facetId}" class="subnavlist">
     <ul>
@@ -93,7 +91,7 @@
                             </div>
 
                             <div class="modal-footer" style="text-align: left;">
-                                <button class="erk-button" data-dismiss="modal" aria-hidden="true" style="float:right;">Close</button>
+                                <button class="erk-button erk-button--light" data-dismiss="modal" aria-hidden="true" style="float:right;">Close</button>
                             </div>
                         </div>
                     </div>
