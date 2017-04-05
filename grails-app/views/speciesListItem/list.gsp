@@ -753,17 +753,6 @@
                                     <g:each in="${facets.get("listProperties")}" var="value">
                                         <g:render template="facet" model="${[key:value.getKey(), values:value.getValue(), isProperty:true]}"/>
                                     </g:each>
-
-                                    %{-- TODO: Hide this node. --}%
-                                    <div style="display:none"><!-- fancybox popup div -->
-                                        <div id="multipleFacets">
-                                            <p>
-                                                Refine your search
-                                            </p>
-
-                                            <div id="dynamic"></div>
-                                        </div>
-                                    </div>
                                 </g:if>
                                 <g:else>
                                     <g:render template="facet" model="${[key:entry.key, values:entry.value, isProperty:false]}"/>

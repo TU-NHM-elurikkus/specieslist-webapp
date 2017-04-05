@@ -45,14 +45,23 @@
 
         <div class="row">
             <hgroup class="col">
-                <h1>
+                <h2 class="float-left">
                     Species lists
+                </h2>
 
-                    <span class="float-right">
-                        <a class="erk-button erk-button--light" title="Add Species List" href="${request.contextPath}/speciesList/upload">Upload a list</a>
-                        <a class="erk-button erk-button--light" title="My Lists" href="${request.contextPath}/speciesList/list">My Lists</a>
-                    </span>
-                </h1>
+                <ul class="erk-ulist list-external-links float-right">
+                    <li class="erk-ulist--item">
+                        <a title="Add Species List" href="${request.contextPath}/speciesList/upload">
+                            Upload a list
+                        </a>
+                    </li>
+
+                    <li class="erk-ulist--item">
+                        <a title="My Lists" href="${request.contextPath}/speciesList/list">
+                            My Lists
+                        </a>
+                    </li>
+                </ul>
             </hgroup>
         </div>
     </header>

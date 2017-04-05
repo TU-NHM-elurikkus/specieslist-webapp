@@ -37,7 +37,7 @@
 <div id="content" class="container">
     <header id="page-header2">
         <div class="row">
-            <div id="breadcrumb" class="col-12">
+            <div id="breadcrumb" class="col">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
                         <a href="${grailsApplication.config.ala.baseURL}">

@@ -17,6 +17,7 @@
 <head>
 <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
 <title>Upload a list | Species lists | ${grailsApplication.config.skin.orgNameLong}</title>
+
 <script type="text/javascript">
     function init(){
         reset();
@@ -270,35 +271,57 @@
 <body class="upload">
 <div id="content" class="container">
     <header id="page-header">
-        <div id="breadcrumb" >
-            <ol class="breadcrumb">
-                <li><a href="${request.contextPath}/public/speciesLists">Species lists</a> <span class="divider"><i class="fa fa-arrow-right"></i></span></li>
-                <li class="current">Upload a list</li>
-            </ol>
+        <div class="row">
+            <div id="breadcrumb" class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="${request.contextPath}/public/speciesLists">
+                            Species lists
+                        </a>
+                    </li>
+
+                    <li class="breadcrumb-item">
+                        Upload a list
+                    </li>
+                </ol>
+            </div>
         </div>
-        <hgroup>
-            <g:if test="${list}">
-                <h1><g:message code="upload.heading.hasList" default="Upload a list"/></h1>
-            </g:if>
-            <g:else>
-                <h1><g:message code="upload.heading" default="Upload a list"/></h1>
-            </g:else>
-        </hgroup>
+
+        <div class="row">
+            <div class="col">
+                <g:if test="${list}">
+                    <h2>
+                        <g:message code="upload.heading.hasList" default="Upload a list"/>
+                    </h2>
+                </g:if>
+                <g:else>
+                    <h2>
+                        <g:message code="upload.heading" default="Upload a list"/>
+                    </h2>
+                </g:else>
+            </div>
+        </div>
     </header>
+
     <div>
         <div class="message alert alert-info" id="uploadmsg" style="clear:right;">${flash.message}</div>
         <div id="section" class="col-wide">
-
             <g:if test="${resourceUid}">
                 <div class="message alert alert-info"><g:message code="upload.instructions.hasList" default="Upload a list"/></div>
             </g:if>
 
-            <p>A species list should consist of a list of scientific or common names and some optional associated properties. Provide input consisting of a header line and some rows of data and we will attempt to map your list to taxon names known to the ALA system. A species list can be uploaded either as a CSV file, or as copy and pasted text.</p>
+            <p>
+                A species list should consist of a list of scientific or common names and some optional associated properties. Provide input consisting of a header line and some rows of data and we will attempt to map your list to taxon names known to the ALA system. A species list can be uploaded either as a CSV file, or as copy and pasted text.
+            </p>
 
             <div id="initialPaste">
-                <h3>Option 1: Select a CSV file to upload here</h3>
-                Please note that the file upload feature requires a modern browser (such as Chrome, Firefox, or Internet
-                Explorer 10)
+                <h3>
+                    Option 1: Select a CSV file to upload here
+                </h3>
+
+                <p>
+                    Please note that the file upload feature requires a modern browser (such as Chrome, Firefox, or Internet Explorer 10)
+                </p>
 
                 <g:uploadForm name="csvUploadForm" id="csvUploadForm" action="parseData">
                     <div class="fileupload fileupload-new pull-left" data-provides="fileupload">
@@ -307,35 +330,58 @@
                                 <i class="icon-file fileupload-exists"></i>
                                 <span class="fileupload-preview"></span>
                             </div>
+
                             <span class="erk-button erk-button--light btn-file">
-                                <span class="fileupload-new">Select file</span>
-                                <span class="fileupload-exists">Change</span>
-                                <input type="file" name="csvFile" id="csvFileUpload"/>
+                                <span class="fileupload-new">
+                                    Select file
+                                </span>
+
+                                <span class="fileupload-exists">
+                                    Change
+                                </span>
+
+                                <input type="file" name="csvFile" id="csvFileUpload">
                             </span>
-                            <a href="#" class="erk-button erk-button--light fileupload-exists" data-dismiss="fileupload">Remove</a>
+
+                            <a href="#" class="erk-button erk-button--light fileupload-exists" data-dismiss="fileupload">
+                                Remove
+                            </a>
                         </div>
                     </div>
                 </g:uploadForm>
 
                 <div style="clear: both"></div>
 
-                <g:submitButton id="checkData2" class="actionButton erk-button erk-button--light" name="checkData" value="Check Data"
-                                onclick="javascript:parseColumns();"/>
+                <g:submitButton
+                    id="checkData2"
+                    class="actionButton erk-button erk-button--light"
+                    name="checkData"
+                    value="Check Data"
+                    onclick="javascript:parseColumns();"/>
 
-                <h3>Option 2: Paste your species list here</h3>
-                <p>To paste your data, click the rectangle below, and type <strong>control-V (Windows)</strong>
+                <h3 onclick="parseColumns();">
+                    Option 2: Paste your species list here
+                </h3>
+
+                <p>
+                    To paste your data, click the rectangle below, and type <strong>control-V (Windows)</strong>
                     or <strong>command-V (Macintosh)</strong>.
                 </p>
 
                 <g:textArea
-                        id="copyPasteData"
-                        name="copyPasteData" rows="10" cols="120" style="width:100%;"
-                        onkeyup="javascript:window.setTimeout('parseColumns()', 500, true);"></g:textArea>
+                    id="copyPasteData"
+                    name="copyPasteData" rows="10" cols="120" style="width:100%;"
+                    onkeyup="javascript:window.setTimeout('parseColumns()', 500, true);">
+                </g:textArea>
 
-                <g:submitButton id="checkData" class="actionButton erk-button erk-button--light" name="checkData" value="Check Data"
-                                onclick="javascript:parseColumns();"/>
+                <g:submitButton
+                    id="checkData"
+                    class="actionButton erk-button erk-button--light"
+                    name="checkData"
+                    value="Check Data"
+                    onclick="javascript:parseColumns();"/>
+
                 <p id="processingInfo"></p>
-
             </div>
 
             <div id="recognisedData" tabindex="-1"></div>
@@ -354,10 +400,12 @@
                             <td>
                                 <label for="listTitle"><g:message code="upload.listname.label" default="Title*"/></label>
                             </td>
+
                             <td>
                                 <g:textField name="listTitle" style="width:99%" value="${list?.listName}"/>
                             </td>
                         </tr>
+
                         <tr>
                             <td><label for="listTypeId"><g:message code="upload.listtype.label" default="List Type*"/></label></td>
                             <td>
@@ -366,93 +414,148 @@
                                     <g:each in="${au.org.ala.specieslist.ListType.values()}" var="type"><option value="${type.name()}" ${(list?.listType == type) ? 'selected="selected"':''}>${type.displayValue}</option></g:each>
                                 </select>
                             </td>
-
                         </tr>
+
                         <g:if test="${request.isUserInRole("ROLE_ADMIN")}">
                             <tr>
-                                <td><label for="isBIE"><g:message code= "speciesList.isBIE.label" default= "Included in species pages"/></label> </td>
-                                <td><g:checkBox name="isBIE" id="isBIE" checked="${list?.isBIE}"/></td>
+                                <td>
+                                    <label for="isBIE">
+                                        <g:message code= "speciesList.isBIE.label" default= "Included in species pages"/>
+                                    </label>
+                                </td>
+
+                                <td>
+                                    <g:checkBox name="isBIE" id="isBIE" checked="${list?.isBIE}"/>
+                                </td>
                             </tr>
+
                             <tr>
-                                <td><label for="isSDS"><g:message code= "speciesList.isSDS.label" default= "Part of the Sensitive Data Service"/></label> </td>
-                                <td><g:checkBox name="isSDS" id="isSDS" checked="${list?.isSDS}"/></td>
+                                <td>
+                                    <label for="isSDS">
+                                        <g:message code= "speciesList.isSDS.label" default= "Part of the Sensitive Data Service"/>
+                                    </label>
+                                </td>
+
+                                <td>
+                                   <g:checkBox name="isSDS" id="isSDS" checked="${list?.isSDS}"/>
+                                </td>
                             </tr>
                         </g:if>
+
                         <tr class="SDSOnly">
-                            <td><label>Region</label></td>
+                            <td>
+                                <label>Region</label>
+                            </td>
+
                             <td>
                                 <g:textField name="sdsRegion" style="width:99%" value="${list?.region}"/>
                             </td>
                         </tr>
+
                         <tr class="SDSOnly">
-                            <td><label>Authority</label></td>
+                            <td>
+                                <label>Authority</label>
+                            </td>
+
                             <td>
                                 <g:textField name="authority" style="width:99%" value="${list?.authority}"/>
                             </td>
                         </tr>
+
                         <tr class="SDSOnly">
-                            <td><label>Category</label></td>
+                            <td>
+                                <label>Category</label>
+                            </td>
+
                             <td>
                                 <g:textField name="category" style="width:99%" value="${list?.category}"/>
                             </td>
                         </tr>
+
                         <tr class="SDSOnly">
-                            <td><label>Generalisation</label></td>
+                            <td>
+                                <label>Generalisation</label>
+                            </td>
+
                             <td>
                                 <g:textField name="generalisation" style="width:99%" value="${list?.generalisation}"/>
                             </td>
                         </tr>
+
                         <tr class="SDSOnly">
-                            <td><label>SDS Type</label></td>
+                            <td>
+                                <label>SDS Type</label>
+                            </td>
+
                             <td>
                                 <g:select from="['CONSERVATION', 'BIOSECURITY']" name="sdsType" style="width:99%" value="${list?.sdsType}" />
                             </td>
                         </tr>
+
                         <tr>
                             <td>
                                 <label for="listDesc"><g:message code="upload.listdesc.label" default="Description"/></label>
                             </td>
+
                             <td>
                                 <g:textArea cols="100" class="input-xxlarge" rows="5" name="listDesc">${list?.description}</g:textArea>
                             </td>
                         </tr>
+
                         <tr>
                             <td>
                                 <label for="listURL"><g:message code="upload.listlink.label" default="URL"/></label>
                             </td>
+
                             <td>
                                 <g:textField name="listURL" class="input-xxlarge">${list?.url}</g:textField>
                             </td>
-
                         </tr>
+
                         <tr>
                             <td>
                                 <label for="listWkt"><g:message code="upload.listWkt.label" default="Spatial bounds for data (WKT)"/></label>
                             </td>
+
                             <td>
                                 <g:textArea cols="100" rows="5" class="input-xxlarge" name="listWkt">${list?.wkt}</g:textArea>
                             </td>
-
                         </tr>
                         </tbody>
                     </table>
-                    <input id="uploadButton" class="datasetName actionButton erk-button erk-button--light" type="button" value="Upload"
-                           onclick="javascript:uploadSpeciesList();"/>
+
+                    <input
+                        type="button"
+                        id="uploadButton"
+                        class="datasetName actionButton erk-button erk-button--light"
+                        value="Upload"
+                        onclick="javascript:uploadSpeciesList();"/>
                 </div>
             </div>
 
             <div id="uploadFeedback" style="clear:right;display:none;" class="alert alert-error">
-                <button type="button" class="close" onclick="$(this).parent().hide()">×</button>
+                <button type="button" class="close" onclick="$(this).parent().hide()">
+                    ×
+                </button>
+
                 <div></div>
             </div>
+
             <div id="uploadProgressBar">
             </div>
         </div>
     </div>
+
     <div id="statusMsgDiv">
         <div class="well">
-            <h3><img src='${resource(dir:'images',file:'spinner.gif')}' id='spinner'/>&nbsp;&nbsp;<span>Uploading your list...</span></h3>
-            <p>This will take a few moments depending on the size of the list.</p>
+            <h3>
+                <img src='${resource(dir:'images',file:'spinner.gif')}' id='spinner'/>&nbsp;&nbsp;
+                <span>Uploading your list...</span>
+            </h3>
+
+            <p>
+                This will take a few moments depending on the size of the list.
+            </p>
         </div>
     </div>
 </div> <!-- content div -->

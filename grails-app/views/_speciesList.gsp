@@ -24,37 +24,18 @@
         this.cancel();
     }
 
-    function fancyConfirm(msg,listId,action,callback) {
-        jQuery.fancybox({
-            'content':"<div style=\"margin:1px;width:240px;text-align:left;\">"+msg+"<div style=\"text-align:right;margin-top:10px;\"><input id=\"fancyConfirm_cancel\" type=\"button\" value=\"No\" class=\"actionButton erk-button erk-button--light\">&nbsp;<input id=\"fancyConfirm_ok\" type=\"button\" value=\"Yes\" class=\"actionButton erk-button erk-button--light\"><img src='${resource(dir:'images',file:'spinner.gif')}' id='spinner'/></div></div>",
-            'padding': 10,
-            'margin': 20,
-            onComplete: function() {
-                jQuery("#fancyConfirm_cancel").click(function() {
-                    ret = false;
-                    jQuery.fancybox.close();
-                });
+    function confirmAction(msg, listId, action, callback) {
+        var url = '${request.contextPath}' + '/speciesList/' + action + '/' + listId;
+        var doProceed = confirm(msg + listId + '?');
 
-                jQuery("#fancyConfirm_ok").click(function() {
-                    ret = true;
-                    $("img#spinner").show(); // show spinning gif
-                    $("#fancyConfirm_ok").attr("disabled","disabled"); // disable "Yes" button while processing
-
-                    var url = "${request.contextPath}"+"/speciesList/"+action+ "/"+listId;
-
-                    $.post(url, function(data) {
-                        alert(action + ' was successful');
-                        window.location.reload()
-                    }).error(function(jqXHR, textStatus, error) {
-                        alert("An error occurred: " + error + " - " + jqXHR.responseText);
-                    }).complete(function() {
-                        $("img#spinner").hide();
-                        $("#fancyConfirm_ok").removeAttr("disabled");
-                        jQuery.fancybox.close();
-                    });
-                })
-            }
-        })
+        if(doProceed) {
+            $.post(url, function(data) {
+                alert(action + ' was successful');
+                window.location.reload()
+            }).error(function(jqXHR, textStatus, error) {
+                alert("An error occurred: " + error + " - " + jqXHR.responseText);
+            });
+        }
     }
 </script>
 
@@ -121,23 +102,35 @@
                         <td>
                             <g:set var="test" value="${[id: list.id]}"/>
 
-                            <a href="#"
-                               onclick="fancyConfirm('Are you sure that you would like to delete ${list.listName.encodeAsHTML()}', ${list.id}, 'delete');
-                               return false;" id="delete_${list.id}" class="buttonDiv">Delete</a>
+                            <button
+                                type="button"
+                                onclick="confirmAction('Are you sure that you would like to delete ${list.listName.encodeAsHTML()}', ${list.id}, 'delete');"
+                                class="erk-button erk-button--light"
+                            >
+                                Delete
+                            </button>
                         </td>
 
                         <td>
-                            <a href="#"
-                               onclick="fancyConfirm('Are you sure that you would like to rematch ${list.listName.encodeAsHTML()}', ${list.id}, 'rematch');
-                               return false;" id="rematch_${list.id}" class="buttonDiv">Rematch</a>
+                            <button
+                                type="button"
+                                onclick="confirmAction('Are you sure that you would like to rematch ${list.listName.encodeAsHTML()}', ${list.id}, 'rematch');"
+                                class="erk-button erk-button--light"
+                            >
+                                Rematch
+                            </button>
                         </td>
 
                         <td>
-                            <a href="${request.contextPath}/speciesList/upload/${list.dataResourceUid}"
-                               class="buttonDiv">Reload</a>
+                            <button
+                                type="button"
+                                onclick="window.location='${request.contextPath}/speciesList/upload/${list.dataResourceUid}';"
+                                class="erk-button erk-button--light"
+                            >
+                                Reload
+                            </button>
                         </td>
                     </g:if>
-                    %{--<g:else><td/></g:else>--}%
                 </tr>
             </g:each>
         </tbody>
