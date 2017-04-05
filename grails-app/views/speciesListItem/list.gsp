@@ -27,11 +27,7 @@
 }" />
 <html>
 <head>
-    %{--<gui:resources components="['dialog']"/>--}%
-    %{--
-    <r:require modules="application, fancybox, amplify"/>
-    --}%
-    <r:require modules="application, fancybox, amplify"/>
+    <r:require modules="application, amplify"/>
     <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
     <script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'facets.js')}"></script>
     <script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'getQueryParam.js')}"></script>
@@ -48,41 +44,6 @@
                 } else {
                     $('#accordion').addClass('overrideHide');
                 }
-            });
-
-            // download link
-            $("#downloadLink").fancybox({
-                'hideOnContentClick' : false,
-                'hideOnOverlayClick': true,
-                'showCloseButton': true,
-                'titleShow' : false,
-                'autoDimensions' : false,
-                'width': 520,
-                'height': 400,
-                'padding': 10,
-                'margin': 10,
-                onCleanup: function() {
-                    $("label[for='reasonTypeId']").css("color","#444");
-                }
-            });
-
-            // fancybox div for refining search with multiple facet values
-            $(".multipleFacetsLink").fancybox({
-                'hideOnContentClick' : false,
-                'hideOnOverlayClick': true,
-                'showCloseButton': true,
-                'titleShow' : false,
-                'transitionIn': 'elastic',
-                'transitionOut': 'elastic',
-                'speedIn': 400,
-                'speedOut': 400,
-                'scrolling': 'auto',
-                'centerOnScroll': true,
-                'autoDimensions' : false,
-                'width': 560,
-                'height': 560,
-                'padding': 10,
-                'margin': 10
             });
 
             // Add scroll bar to top and bottom of table
@@ -202,12 +163,6 @@
                 var recordId = $(this).data("id");
                 viewRecordForId(recordId);
             });
-
-            // mouse over affect on thumbnail images
-            $('.imgCon').on('hover', function() {
-                $(this).find('.brief, .detail').toggleClass('hide');
-            });
-
         }); // end document ready
 
         function getAndViewRecordId(hash) {
@@ -340,59 +295,80 @@
                         </a>
                     </li>
 
-                    <li class="breadcrumb-item">${speciesList?.listName?:"Species list items"}</li>
+                    <li class="breadcrumb-item">
+                        ${speciesList?.listName?:"Species list items"}
+                    </li>
                 </ol>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-12">
-                <h2>
+            <div class="col">
+                <h2 class="float-left">
                     Species List:
                     <a href="${collectoryUrl}/public/show/${params.id}" title="view Date Resource page">
                         ${speciesList?.listName}
                     </a>
-                    &nbsp;&nbsp;
-                    <div id="listActionButtons">
-                        <a href="#" id="toggleListInfo" class="erk-button erk-button--light">
-                            <i class="fa fa-info-circle"></i>
-                            List info
-                        </a>
-
-                        <g:if test="${userCanEditPermissions}">
-                            <a
-                                href="#"
-                                class="erk-button erk-button--light"
-                                data-remote="${createLink(controller: 'editor', action: 'editPermissions', id: params.id)}"
-                                data-target="#modal"
-                                data-toggle="modal"
-                            >
-                                <i class="fa fa-user-o"></i> Edit permissions
-                            </a>
-                        </g:if>
-
-                        <g:if test="${userCanEditData}">
-                            <a
-                                href="#"
-                                class="erk-button erk-button--light"
-                                data-remote="${createLink(controller: 'editor', action: 'addRecordScreen', id: params.id)}"
-                                data-target="#addRecord"
-                                data-toggle="modal"
-                            >
-                                <i class="fa fa-plus"></i> Add species
-                            </a>
-                        </g:if>
-                    </div>
-
-                    <span class="float-right">
-                        <a href="#download" class="erk-button erk-button--light" title="View the download options for this species list." id="downloadLink">Download</a>
-
-                        <a class="erk-button erk-button--light" title="View occurrences for up to ${maxDownload} species on the list"
-                           href="${request.contextPath}/speciesList/occurrences/${params.id}${params.toQueryString()}&type=Search">View occurrence records</a>
-
-                        <a href="${request.contextPath}/speciesList/spatialPortal/${params.id}${params.toQueryString()}&type=Search" class="erk-button erk-button--light" title="View the spatial portal." id="downloadLink">View in spatial portal</a>
-                    </span>
                 </h2>
+
+                <div id="listActionButtons" class="float-left">
+                    <button id="toggleListInfo" class="erk-button erk-button--light">
+                        <i class="fa fa-info-circle"></i> List info
+                    </button>
+
+                    <button
+                        type="button"
+                        class="erk-button erk-button--light"
+                        title="View the download options for this species list."
+                        data-toggle="modal"
+                        data-target="#download-dialog"
+                    >
+                       <i class="fa fa-download"></i> Download
+                    </button>
+
+                    <g:if test="${userCanEditPermissions}">
+                        <button
+                            type="button"
+                            data-remote="${createLink(controller: 'editor', action: 'editPermissions', id: params.id)}"
+                            data-target="#modal"
+                            data-toggle="modal"
+                            class="erk-button erk-button--light"
+                        >
+                            <i class="fa fa-user-o"></i> Edit permissions
+                        </button>
+                    </g:if>
+
+                    <g:if test="${userCanEditData}">
+                        <a
+                            href="#"
+                            data-remote="${createLink(controller: 'editor', action: 'addRecordScreen', id: params.id)}"
+                            data-target="#addRecord"
+                            data-toggle="modal"
+                        >
+                            <i class="fa fa-plus"></i> Add species
+                        </a>
+                    </g:if>
+                </div>
+
+                <ul class="erk-ulist list-external-links float-right">
+                    <li class="erk-ulist--item">
+                        <a
+                            href="${request.contextPath}/speciesList/occurrences/${params.id}${params.toQueryString()}&type=Search"
+                            title="View occurrences for up to ${maxDownload} species on the list"
+                        >
+                            View occurrence records
+                        </a>
+                    </li>
+
+                    <li class="erk-ulist--item">
+                        <a
+                            href="${request.contextPath}/speciesList/spatialPortal/${params.id}${params.toQueryString()}&type=Search"
+                            title="View the spatial portal."
+                        >
+                            View in spatial portal
+                        </a>
+                    </li>
+                </ul>
             </div>
 
             <g:if test="${userCanEditPermissions}">
@@ -463,9 +439,8 @@
                 </div>
             </g:if>
 
-            <div style="display:none">
-                <g:render template="/download"/>
-            </div>
+            %{-- Download dialog modal --}%
+            <g:render template="/download"/>
         </div>
     </header>
 
@@ -475,7 +450,9 @@
         <button type="button" class="close" onclick="$(this).parent().slideUp()">&times;</button>
 
         <g:if test="${userCanEditPermissions}">
-            <a href="#" class="erk-button erk-button--light" id="edit-meta-button"><i class="fa fa-pencil"></i> Edit</a>
+            <a href="#" class="erk-button erk-button--light" id="edit-meta-button">
+                <i class="fa fa-pencil"></i> Edit
+            </a>
         </g:if>
 
         <dl class="row" id="show-meta-dl">
@@ -713,25 +690,25 @@
         <div class="col-3 well" id="facets-column">
             <div class="boxedZ attachedZ">
                 <section class="meta">
-                    <ul>
-                        <li>
+                    <ul class="erk-ulist">
+                        <li class="erk-ulist--item">
                             Number of Taxa
                             <span class="count">${totalCount}</span>
                         </li>
 
-                        <li>
+                        <li class="erk-ulist--item">
                             Distinct Species
                             <span class="count">${distinctCount}</span>
                         </li>
 
                         <g:if test="${hasUnrecognised && noMatchCount!=totalCount}">
-                            <li>
+                            <li class="erk-ulist--item">
                                 <g:link action="list" id="${params.id}" title="View unrecognised taxa" params="${[fq:sl.buildFqList(fqs:fqs, fq:"guid:null"), max:params.max]}">Unrecognised Taxa</g:link>
                                 <span class="count">${noMatchCount}</span>
                             </li>
                         </g:if>
 
-                        <li>
+                        <li class="erk-ulist--item">
                             <g:link controller="speciesList" action="list" class="wrk-button" title="My Lists">
                                 My Lists
                             </g:link>
@@ -754,10 +731,10 @@
                                     </div>
 
                                     <div id="currentFilters" class="subnavlist">
-                                        <ul>
+                                        <ul class="erk-ulist">
                                             <g:each in="${fqs}" var="fq">
                                                 <g:if test="${fq.length() >0}">
-                                                    <li>
+                                                    <li class="erk-ulist--item">
                                                         <g:link action="list" id="${params.id}" params="${[fq:sl.excludedFqList(fqs:fqs, fq:fq), max:params.max]}" class="removeLink" title="Uncheck (remove filter)">
                                                             <i class="fa fa-check"></i>
                                                         </g:link>
@@ -802,13 +779,15 @@
             <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" data-toggle="tab" href="#list-tab" role="tab" title="View as detailed list">
-                        <i class="fa fa-th-list"></i> List
+                        <i class="fa fa-th-list"></i>
+                        List
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#grid-tab" role="tab" title="View as tumbnail image grid">
-                        <i class="fa fa-th"></i> Grid
+                        <i class="fa fa-th"></i>
+                        Grid
                     </a>
                 </li>
             </ul>
@@ -816,7 +795,7 @@
             <div class="tab-content">
                 <div class="tab-pane active" id="list-tab" role="tabpanel">
                     <div class="table-responsive">
-                        <table class="table table-sm table-striped table-condensed" id="speciesListTable">
+                        <table class="table table-sm table-striped" id="speciesListTable">
                             <thead>
                                 <tr>
                                     <th class="action">Action</th>
@@ -937,8 +916,7 @@
                                     ${displayName}
                                 </div>
 
-                                %{-- TODO: .hide class. --}%
-                                <div class="meta detail hide">
+                                <div class="meta detail">
                                     ${displayName}
 
                                     <g:if test="${result.author}">
@@ -999,7 +977,6 @@
             <g:each var="result" in="${results}" status="i">
                 <g:set var="recId" value="${result.id}"/>
 
-                %{-- TODO: Modal, .hide class. --}%
                 <div class="modal fade" id="viewRecord">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -1034,18 +1011,20 @@
                                 </table>
                             </div>
 
+                            %{-- TODO: .hide class. --}%
+                            %{--
                             <div class="modal-footer">
-                                %{-- TODO: .hide class. --}%
                                 <button class="erk-button erk-button--light hide" data-id="${recId}">Previous</button>
                                 <button class="erk-button erk-button--light hide" data-id="${recId}">Next</button>
                                 <button class="erk-button erk-button--light" onclick="$('#viewRecord .modal-body').scrollTop(0);" data-dismiss="modal" aria-hidden="true">Close</button>
                             </div>
+                            --}%
                         </div>
                     </div>
                 </div>
 
                 <g:if test="${userCanEditData}">
-                    <div class="modal hide fade" id="editRecord_${recId}">
+                    <div class="modal fade" id="editRecord_${recId}">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                                 ×
@@ -1073,7 +1052,7 @@
                         </div>
                     </div>
 
-                    <div class="modal hide fade" id="deleteRecord_${recId}">
+                    <div class="modal fade" id="deleteRecord_${recId}">
                         <div class="modal-header">
                             <h3>
                                 Are you sure you want to delete this species record?

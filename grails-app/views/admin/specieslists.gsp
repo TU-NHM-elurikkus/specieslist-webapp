@@ -27,7 +27,9 @@
                         </li>
 
                         <li class="breadcrumb-item">
-                            <a class="current" href="${request.contextPath}/public/speciesLists">Species lists</a>
+                            <a class="current" href="${request.contextPath}/public/speciesLists">
+                                Species lists
+                            </a>
                         </li>
                     </ol>
                 </div>
