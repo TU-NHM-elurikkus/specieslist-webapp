@@ -1,51 +1,9 @@
-/*
-body {
-    font-size: 13px;
-}
-
-h1 {font-size: 2.0em;}
-h2 {font-size: 1.8em;}
-h3 {font-size: 1.6em;}
-h4 {font-size: 1.4em;}
-
-#content {
-    margin-bottom: 20px;
-}
-
-.breadcrumb {
-    background-color: inherit;
-    margin: 0 0 5px 0;
-    padding: 0;
-}
-
-.breadcrumb > li > .icon {
-    color: #555555;
-    opacity:0.6;
-    filter:alpha(opacity=60);
-    margin: 1px 4px 0;
-}
-
-#breadcrumb a.current {
-    text-decoration: none;
-    color: #333;
-    cursor: default;
-    background-image: none !important;
-}
-
-th, td {
-    padding: .5em 5px;
-    vertical-align: top;
-}
-*/
-
 p span.count {
     float: right;
 }
 
 #page-header, #page-header2 {
     margin-bottom: 1rem;
-}
-
 }
 
 .tableList thead th {
@@ -114,22 +72,15 @@ td.dataValue > input[type="text"] {
 .speciesList .sortable, .tableList .sortable {
     background: url('../images/sort_both.png') no-repeat center right;
     padding-right: 18px;
- }
+}
+
 .speciesList .sorted.asc, .tableList .sorted.asc {
     background: url('../images/sort_asc.png') no-repeat center right;
 }
+
 .speciesList .sorted.desc, .tableList .sorted.desc {
     background: url('../images/sort_desc.png') no-repeat center right;
 }
-
-/*
-#maxItems {
-    height: 22px;
-    font-size: 11px;
-    line-height: 18px;
-    margin-bottom: 4px;
-}
-*/
 
 #list-meta-data {
     margin-bottom: 15px;
@@ -216,6 +167,10 @@ img.smallSpeciesImage {
     max-width: none;
 }
 
+#speciesListTable {
+    margin-bottom: 0;
+}
+
 #speciesListTable td.kvp  {
     padding: 0;
 }
@@ -236,8 +191,17 @@ img.smallSpeciesImage {
     padding: 8px;
 }
 
+#speciesListTable th {
+    border-top: 0;
+}
+
 #listActionButtons {
     display: inline-block;
+    margin: 0 1rem;
+}
+
+.list-external-links {
+    margin: 0;
 }
 
 .listSearchForm {
@@ -249,6 +213,7 @@ img.smallSpeciesImage {
 #listItemView {
     /*float: right;*/
 }
+
 #listItemView .btn {
     font-weight: bold;
 }
@@ -262,15 +227,14 @@ img.smallSpeciesImage {
     background-color: #DDD;
     color: #DDD;
     font-size: 12px;
-    /*text-shadow: 2px 2px 6px rgba(255, 255, 255, 1);*/
-    /* padding: 5px; */
-    /* margin-bottom: 8px; */
-    margin: 2px 0 2px 0;
     position: relative;
+    margin: .5rem;
 }
+
 .imgCon img {
     height: 180px;
 }
+
 .imgCon .meta {
     opacity: 0.8;
     position: absolute;
@@ -281,18 +245,42 @@ img.smallSpeciesImage {
     text-align: left;
     padding: 4px 5px 2px 5px;
 }
+
 .imgCon .brief {
     color: black;
     background-color: white;
 }
+
 .imgCon .detail {
+    display: none;
     color: white;
     background-color: black;
     opacity: 0.7;
 }
+
+.imgCon:hover .meta.brief {
+    display: none;
+}
+
+.imgCon:hover .meta.detail {
+    display: block;
+}
+
+#grid-tab {
+    padding: .5rem;
+}
+
 .overrideHide {
    display: block !important;
 }
+
 .borderless td, .borderless th {
     border: none;
+}
+
+.tab-content {
+    border-bottom: 1px solid #DDD;
+    border-right: 1px solid #DDD;
+    border-left: 1px solid #DDD;
+    margin-bottom: 1rem;
 }

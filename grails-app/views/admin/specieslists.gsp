@@ -10,7 +10,7 @@
 <head>
     <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
     <title>Species lists | ${grailsApplication.config.skin.orgNameLong}</title>
-    <r:require modules="fancybox,application"/>
+    <r:require modules="application"/>
 </head>
 
 <body class="">
@@ -27,7 +27,9 @@
                         </li>
 
                         <li class="breadcrumb-item">
-                            <a class="current" href="${request.contextPath}/public/speciesLists">Species lists</a>
+                            <a class="current" href="${request.contextPath}/public/speciesLists">
+                                Species lists
+                            </a>
                         </li>
                     </ol>
                 </div>

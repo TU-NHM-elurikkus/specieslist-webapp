@@ -15,7 +15,7 @@
 <!doctype html>
 <html>
 <head>
-    <r:require modules="fancybox,application"/>
+    <r:require modules="application"/>
     <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
     <title>My Species lists | ${grailsApplication.config.skin.orgNameLong}</title>
     <style type="text/css">
@@ -37,7 +37,7 @@
 <div id="content" class="container">
     <header id="page-header2">
         <div class="row">
-            <div id="breadcrumb" class="col-12">
+            <div id="breadcrumb" class="col">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
                         <a href="${grailsApplication.config.ala.baseURL}">
@@ -60,17 +60,19 @@
         </div>
 
         <div class="row">
-            <hgroup class="col">
-                <h1>
+            <div class="col">
+                <h2 class="float-left">
                     My species lists
+                </h2>
 
-                    <span class="float-right">
-                        <g:link controller="speciesList" action="upload" class="erk-button erk-button--light" title="Add Species List">
+                <ul class="erk-ulist list-external-links float-right">
+                    <li class="erk-ulist--item">
+                        <g:link controller="speciesList" action="upload" title="Add Species List">
                             Upload a list
                         </g:link>
-                    </span>
-                </h1>
-            </hgroup>
+                    </li>
+                </ul>
+            </div>
         </div>
     </header>
 
