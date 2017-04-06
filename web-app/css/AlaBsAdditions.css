@@ -284,3 +284,13 @@ img.smallSpeciesImage {
     border-left: 1px solid #DDD;
     margin-bottom: 1rem;
 }
+
+/**
+ * Keeps file type input's appearance clear. Will be removed once we create a
+ * more stylish file selector input.
+ */
+.file-selector {
+    background-color: initial;
+    border: initial;
+    padding: 0;
+}

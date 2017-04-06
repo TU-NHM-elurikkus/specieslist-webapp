@@ -828,11 +828,18 @@
                                             ${fieldValue(bean: result, field: "rawScientificName")}
 
                                             <g:if test="${result.guid == null}">
-                                                %{-- XXX TODO: tag properties were proken and did not work, test and fix. --}%
-                                                <br/>(unmatched - try <a href="http://google.com/search?q=${fieldValue(bean: result, field: "rawScientificName").trim()}" target="google" class="erk-button erk-button--light btn-mini">Google</a>,
-                                                <a href="${grailsApplication.config.biocache.baseURL}/occurrences/search?q=${fieldValue(bean: result, field: "rawScientificName").trim()}" target="biocache" class="erk-button erk-button--light btn-mini">
+                                                <br />
+                                                <strong>
+                                                    unmatched
+                                                </strong>
+                                                - try
+                                                <a href="http://google.com/search?q=${fieldValue(bean: result, field: "rawScientificName").trim()}" target="google">
+                                                    Google
+                                                </a>
+                                                or
+                                                <a href="${grailsApplication.config.biocache.baseURL}/occurrences/search?q=${fieldValue(bean: result, field: "rawScientificName").trim()}" target="biocache">
                                                     Occurrences
-                                                </a>)
+                                                </a>
                                             </g:if>
                                         </td>
 

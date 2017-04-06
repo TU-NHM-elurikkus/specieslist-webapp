@@ -43,8 +43,8 @@
 
                 <p>Adjust headings that have been incorrectly matched using the text boxes.</p>
 
-                <div class="fwtable well">
-                    <table id="initialParse" class="table table-striped table-bordered">
+                <div class="fwtable table-responsive">
+                    <table id="initialParse" class="table table-sm table-striped table-bordered">
                         <thead>
                         <g:if test="${columnHeaders}">
                             <g:each in="${columnHeaders}" var="hdr">

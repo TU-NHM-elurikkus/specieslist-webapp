@@ -16,31 +16,37 @@
 <html>
 <head>
 <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
-<title>Upload a list | Species lists | ${grailsApplication.config.skin.orgNameLong}</title>
+<title>
+    Upload a list | Species lists | ${grailsApplication.config.skin.orgNameLong}
+</title>
 
 <script type="text/javascript">
-    function init(){
+    function init() {
         reset();
     }
 
-    function reset(){
-        $('#recognisedDataDiv').hide();
-        if("${list}")
-            $('#uploadDiv').show();
-        else
-            $('#uploadDiv').hide();
-        $('#statusMsgDiv').hide();
-        $('#uploadmsg').hide();
+    function reset() {
+        $('#recognisedDataDiv').addClass('hidden-node');
+
+        if("${list}") {
+            $('#uploadDiv').removeClass('hidden-node');
+        } else {
+            $('#uploadDiv').addClass('hidden-node');
+        }
+
+        $('#statusMsgDiv').addClass('hidden-node');
+        $('#uploadmsg').addClass('hidden-node');
         refreshSDSRows();
     }
 
-    function refreshSDSRows(){
+    function refreshSDSRows() {
         var ischecked=$('#isSDS').is(':checked');
         var rows = $('table.listDetailTable tr');
+
         if(ischecked) {
-            rows.filter('.SDSOnly').show();
+            rows.filter('.SDSOnly').removeClass('hidden-node');
         } else {
-            rows.filter('.SDSOnly').hide();
+            rows.filter('.SDSOnly').addClass('hidden-node');
         }
     }
 
@@ -67,8 +73,8 @@
                     $('#recognisedDataDiv').show();
                     $('#recognisedData').html(data);
                     if (isFileUpload) $('#recognisedData input:first').focus();
-                    $('#uploadDiv').show();
-                    $('#listvocab').hide();
+                    $('#uploadDiv').removeClass('hidden-node');
+                    $('#listvocab').addClass('hidden-node');
                 },
                 error: function(jqXHR, textStatus, error) {
                     //console.log("jqXHR", jqXHR);
@@ -98,13 +104,13 @@
     }
 
     function viewVocab(){
-        $('#listvocab').show();
-        $('#viewVocabButton').hide();
+        $('#listvocab').removeClass('hidden-node');
+        $('#viewVocabButton').addClass('hidden-node');
     }
 
     function hideVocab(){
-        $('#listvocab').hide();
-        $('#viewVocabButton').show();
+        $('#listvocab').addClass('hidden-node');
+        $('#viewVocabButton').removeClass('hidden-node');
     }
 
     function validateForm(){
@@ -132,9 +138,9 @@
     }
 
     function reportError(error){
-        $('#statusMsgDiv').hide();
+        $('#statusMsgDiv').addClass('hidden-node');
         $('#uploadFeedback div').html(error);
-        $('#uploadFeedback').show();
+        $('#uploadFeedback').removeClass('hidden-node');
     }
 
     function uploadSpeciesList(){
@@ -171,10 +177,10 @@
                     map['sdsType'] = $('#sdsType').val();
                 }
             }
-            console.log("The map: ",map);
-            $('#recognisedDataDiv').hide();
-            $('#uploadDiv').hide();
-            $('#statusMsgDiv').show();
+            // console.log("The map: ",map);
+            $('#recognisedDataDiv').addClass('hidden-node');
+            $('#uploadDiv').addClass('hidden-node');
+            $('#statusMsgDiv').removeClass('hidden-node');
             var url = "${createLink(controller:'speciesList', action:'uploadList')}";
 
             var data
@@ -265,7 +271,7 @@
     });
 
 </script>
-    <r:require modules="application, fileupload"/>
+    <r:require modules="application"/>
 </head>
 
 <body class="upload">
@@ -304,10 +310,15 @@
     </header>
 
     <div>
-        <div class="message alert alert-info" id="uploadmsg" style="clear:right;">${flash.message}</div>
+        <div class="message alert alert-info" id="uploadmsg" style="clear:right;">
+            ${flash.message}
+        </div>
+
         <div id="section" class="col-wide">
             <g:if test="${resourceUid}">
-                <div class="message alert alert-info"><g:message code="upload.instructions.hasList" default="Upload a list"/></div>
+                <div class="message alert alert-info">
+                    <g:message code="upload.instructions.hasList" default="Upload a list"/>
+                </div>
             </g:if>
 
             <p>
@@ -324,42 +335,36 @@
                 </p>
 
                 <g:uploadForm name="csvUploadForm" id="csvUploadForm" action="parseData">
-                    <div class="fileupload fileupload-new pull-left" data-provides="fileupload">
-                        <div class="input-append">
-                            <div class="uneditable-input span3">
-                                <i class="icon-file fileupload-exists"></i>
-                                <span class="fileupload-preview"></span>
-                            </div>
+                    <div data-provides="fileupload">
+                        <input id="csvFileUpload"
+                            type="file"
+                            name="csvFile"
+                            class="file-selector"
+                        >
 
-                            <span class="erk-button erk-button--light btn-file">
-                                <span class="fileupload-new">
-                                    Select file
-                                </span>
-
-                                <span class="fileupload-exists">
-                                    Change
-                                </span>
-
-                                <input type="file" name="csvFile" id="csvFileUpload">
-                            </span>
-
-                            <a href="#" class="erk-button erk-button--light fileupload-exists" data-dismiss="fileupload">
+                        <p>
+                            <button
+                                type="button"
+                                class="erk-button erk-button--light"
+                                onclick="javascript:this.form.reset();parseColumns();"
+                            >
                                 Remove
-                            </a>
-                        </div>
+                            </button>
+
+                            <button
+                                type="button"
+                                id="checkData2"
+                                class="erk-button erk-button--light"
+                                name="checkData"
+                                onclick="javascript:parseColumns();"
+                            >
+                                Check Data
+                            </button>
+                        </p>
                     </div>
                 </g:uploadForm>
 
-                <div style="clear: both"></div>
-
-                <g:submitButton
-                    id="checkData2"
-                    class="actionButton erk-button erk-button--light"
-                    name="checkData"
-                    value="Check Data"
-                    onclick="javascript:parseColumns();"/>
-
-                <h3 onclick="parseColumns();">
+                <h3>
                     Option 2: Paste your species list here
                 </h3>
 
@@ -389,12 +394,18 @@
             <!-- Moved the upload div to here so that the values can be remembered to support a reload of the species list-->
 
             <div id="uploadDiv">
-                <h2>3. Upload Species List</h2>
-                <p>Please supply a title for your list, and indicate the type of list you are uploading from the options provided.<br/>
-                You can optionally supply a description, an external URL as a reference to the list and a geospatial bounds for the list (in WKT format).
+                <h2>
+                    3. Upload Species List
+                </h2>
+
+                <p>
+                    Please supply a title for your list, and indicate the type of list you are uploading from the options provided.
+                    <br/>
+                    You can optionally supply a description, an external URL as a reference to the list and a geospatial bounds for the list (in WKT format).
                 </p>
-                <div id="processSampleUpload" class="well">
-                    <table class="listDetailTable table table-condensed borderless">
+
+                <div id="processSampleUpload" class="table-responsive">
+                    <table class="listDetailTable table table-sm borderless">
                         <tbody>
                         <tr>
                             <td>
@@ -534,7 +545,7 @@
             </div>
 
             <div id="uploadFeedback" style="clear:right;display:none;" class="alert alert-error">
-                <button type="button" class="close" onclick="$(this).parent().hide()">
+                <button type="button" class="close" onclick="$(this).parent().addClass('hidden-node')">
                     ×
                 </button>
 
@@ -546,7 +557,7 @@
         </div>
     </div>
 
-    <div id="statusMsgDiv">
+    <div id="statusMsgDiv" class="hidden-node">
         <div class="well">
             <h3>
                 <img src='${resource(dir:'images',file:'spinner.gif')}' id='spinner'/>&nbsp;&nbsp;
