@@ -294,3 +294,7 @@ img.smallSpeciesImage {
     border: initial;
     padding: 0;
 }
+
+.pagination > .step, .currentStep, .prevLink {
+    padding-right: 0.5em;
+}
