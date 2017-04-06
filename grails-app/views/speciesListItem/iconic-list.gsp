@@ -275,7 +275,7 @@
                     </select>
                 </div>
 
-                <div class="pagination listPagination" id="searchNavBar">
+                <div class="pagination" id="searchNavBar">
                     <g:if test="${params.fq}">
                         <g:paginate total="${totalCount}" action="iconicSpecies" id="${params.id}" params="${[fq: params.fq]}"/>
                     </g:if>

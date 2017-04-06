@@ -948,7 +948,7 @@
 
             <div class="row">
                 <div class="col">
-                    <div class="float-left">
+                    <div class="pagination float-left">
                         <g:if test="${params.fq}">
                             <g:paginate total="${totalCount}" action="list" id="${params.id}" params="${[fq: params.fq]}"/>
                         </g:if>
