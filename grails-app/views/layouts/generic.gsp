@@ -20,11 +20,13 @@
     </head>
 
     <body>
-        <div class="wrap">
-            <g:render template="/menu" plugin="elurikkus-commons" />
+        <g:render template="/menu" plugin="elurikkus-commons" />
 
+        <div class="wrap">
             <g:layoutBody/>
         </div>
+
+        <g:render template="/footer" plugin="elurikkus-commons" />
 
         <!-- Resources -->
         <r:layoutResources/>
