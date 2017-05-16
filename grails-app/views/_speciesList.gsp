@@ -6,7 +6,6 @@
         $("table .sortable").each(function(i) {
             var href = $(this).find("a").attr("href");
 
-            $(this).css("cursor", "pointer");
             $(this).click(function() {
                 window.location.href = href;
             });
@@ -39,7 +38,7 @@
     }
 </script>
 
-<div id="speciesList" class="speciesList clearfix table-responsive">
+<div id="speciesList" class="speciesList table-responsive">
     <table class="table table-sm table-bordered table-striped">
         <thead>
             <tr>

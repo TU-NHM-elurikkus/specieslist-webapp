@@ -17,61 +17,55 @@
 <head>
     <r:require modules="application"/>
     <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
-    <title>My Species lists | ${grailsApplication.config.skin.orgNameLong}</title>
-    <style type="text/css">
-        #speciesList {display: none;}
-    </style>
+    <title>
+        My Species lists | ${grailsApplication.config.skin.orgNameLong}
+    </title>
 </head>
 
-<body class="yui-skin-sam nav-species">
-<script type="text/javascript">
-    window.onload=init
-
-    function init() {
-        if(document.getElementById("speciesList") != null) {
-            document.getElementById("speciesList").style.display = "block";
-        }
-    }
-</script>
-
-<div id="content" class="container">
-    <header id="page-header2">
+<body>
+<div id="content" class="container-fluid">
+    <header id="page-header">
+        %{-- TITLE --}%
         <div class="row">
-            <div id="breadcrumb" class="col">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">
-                        <a href="${grailsApplication.config.ala.baseURL}">
-                            Home
-                        </a>
-                    </li>
+            <div class="col">
+                <div class="page-header-title">
+                    <h1 class="page-header-title__title">
+                        My Species lists
+                    </h1>
 
-                    <li class="breadcrumb-item">
-                        <a href="${request.contextPath}/public/speciesLists">
-                            Species lists
-                        </a>
-                    </li>
+                    <div class="page-header-title__subtitle">
+                        <div>
+                            Below is a listing of species lists that you have provided. You can use these lists to work with parts of the Atlas.
+                        </div>
 
-                    %{-- XXX --}%
-                    <li class="breadcrumb-item">
-                        ${request.getUserPrincipal()?.attributes?.firstname} ${request.getUserPrincipal()?.attributes?.lastname}&apos;s Species Lists
-                    </li>
-                </ol>
+                        <div>
+                            Click on the "delete" button next to a list to remove it from the Atlas.
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
+        %{-- LINKS --}%
         <div class="row">
             <div class="col">
-                <h2 class="float-left">
-                    My species lists
-                </h2>
+                <div class="page-header-links">
+                    <a href="${request.contextPath}/public/speciesLists" class="page-header-links__link">
+                        Species lists
+                    </a>
 
-                <ul class="erk-ulist list-external-links float-right">
-                    <li class="erk-ulist--item">
-                        <g:link controller="speciesList" action="upload" title="Add Species List">
-                            Upload a list
-                        </g:link>
-                    </li>
-                </ul>
+                    %{--
+                    <a title="My Lists" href="${request.contextPath}/speciesList/list" class="page-header-links__link">
+                        My Lists
+                    </a>
+                    --}%
+
+                    %{--
+                    <g:link controller="speciesList" action="upload" title="Add Species List" class="page-header-links__link">
+                        Upload a list
+                    </g:link>
+                    --}%
+                </div>
             </div>
         </div>
     </header>
@@ -79,10 +73,12 @@
     <g:if test="${lists && total > 0}">
         <div class="row">
             <div class="col">
+                %{--
                 <p>
                     Below is a listing of species lists that you have provided. You can use these lists to work with parts of the Atlas.
                     Click on the "delete" button next to a list to remove it from the Atlas.
                 </p>
+                --}%
 
                 <div class="float-right">
                     <g:render template="/pageSize"/>

@@ -15,300 +15,304 @@
 <!doctype html>
 <html>
 <head>
-<meta name="layout" content="${grailsApplication.config.skin.layout}"/>
-<title>
-    Upload a list | Species lists | ${grailsApplication.config.skin.orgNameLong}
-</title>
+    <r:require modules="application"/>
 
-<script type="text/javascript">
-    function init() {
-        reset();
-    }
+    <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
 
-    function reset() {
-        $('#recognisedDataDiv').addClass('hidden-node');
-
-        if("${list}") {
-            $('#uploadDiv').removeClass('hidden-node');
-        } else {
-            $('#uploadDiv').addClass('hidden-node');
-        }
-
-        $('#statusMsgDiv').addClass('hidden-node');
-        $('#uploadmsg').addClass('hidden-node');
-        refreshSDSRows();
-    }
-
-    function refreshSDSRows() {
-        var ischecked=$('#isSDS').is(':checked');
-        var rows = $('table.listDetailTable tr');
-
-        if(ischecked) {
-            rows.filter('.SDSOnly').removeClass('hidden-node');
-        } else {
-            rows.filter('.SDSOnly').addClass('hidden-node');
-        }
-    }
-
-    function parseColumns(){
-        if ($('#copyPasteData').val().trim() == "" && $('#csvFileUpload').val().trim() == "") {
+    <script type="text/javascript">
+        function init() {
             reset();
-        } else if ($('#copyPasteData').val().trim() != "" && $('#csvFileUpload').val().trim() != "") {
-            reportError("<b>Error:</b> You must either upload a file <i>or</i> copy and paste the list into the provided field, not both.");
-        } else {
-            //console.log($('#copyPasteData').val())
-            $.ajaxSetup({
-                scriptCharset: "utf-8",
-                contentType: "text/html; charset=utf-8"
-            });
-            var url = "${createLink(controller:'speciesList', action:'parseData')}";
-            var isFileUpload = $('#csvFileUpload').val().trim() != "";
-            $.ajax({
-                type: "POST",
-                url: url,
-                processData: !isFileUpload,
-                contentType: !isFileUpload,
-                data: isFileUpload ? new FormData(document.forms.namedItem("csvUploadForm")) : $('#copyPasteData').val(),
-                success: function(data) {
-                    $('#recognisedDataDiv').show();
-                    $('#recognisedData').html(data);
-                    if (isFileUpload) $('#recognisedData input:first').focus();
-                    $('#uploadDiv').removeClass('hidden-node');
-                    $('#listvocab').addClass('hidden-node');
-                },
-                error: function(jqXHR, textStatus, error) {
-                    //console.log("jqXHR", jqXHR);
-                    var ExtractedErrorMsg = $(jqXHR.responseText).find(".error-details").clone().wrap('<p>').parent().html(); // hack to get outerHtml
-                    reportError("<b>Error:</b> " + error + " (" + jqXHR.status + ")<br/><code style='background-color:inherit;'>" + ExtractedErrorMsg + "</code>");
-                }
-            });
         }
-    }
 
-    function updateCustom(checked){
-        if (checked) {
-            hide('manualMapping');
-        } else {
-            show('manualMapping');
+        function reset() {
+            $('#recognisedDataDiv').addClass('hidden-node');
+
+            if("${list}") {
+                $('#uploadDiv').removeClass('hidden-node');
+            } else {
+                $('#uploadDiv').addClass('hidden-node');
+            }
+
+            $('#statusMsgDiv').addClass('hidden-node');
+            $('#uploadmsg').addClass('hidden-node');
+            refreshSDSRows();
         }
-    }
-    function hide(obj)
-    {
-        obj1 = document.getElementById(obj);
-        obj1.style.visibility = 'hidden';
-    }
-    function show(obj)
-    {
-        obj1 = document.getElementById(obj);
-        obj1.style.visibility = 'visible';
-    }
 
-    function viewVocab(){
-        $('#listvocab').removeClass('hidden-node');
-        $('#viewVocabButton').addClass('hidden-node');
-    }
+        function refreshSDSRows() {
+            var ischecked=$('#isSDS').is(':checked');
+            var rows = $('table.listDetailTable tr');
 
-    function hideVocab(){
-        $('#listvocab').addClass('hidden-node');
-        $('#viewVocabButton').removeClass('hidden-node');
-    }
-
-    function validateForm(){
-        var isValid = false;
-        var typeId = $("#listTypeId option:selected").val();
-        if($('#listTitle').val().length > 0){
-            isValid=true
+            if(ischecked) {
+                rows.filter('.SDSOnly').removeClass('hidden-node');
+            } else {
+                rows.filter('.SDSOnly').addClass('hidden-node');
+            }
         }
-        else{
-            $('#listTitle').focus();
-            alert("You must supply a species list title");
-        }
-        if(isValid){
 
-            if(typeId){
-                isValid = true
+        function parseColumns(){
+            if ($('#copyPasteData').val().trim() == "" && $('#csvFileUpload').val().trim() == "") {
+                reset();
+            } else if ($('#copyPasteData').val().trim() != "" && $('#csvFileUpload').val().trim() != "") {
+                reportError("<b>Error:</b> You must either upload a file <i>or</i> copy and paste the list into the provided field, not both.");
+            } else {
+                //console.log($('#copyPasteData').val())
+                $.ajaxSetup({
+                    scriptCharset: "utf-8",
+                    contentType: "text/html; charset=utf-8"
+                });
+                var url = "${createLink(controller:'speciesList', action:'parseData')}";
+                var isFileUpload = $('#csvFileUpload').val().trim() != "";
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    processData: !isFileUpload,
+                    contentType: !isFileUpload,
+                    data: isFileUpload ? new FormData(document.forms.namedItem("csvUploadForm")) : $('#copyPasteData').val(),
+                    success: function(data) {
+                        $('#recognisedDataDiv').show();
+                        $('#recognisedData').html(data);
+                        if (isFileUpload) $('#recognisedData input:first').focus();
+                        $('#uploadDiv').removeClass('hidden-node');
+                        $('#listvocab').addClass('hidden-node');
+                    },
+                    error: function(jqXHR, textStatus, error) {
+                        //console.log("jqXHR", jqXHR);
+                        var ExtractedErrorMsg = $(jqXHR.responseText).find(".error-details").clone().wrap('<p>').parent().html(); // hack to get outerHtml
+                        reportError("<b>Error:</b> " + error + " (" + jqXHR.status + ")<br/><code style='background-color:inherit;'>" + ExtractedErrorMsg + "</code>");
+                    }
+                });
+            }
+        }
+
+        function updateCustom(checked){
+            if (checked) {
+                hide('manualMapping');
+            } else {
+                show('manualMapping');
+            }
+        }
+        function hide(obj)
+        {
+            obj1 = document.getElementById(obj);
+            obj1.style.visibility = 'hidden';
+        }
+        function show(obj)
+        {
+            obj1 = document.getElementById(obj);
+            obj1.style.visibility = 'visible';
+        }
+
+        function viewVocab(){
+            $('#listvocab').removeClass('hidden-node');
+            $('#viewVocabButton').addClass('hidden-node');
+        }
+
+        function hideVocab(){
+            $('#listvocab').addClass('hidden-node');
+            $('#viewVocabButton').removeClass('hidden-node');
+        }
+
+        function validateForm(){
+            var isValid = false;
+            var typeId = $("#listTypeId option:selected").val();
+            if($('#listTitle').val().length > 0){
+                isValid=true
             }
             else{
-                isValid=false
-                $("#listTypeId").focus();
-                alert("You must supply a list type");
+                $('#listTitle').focus();
+                alert("You must supply a species list title");
             }
-        }
-        return isValid;
-    }
+            if(isValid){
 
-    function reportError(error){
-        $('#statusMsgDiv').addClass('hidden-node');
-        $('#uploadFeedback div').html(error);
-        $('#uploadFeedback').removeClass('hidden-node');
-    }
-
-    function uploadSpeciesList(){
-        if(validateForm()){
-            var isFileUpload = $('#csvFileUpload').val().trim() != "";
-
-            var map = getVocabularies();
-            map['headers'] = getColumnHeaders();
-            map['speciesListName'] = $('#listTitle').val();
-            map['description'] = $('#listDesc').val();
-            map['listUrl'] = $('#listURL').val();
-            map['listWkt'] = $('#listWkt').val();
-            if (!isFileUpload) {
-                map['rawData']  =$('#copyPasteData').val();
-            }
-            map['listType'] =$('#listTypeId').val();
-            //add the existing data resource uid if it is provided to handle a resubmit
-            if("${resourceUid}")
-                map['id'] = "${resourceUid}"
-            //if the isBIE checkbox exists add the value
-            if($('#isBIE').length>0){
-                map['isBIE']=$('#isBIE').is(':checked');
-            }
-            //if the isSDS checkbox exists add the value
-            if($('#isSDS').length>0){
-                map['isSDS']=$('#isSDS').is(':checked');
-                var ischecked=$('#isSDS').is(':checked');
-                if(ischecked){
-                    //add the SDS only properties
-                    map['region'] = $('#sdsRegion').val();
-                    map['authority'] = $('#authority').val();
-                    map['category'] = $('#category').val();
-                    map['generalisation'] = $('#generalisation').val();
-                    map['sdsType'] = $('#sdsType').val();
+                if(typeId){
+                    isValid = true
+                }
+                else{
+                    isValid=false
+                    $("#listTypeId").focus();
+                    alert("You must supply a list type");
                 }
             }
-            // console.log("The map: ",map);
-            $('#recognisedDataDiv').addClass('hidden-node');
-            $('#uploadDiv').addClass('hidden-node');
-            $('#statusMsgDiv').removeClass('hidden-node');
-            var url = "${createLink(controller:'speciesList', action:'uploadList')}";
+            return isValid;
+        }
 
-            var data
-            if (isFileUpload) {
-                data = new FormData(document.forms.namedItem("csvUploadForm"))
-                data.append("formParams", JSON.stringify(map))
-            }
-            else {
-                data = JSON.stringify(map)
-            }
-            $.ajax({
-                type: "POST",
-                url: url,
-                processData: !isFileUpload,
-                contentType: !isFileUpload,
-                data: data,
-                success: function(response){
-                    //console.log(response, response.url)
-                    if(response.url != null && response.error == null) {
-                        window.location.href = response.url;
-                    } else {
-                        reportError(response.error)
+        function reportError(error){
+            $('#statusMsgDiv').addClass('hidden-node');
+            $('#uploadFeedback div').html(error);
+            $('#uploadFeedback').removeClass('hidden-node');
+        }
+
+        function uploadSpeciesList(){
+            if(validateForm()){
+                var isFileUpload = $('#csvFileUpload').val().trim() != "";
+
+                var map = getVocabularies();
+                map['headers'] = getColumnHeaders();
+                map['speciesListName'] = $('#listTitle').val();
+                map['description'] = $('#listDesc').val();
+                map['listUrl'] = $('#listURL').val();
+                map['listWkt'] = $('#listWkt').val();
+                if (!isFileUpload) {
+                    map['rawData']  =$('#copyPasteData').val();
+                }
+                map['listType'] =$('#listTypeId').val();
+                //add the existing data resource uid if it is provided to handle a resubmit
+                if("${resourceUid}")
+                    map['id'] = "${resourceUid}"
+                //if the isBIE checkbox exists add the value
+                if($('#isBIE').length>0){
+                    map['isBIE']=$('#isBIE').is(':checked');
+                }
+                //if the isSDS checkbox exists add the value
+                if($('#isSDS').length>0){
+                    map['isSDS']=$('#isSDS').is(':checked');
+                    var ischecked=$('#isSDS').is(':checked');
+                    if(ischecked){
+                        //add the SDS only properties
+                        map['region'] = $('#sdsRegion').val();
+                        map['authority'] = $('#authority').val();
+                        map['category'] = $('#category').val();
+                        map['generalisation'] = $('#generalisation').val();
+                        map['sdsType'] = $('#sdsType').val();
+                    }
+                }
+                // console.log("The map: ",map);
+                $('#recognisedDataDiv').addClass('hidden-node');
+                $('#uploadDiv').addClass('hidden-node');
+                $('#statusMsgDiv').removeClass('hidden-node');
+                var url = "${createLink(controller:'speciesList', action:'uploadList')}";
+
+                var data
+                if (isFileUpload) {
+                    data = new FormData(document.forms.namedItem("csvUploadForm"))
+                    data.append("formParams", JSON.stringify(map))
+                }
+                else {
+                    data = JSON.stringify(map)
+                }
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    processData: !isFileUpload,
+                    contentType: !isFileUpload,
+                    data: data,
+                    success: function(response){
+                        //console.log(response, response.url)
+                        if(response.url != null && response.error == null) {
+                            window.location.href = response.url;
+                        } else {
+                            reportError(response.error)
+                        }
+
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        //console.log('Error!  Status = ' ,xhr.status, textStatus, errorThrown, xhr.responseText);
+                        reportError("Error: " +errorThrown);
                     }
 
-                },
-                error: function(xhr, textStatus, errorThrown) {
-                    //console.log('Error!  Status = ' ,xhr.status, textStatus, errorThrown, xhr.responseText);
-                    reportError("Error: " +errorThrown);
-                }
-
-            });
-        }
-    }
-
-    function getVocabularies(){
-        var potentialVocabH3s = $('div.vocabDiv');
-        var vocabMap = {};
-        $.each(potentialVocabH3s, function(index,vdiv){
-            var value = "";
-            var h3value = "vocab_"+$(vdiv).find('h3:first').text();
-
-            $(vdiv).find('table').find('tbody').find('tr').each(function(index2,vrow){
-
-                if(value.length>0)
-                    value = value +",";
-
-                var vkey = $(vrow).children().eq(0).text();
-
-                var vvalue= $(vrow).children().eq(1).children().eq(0).val();
-                if(vvalue.length>0)
-                    value = value + vkey +":"+vvalue;
-            })
-
-            vocabMap[h3value] = value;
-        })
-        return vocabMap;
-    }
-
-    function getColumnHeaders(){
-
-        var columnHeaderInputs = $('input.columnHeaderInput');
-        var columnHeadersCSV = "";
-        var i = 0;
-        $.each(columnHeaderInputs, function(index, input){
-            if(index>0){
-                columnHeadersCSV = columnHeadersCSV + ",";
+                });
             }
-            columnHeadersCSV = columnHeadersCSV + input.value;
-            i++;
+        }
+
+        function getVocabularies(){
+            var potentialVocabH3s = $('div.vocabDiv');
+            var vocabMap = {};
+            $.each(potentialVocabH3s, function(index,vdiv){
+                var value = "";
+                var h3value = "vocab_"+$(vdiv).find('h3:first').text();
+
+                $(vdiv).find('table').find('tbody').find('tr').each(function(index2,vrow){
+
+                    if(value.length>0)
+                        value = value +",";
+
+                    var vkey = $(vrow).children().eq(0).text();
+
+                    var vvalue= $(vrow).children().eq(1).children().eq(0).val();
+                    if(vvalue.length>0)
+                        value = value + vkey +":"+vvalue;
+                })
+
+                vocabMap[h3value] = value;
+            })
+            return vocabMap;
+        }
+
+        function getColumnHeaders(){
+
+            var columnHeaderInputs = $('input.columnHeaderInput');
+            var columnHeadersCSV = "";
+            var i = 0;
+            $.each(columnHeaderInputs, function(index, input){
+                if(index>0){
+                    columnHeadersCSV = columnHeadersCSV + ",";
+                }
+                columnHeadersCSV = columnHeadersCSV + input.value;
+                i++;
+            });
+
+            return columnHeadersCSV;
+        }
+
+        function updateH3(column){
+            var columnHeaderInputs = $('input.columnHeaderInput');
+            $.each(columnHeaderInputs, function(index, input){
+                $("h3[for='"+input.id+"']").html($(input).val());
+            })
+        }
+
+        //setup the page
+        $(document).ready(function(){
+            init();
+            $("#isSDS").change(function(){
+                refreshSDSRows();
+          });
         });
+    </script>
 
-        return columnHeadersCSV;
-    }
-
-    function updateH3(column){
-        var columnHeaderInputs = $('input.columnHeaderInput');
-        $.each(columnHeaderInputs, function(index, input){
-            $("h3[for='"+input.id+"']").html($(input).val());
-        })
-    }
-
-    //setup the page
-    $(document).ready(function(){
-        init();
-        $("#isSDS").change(function(){
-            refreshSDSRows();
-      });
-    });
-
-</script>
-    <r:require modules="application"/>
+    <title>
+        Upload a list | Species lists | ${grailsApplication.config.skin.orgNameLong}
+    </title>
 </head>
 
 <body class="upload">
 <div id="content" class="container">
     <header id="page-header">
+        %{-- TITLE --}%
         <div class="row">
-            <div id="breadcrumb" class="col">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">
-                        <a href="${request.contextPath}/public/speciesLists">
-                            Species lists
-                        </a>
-                    </li>
-
-                    <li class="breadcrumb-item">
-                        Upload a list
-                    </li>
-                </ol>
+            <div class="col">
+                <div class="page-header-title">
+                    <g:if test="${list}">
+                        <h1>
+                            <g:message code="upload.heading.hasList" default="Upload a list"/>
+                        </h1>
+                    </g:if>
+                    <g:else>
+                        <h1>
+                            <g:message code="upload.heading" default="Upload a list"/>
+                        </h1>
+                    </g:else>
+                </div>
             </div>
         </div>
 
+        %{-- LINKS --}%
         <div class="row">
             <div class="col">
-                <g:if test="${list}">
-                    <h2>
-                        <g:message code="upload.heading.hasList" default="Upload a list"/>
-                    </h2>
-                </g:if>
-                <g:else>
-                    <h2>
-                        <g:message code="upload.heading" default="Upload a list"/>
-                    </h2>
-                </g:else>
+                <div class="page-header-links">
+                    <a href="${request.contextPath}/public/speciesLists" class="page-header-links__link">
+                        Species lists
+                    </a>
+
+                    <a title="My Lists" href="${request.contextPath}/speciesList/list" class="page-header-links__link">
+                        My Lists
+                    </a>
+                </div>
             </div>
         </div>
     </header>
 
+    %{-- OLD --}%
     <div>
         <div class="message alert alert-info" id="uploadmsg" style="clear:right;">
             ${flash.message}

@@ -2,10 +2,6 @@ p span.count {
     float: right;
 }
 
-#page-header, #page-header2 {
-    margin-bottom: 1rem;
-}
-
 .tableList thead th {
     vertical-align: top;
 }
@@ -22,8 +18,7 @@ p span.count {
 }
 
 #speciesList {
-    margin-top: 1rem;
-    clear: both;
+    padding-top: 1rem;
 }
 
 #facets-column {
@@ -169,6 +164,7 @@ img.smallSpeciesImage {
 
 #speciesListTable {
     margin-bottom: 0;
+    border-style: hidden;
 }
 
 #speciesListTable td.kvp  {
@@ -191,20 +187,7 @@ img.smallSpeciesImage {
     padding: 8px;
 }
 
-#speciesListTable th {
-    border-top: 0;
-}
-
-#listActionButtons {
-    display: inline-block;
-    margin: 0 1rem;
-}
-
-.list-external-links {
-    margin: 0;
-}
-
-.listSearchForm {
+.list-search-form {
     display: inline-block;
     float: left;
     margin-right: 1rem;
@@ -297,4 +280,15 @@ img.smallSpeciesImage {
 
 .pagination > .step, .currentStep, .prevLink {
     padding-right: 0.5em;
+}
+
+.action-button-block {
+    display: inline-block;
+    float: right;
+    margin: 0 .25rem;
+}
+
+/* Override container padding */
+#content.container-fluid {
+    padding: 0;
 }
