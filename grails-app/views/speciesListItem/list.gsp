@@ -13,7 +13,7 @@
   - rights and limitations under the License.
   --}%
 <!doctype html>
-<g:set var="bieUrl" value="${grailsApplication.config.bie.baseURL}"/>
+<g:set var="bieUrl" value="${grailsApplication.config.bie.baseURL}" />
 <g:set var="collectoryUrl" value="${grailsApplication.config.collectory.baseURL}" />
 <g:set var="maxDownload" value="${grailsApplication.config.downloadLimit}" />
 <g:set var="userCanEditPermissions" value="${
@@ -27,8 +27,8 @@
 }" />
 <html>
 <head>
-    <r:require modules="application, amplify"/>
-    <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
+    <r:require modules="application, amplify" />
+    <meta name="layout" content="${grailsApplication.config.skin.layout}" />
     <script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'facets.js')}"></script>
     <script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'getQueryParam.js')}"></script>
     <script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'jquery-ui-1.8.17.custom.min.js')}"></script>
@@ -282,253 +282,205 @@
     </script>
 </head>
 
-<body class="nav-species">
-<div id="content" class="container">
-    <header id="page-header">
-        <div class="row">
-            <div id="breadcrumb" class="col-12">
-                <ol class="breadcrumb">
-                    %{--<li><a href="http://www.ala.org.au">Home</a> <span class=" icon icon-arrow-right"></span></li>--}%
-                    <li class="breadcrumb-item">
-                        <a href="${request.contextPath}/public/speciesLists">
-                            Species lists
-                        </a>
-                    </li>
+<body>
+%{-- Download dialog modal --}%
+<div class="inline-block">
+    <g:render template="/download"/>
+</div>
 
-                    <li class="breadcrumb-item">
-                        ${speciesList?.listName?:"Species list items"}
-                    </li>
-                </ol>
+<div id="content" class="container-fluid">
+    <header id="page-header">
+        %{-- TITLE --}%
+        <div class="row">
+            <div class="col">
+                <div class="page-header-title">
+                    <h1 class="page-header-title__title">
+                        Species List:
+                        <a href="${collectoryUrl}/lists/speciesListItem/list/${params.id}">
+                            ${speciesList?.listName}
+                        </a>
+
+                        %{--
+                        <a href="${collectoryUrl}/public/show/${params.id}" title="view Date Resource page">
+                            ${speciesList?.listName}
+                        </a>
+                        --}%
+                    </h1>
+
+                    %{--
+                    <div class="page-header-title__subtitle">
+                        <div>
+                            Below is a listing of species lists that you have provided. You can use these lists to work with parts of the Atlas.
+                        </div>
+
+                        <div>
+                            Click on the "delete" button next to a list to remove it from the Atlas.
+                        </div>
+                    </div>
+                    --}%
+                </div>
             </div>
         </div>
 
+        %{-- LINKS --}%
         <div class="row">
             <div class="col">
-                <h2 class="float-left">
-                    Species List:
-                    <a href="${collectoryUrl}/public/show/${params.id}" title="view Date Resource page">
-                        ${speciesList?.listName}
+                <div class="page-header-links">
+                    <a href="${request.contextPath}/public/speciesLists" class="page-header-links__link">
+                        Species lists
                     </a>
-                </h2>
 
-                <div id="listActionButtons" class="float-left">
-                    <button id="toggleListInfo" class="erk-button erk-button--light">
-                        <i class="fa fa-info-circle"></i> List info
-                    </button>
-
-                    <button
-                        type="button"
-                        class="erk-button erk-button--light"
-                        title="View the download options for this species list."
-                        data-toggle="modal"
-                        data-target="#download-dialog"
+                    <a
+                        href="${request.contextPath}/speciesList/occurrences/${params.id}${params.toQueryString()}&type=Search"
+                        title="View occurrences for up to ${maxDownload} species on the list"
+                        class="page-header-links__link"
                     >
-                       <i class="fa fa-download"></i> Download
-                    </button>
+                        View occurrence records
+                    </a>
 
-                    <g:if test="${userCanEditPermissions}">
+                    <a
+                        href="${request.contextPath}/speciesList/spatialPortal/${params.id}${params.toQueryString()}&type=Search"
+                        title="View the spatial portal."
+                        class="page-header-links__link"
+                    >
+                        View in spatial portal
+                    </a>
+
+                    <div class="action-button-block">
+                        <button id="toggleListInfo" class="erk-button erk-button--light">
+                            <span class="fa fa-info-circle">
+                            </span>
+                            List info
+                        </button>
+
                         <button
                             type="button"
-                            data-remote="${createLink(controller: 'editor', action: 'editPermissions', id: params.id)}"
-                            data-target="#modal"
-                            data-toggle="modal"
                             class="erk-button erk-button--light"
-                        >
-                            <i class="fa fa-user-o"></i> Edit permissions
-                        </button>
-                    </g:if>
-
-                    <g:if test="${userCanEditData}">
-                        <a
-                            href="#"
-                            data-remote="${createLink(controller: 'editor', action: 'addRecordScreen', id: params.id)}"
-                            data-target="#addRecord"
+                            title="View the download options for this species list."
                             data-toggle="modal"
+                            data-target="#download-dialog"
                         >
-                            <i class="fa fa-plus"></i> Add species
-                        </a>
-                    </g:if>
+                           <span class="fa fa-download">
+                           </span>
+                           Download
+                        </button>
+
+                        <g:if test="${userCanEditPermissions}">
+                            <button
+                                type="button"
+                                data-remote="${createLink(controller: 'editor', action: 'editPermissions', id: params.id)}"
+                                data-target="#modal"
+                                data-toggle="modal"
+                                class="erk-button erk-button--light"
+                            >
+                                <span class="fa fa-user-o">
+                                </span>
+                                Edit permissions
+                            </button>
+                        </g:if>
+
+                        <g:if test="${userCanEditData}">
+                            <a
+                                href="#"
+                                data-remote="${createLink(controller: 'editor', action: 'addRecordScreen', id: params.id)}"
+                                data-target="#addRecord"
+                                data-toggle="modal"
+                            >
+                                <span class="fa fa-plus">
+                                </span>
+                                Add species
+                            </a>
+                        </g:if>
+                    </div>
                 </div>
-
-                <ul class="erk-ulist list-external-links float-right">
-                    <li class="erk-ulist--item">
-                        <a
-                            href="${request.contextPath}/speciesList/occurrences/${params.id}${params.toQueryString()}&type=Search"
-                            title="View occurrences for up to ${maxDownload} species on the list"
-                        >
-                            View occurrence records
-                        </a>
-                    </li>
-
-                    <li class="erk-ulist--item">
-                        <a
-                            href="${request.contextPath}/speciesList/spatialPortal/${params.id}${params.toQueryString()}&type=Search"
-                            title="View the spatial portal."
-                        >
-                            View in spatial portal
-                        </a>
-                    </li>
-                </ul>
             </div>
-
-            <g:if test="${userCanEditPermissions}">
-                <div class="modal fade" id="modal">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                    ×
-                                </button>
-
-                                <h3 id="myModalLabel">
-                                    Species list permissions
-                                </h3>
-                            </div>
-
-                            <div class="modal-body">
-                                <p>
-                                    <img src="${resource(dir:'images',file:'spinner.gif')}" alt="spinner icon"/>
-                                </p>
-                            </div>
-
-                            <div class="modal-footer">
-                                <button class="erk-button erk-button--light" data-dismiss="modal" aria-hidden="true">
-                                    Close
-                                </button>
-
-                                <button class="erk-button erk-button--light" id="saveEditors">
-                                    Save changes
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </g:if>
-
-            <g:if test="${userCanEditData}">
-                <div class="modal fade" id="addRecord">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                    ×
-                                </button>
-
-                                <h3>
-                                    Add record values
-                                </h3>
-                            </div>
-
-                            <div class="modal-body">
-                                <p>
-                                    <img src="${resource(dir:'images',file:'spinner.gif')}" alt="spinner icon"/>
-                                </p>
-                            </div>
-
-                            <div class="modal-footer">
-                                <button class="erk-button erk-button--light" data-dismiss="modal" aria-hidden="true">
-                                    Close
-                                </button>
-
-                                <button class="erk-button erk-button--light" id="saveNewRecord" data-id="${speciesList.id}" data-modal="#addRecord">
-                                    Save changes
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </g:if>
-
-            %{-- Download dialog modal --}%
-            <g:render template="/download"/>
         </div>
     </header>
 
-    %{-- TODO: .hide class. --}%
-    %{-- <div class="alert alert-info hide" id="list-meta-data"> --}%
     <div style="display: none;" class="alert alert-info" id="list-meta-data">
         <button type="button" class="close" onclick="$(this).parent().slideUp()">&times;</button>
 
         <g:if test="${userCanEditPermissions}">
             <a href="#" class="erk-button erk-button--light" id="edit-meta-button">
-                <i class="fa fa-pencil"></i> Edit
+                <span class="fa fa-pencil"></span> Edit
             </a>
         </g:if>
 
         <dl class="row" id="show-meta-dl">
-            <dt class="col-3">${message(code: 'speciesList.listName.label', default: 'List name')}</dt>
-            <dd class="col-9">${speciesList.listName?:'&nbsp;'}</dd>
-            <dt class="col-3">${message(code: 'speciesList.username.label', default: 'Owner')}</dt>
-            <dd class="col-9">${speciesList.fullName?:speciesList.username?:'&nbsp;'}</dd>
-            <dt class="col-3">${message(code: 'speciesList.listType.label', default: 'List type')}</dt>
-            <dd class="col-9">${speciesList.listType?.displayValue}</dd>
+            <dt class="col-sm-6 col-md-3">${message(code: 'speciesList.listName.label', default: 'List name')}</dt>
+            <dd class="col-sm-6 col-md-9">${speciesList.listName?:'&nbsp;'}</dd>
+            <dt class="col-sm-6 col-md-3">${message(code: 'speciesList.username.label', default: 'Owner')}</dt>
+            <dd class="col-sm-6 col-md-9">${speciesList.fullName?:speciesList.username?:'&nbsp;'}</dd>
+            <dt class="col-sm-6 col-md-3">${message(code: 'speciesList.listType.label', default: 'List type')}</dt>
+            <dd class="col-sm-6 col-md-9">${speciesList.listType?.displayValue}</dd>
 
             <g:if test="${speciesList.description}">
-                <dt class="col-3">${message(code: 'speciesList.description.label', default: 'Description')}</dt>
-                <dd class="col-9">${speciesList.description}</dd>
+                <dt class="col-sm-6 col-md-3">${message(code: 'speciesList.description.label', default: 'Description')}</dt>
+                <dd class="col-sm-6 col-md-9">${speciesList.description}</dd>
             </g:if>
 
             <g:if test="${speciesList.url}">
-                <dt class="col-3">${message(code: 'speciesList.url.label', default: 'URL')}</dt>
-                <dd class="col-9"><a href="${speciesList.url}" target="_blank">${speciesList.url}</a></dd>
+                <dt class="col-sm-6 col-md-3">${message(code: 'speciesList.url.label', default: 'URL')}</dt>
+                <dd class="col-sm-6 col-md-9"><a href="${speciesList.url}" target="_blank">${speciesList.url}</a></dd>
             </g:if>
 
             <g:if test="${speciesList.wkt}">
-                <dt class="col-3">${message(code: 'speciesList.wkt.label', default: 'WKT vector')}</dt>
-                <dd class="col-9">${speciesList.wkt}</dd>
+                <dt class="col-sm-6 col-md-3">${message(code: 'speciesList.wkt.label', default: 'WKT vector')}</dt>
+                <dd class="col-sm-6 col-md-9">${speciesList.wkt}</dd>
             </g:if>
 
-            <dt class="col-3">${message(code: 'speciesList.dateCreated.label', default: 'Date submitted')}</dt>
-            <dd class="col-9"><g:formatDate format="yyyy-MM-dd" date="${speciesList.dateCreated?:0}"/><!-- ${speciesList.lastUpdated} --></dd>
-            <dt class="col-3">${message(code: 'speciesList.isPrivate.label', default: 'Is private')}</dt>
-            <dd class="col-9"><g:formatBoolean boolean="${speciesList.isPrivate?:false}" true="Yes" false="No"/></dd>
-            <dt class="col-3">${message(code: 'speciesList.isBIE.label', default: 'Included in BIE')}</dt>
-            <dd class="col-9"><g:formatBoolean boolean="${speciesList.isBIE?:false}" true="Yes" false="No"/></dd>
-            <dt class="col-3">${message(code: 'speciesList.isAuthoritative.label', default: 'Authoritative')}</dt>
-            <dd class="col-9"><g:formatBoolean boolean="${speciesList.isAuthoritative?:false}" true="Yes" false="No"/></dd>
-            <dt class="col-3">${message(code: 'speciesList.isInvasive.label', default: 'Invasive')}</dt>
-            <dd class="col-9"><g:formatBoolean boolean="${speciesList.isInvasive?:false}" true="Yes" false="No"/></dd>
-            <dt class="col-3">${message(code: 'speciesList.isThreatened.label', default: 'Threatened')}</dt>
-            <dd class="col-9"><g:formatBoolean boolean="${speciesList.isThreatened?:false}" true="Yes" false="No"/></dd>
-            <dt class="col-3">${message(code: 'speciesList.isSDS.label', default: 'Part of the SDS')}</dt>
-            <dd class="col-9"><g:formatBoolean boolean="${speciesList.isSDS?:false}" true="Yes" false="No"/></dd>
-            <dt class="col-3">${message(code: 'speciesList.region.label', default: 'Region')}</dt>
-            <dd class="col-9">${speciesList.region?:'Not provided'}</dd>
+            <dt class="col-sm-6 col-md-3">${message(code: 'speciesList.dateCreated.label', default: 'Date submitted')}</dt>
+            <dd class="col-sm-6 col-md-9"><g:formatDate format="yyyy-MM-dd" date="${speciesList.dateCreated?:0}" /><!-- ${speciesList.lastUpdated} --></dd>
+            <dt class="col-sm-6 col-md-3">${message(code: 'speciesList.isPrivate.label', default: 'Is private')}</dt>
+            <dd class="col-sm-6 col-md-9"><g:formatBoolean boolean="${speciesList.isPrivate?:false}" true="Yes" false="No" /></dd>
+            <dt class="col-sm-6 col-md-3">${message(code: 'speciesList.isBIE.label', default: 'Included in BIE')}</dt>
+            <dd class="col-sm-6 col-md-9"><g:formatBoolean boolean="${speciesList.isBIE?:false}" true="Yes" false="No" /></dd>
+            <dt class="col-sm-6 col-md-3">${message(code: 'speciesList.isAuthoritative.label', default: 'Authoritative')}</dt>
+            <dd class="col-sm-6 col-md-9"><g:formatBoolean boolean="${speciesList.isAuthoritative?:false}" true="Yes" false="No" /></dd>
+            <dt class="col-sm-6 col-md-3">${message(code: 'speciesList.isInvasive.label', default: 'Invasive')}</dt>
+            <dd class="col-sm-6 col-md-9"><g:formatBoolean boolean="${speciesList.isInvasive?:false}" true="Yes" false="No" /></dd>
+            <dt class="col-sm-6 col-md-3">${message(code: 'speciesList.isThreatened.label', default: 'Threatened')}</dt>
+            <dd class="col-sm-6 col-md-9"><g:formatBoolean boolean="${speciesList.isThreatened?:false}" true="Yes" false="No" /></dd>
+            <dt class="col-sm-6 col-md-3">${message(code: 'speciesList.isSDS.label', default: 'Part of the SDS')}</dt>
+            <dd class="col-sm-6 col-md-9"><g:formatBoolean boolean="${speciesList.isSDS?:false}" true="Yes" false="No" /></dd>
+            <dt class="col-sm-6 col-md-3">${message(code: 'speciesList.region.label', default: 'Region')}</dt>
+            <dd class="col-sm-6 col-md-9">${speciesList.region?:'Not provided'}</dd>
 
             <g:if test="${speciesList.isSDS}">
                 <g:if test="${speciesList.authority}">
-                    <dt class="col-3">${message(code: 'speciesList.authority.label', default: 'SDS Authority')}</dt>
-                    <dd class="col-9">${speciesList.authority}</dd>
+                    <dt class="col-sm-6 col-md-3">${message(code: 'speciesList.authority.label', default: 'SDS Authority')}</dt>
+                    <dd class="col-sm-6 col-md-9">${speciesList.authority}</dd>
                 </g:if>
 
                 <g:if test="${speciesList.category}">
-                    <dt class="col-3">${message(code: 'speciesList.category.label', default: 'SDS Category')}</dt>
-                    <dd class="col-9">${speciesList.category}</dd>
+                    <dt class="col-sm-6 col-md-3">${message(code: 'speciesList.category.label', default: 'SDS Category')}</dt>
+                    <dd class="col-sm-6 col-md-9">${speciesList.category}</dd>
                 </g:if>
 
                 <g:if test="${speciesList.generalisation}">
-                    <dt class="col-3">${message(code: 'speciesList.generalisation.label', default: 'SDS Coordinate Generalisation')}</dt>
-                    <dd class="col-9">${speciesList.generalisation}</dd>
+                    <dt class="col-sm-6 col-md-3">${message(code: 'speciesList.generalisation.label', default: 'SDS Coordinate Generalisation')}</dt>
+                    <dd class="col-sm-6 col-md-9">${speciesList.generalisation}</dd>
                 </g:if>
 
                 <g:if test="${speciesList.sdsType}">
-                    <dt class="col-3">${message(code: 'speciesList.sdsType.label', default: 'SDS Type')}</dt>
-                    <dd class="col-9">${speciesList.sdsType}</dd>
+                    <dt class="col-sm-6 col-md-3">${message(code: 'speciesList.sdsType.label', default: 'SDS Type')}</dt>
+                    <dd class="col-sm-6 col-md-9">${speciesList.sdsType}</dd>
                 </g:if>
             </g:if>
 
             <g:if test="${speciesList.editors}">
-                <dt class="col-3">${message(code: 'speciesList.editors.label', default: 'List editors')}</dt>
-                <dd class="col-9">${speciesList.editors.collect{ sl.getFullNameForUserId(userId: it) }?.join(", ")}</dd>
+                <dt class="col-sm-6 col-md-3">${message(code: 'speciesList.editors.label', default: 'List editors')}</dt>
+                <dd class="col-sm-6 col-md-9">${speciesList.editors.collect{ sl.getFullNameForUserId(userId: it) }?.join(", ")}</dd>
             </g:if>
 
-            <dt class="col-3">${message(code: 'speciesList.metadata.label', default: 'Metadata link')}</dt>
-            <dd class="col-9"><a href="${grailsApplication.config.collectory.baseURL}/public/show/${speciesList.dataResourceUid}">${grailsApplication.config.collectory.baseURL}/public/show/${speciesList.dataResourceUid}</a></dd>
+            %{-- The link is broken
+            <dt class="col-sm-6 col-md-3">${message(code: 'speciesList.metadata.label', default: 'Metadata link')}</dt>
+            <dd class="col-sm-6 col-md-9"><a href="${grailsApplication.config.collectory.baseURL}/public/show/${speciesList.dataResourceUid}">${grailsApplication.config.collectory.baseURL}/public/show/${speciesList.dataResourceUid}</a></dd>
+            --}%
         </dl>
 
         <g:if test="${userCanEditPermissions}">
-            %{-- TODO: .hide class. --}%
-            <div id="edit-meta-div" class="hide">
+            <div style="display: none;" id="edit-meta-div">
                 <form class="form-horizontal" id="edit-meta-form">
                     <input type="hidden" name="id" value="${speciesList.id}" />
 
@@ -581,8 +533,8 @@
                     <div class="control-group">
                         <label class="control-label" for="dateCreated">${message(code: 'speciesList.dateCreated.label', default: 'Date submitted')}</label>
                         <div class="controls">
-                            <input type="date" name="dateCreated" id="dateCreated" data-date-format="yyyy-mm-dd" class="input-xlarge" value="<g:formatDate format="yyyy-MM-dd" date="${speciesList.dateCreated?:0}"/>" />
-                            %{--<g:datePicker name="dateCreated" value="${speciesList.dateCreated}" precision="day" relativeYears="[-2..7]" class="input-small"/>--}%
+                            <input type="date" name="dateCreated" id="dateCreated" data-date-format="yyyy-mm-dd" class="input-xlarge" value="<g:formatDate format="yyyy-MM-dd" date="${speciesList.dateCreated?:0}" />" />
+                            %{--<g:datePicker name="dateCreated" value="${speciesList.dateCreated}" precision="day" relativeYears="[-2..7]" class="input-small" />--}%
                         </div>
                     </div>
 
@@ -687,7 +639,7 @@
     </g:if>
 
     <div class="row">
-        <div class="col-3 well" id="facets-column">
+        <div class="col-md-3 well" id="facets-column">
             <div class="boxedZ attachedZ">
                 <section class="meta">
                     <ul class="erk-ulist">
@@ -703,16 +655,21 @@
 
                         <g:if test="${hasUnrecognised && noMatchCount!=totalCount}">
                             <li class="erk-ulist--item">
-                                <g:link action="list" id="${params.id}" title="View unrecognised taxa" params="${[fq:sl.buildFqList(fqs:fqs, fq:"guid:null"), max:params.max]}">Unrecognised Taxa</g:link>
+                                <g:link action="list" id="${params.id}" title="View unrecognised taxa" params="${[fq:sl.buildFqList(fqs:fqs, fq:"guid:null"), max:params.max]}">
+                                    Unrecognised Taxa
+                                </g:link>
+
                                 <span class="count">${noMatchCount}</span>
                             </li>
                         </g:if>
 
+                        %{--
                         <li class="erk-ulist--item">
                             <g:link controller="speciesList" action="list" class="wrk-button" title="My Lists">
                                 My Lists
                             </g:link>
                         </li>
+                        --}%
                     </ul>
                 </section>
 
@@ -736,10 +693,10 @@
                                                 <g:if test="${fq.length() >0}">
                                                     <li class="erk-ulist--item">
                                                         <g:link action="list" id="${params.id}" params="${[fq:sl.excludedFqList(fqs:fqs, fq:fq), max:params.max]}" class="removeLink" title="Uncheck (remove filter)">
-                                                            <i class="fa fa-check"></i>
+                                                            <span class="fa fa-check"></span>
                                                         </g:link>
 
-                                                        <g:message code="facet.${fq.replaceFirst("kvp ","")}" default="${fq.replaceFirst("kvp ","")}"/>
+                                                        <g:message code="facet.${fq.replaceFirst("kvp ","")}" default="${fq.replaceFirst("kvp ","")}" />
                                                     </li>
                                                 </g:if>
                                             </g:each>
@@ -751,11 +708,11 @@
                             <g:each in="${facets}" var="entry">
                                 <g:if test="${entry.key == "listProperties"}">
                                     <g:each in="${facets.get("listProperties")}" var="value">
-                                        <g:render template="facet" model="${[key:value.getKey(), values:value.getValue(), isProperty:true]}"/>
+                                        <g:render template="facet" model="${[key:value.getKey(), values:value.getValue(), isProperty:true]}" />
                                     </g:each>
                                 </g:if>
                                 <g:else>
-                                    <g:render template="facet" model="${[key:entry.key, values:entry.value, isProperty:false]}"/>
+                                    <g:render template="facet" model="${[key:entry.key, values:entry.value, isProperty:false]}" />
                                 </g:else>
                             </g:each>
                         </div>
@@ -764,18 +721,18 @@
             </div>
         </div>
 
-        <div class="col-9">
+        <div class="col-md-9">
             <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" data-toggle="tab" href="#list-tab" role="tab" title="View as detailed list">
-                        <i class="fa fa-th-list"></i>
+                        <span class="fa fa-th-list"></span>
                         List
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#grid-tab" role="tab" title="View as tumbnail image grid">
-                        <i class="fa fa-th"></i>
+                        <span class="fa fa-th"></span>
                         Grid
                     </a>
                 </li>
@@ -783,8 +740,8 @@
 
             <div class="tab-content">
                 <div class="tab-pane active" id="list-tab" role="tabpanel">
-                    <div class="table-responsive">
-                        <table class="table table-sm table-striped" id="speciesListTable">
+                    <div class="speciesList table-responsive">
+                        <table class="table table-sm table-bordered table-striped" id="speciesListTable">
                             <thead>
                                 <tr>
                                     <th class="action">Action</th>
@@ -801,24 +758,24 @@
 
                             <tbody>
                                 <g:each var="result" in="${results}" status="i">
-                                    <g:set var="recId" value="${result.id}"/>
-                                    <g:set var="bieTitle">species page for <i>${result.rawScientificName}</i></g:set>
+                                    <g:set var="recId" value="${result.id}" />
+                                    <g:set var="bieTitle">species page for <span>${result.rawScientificName}</span></g:set>
 
                                     <tr class="${(i % 2) == 0 ? 'odd' : 'even'}" id="row_${recId}">
                                         <td class="action">
                                             <center>
                                                 <a class="viewRecordButton" href="#viewRecord" title="view record" data-id="${recId}">
-                                                    <i class="fa fa-info-circle"></i>
+                                                    <span class="fa fa-info-circle"></span>
                                                 </a>
 
                                                 <g:if test="${userCanEditData}">
                                                     <a href="#" title="edit" data-remote="${createLink(controller: 'editor', action: 'editRecordScreen', id: result.id)}"
                                                         data-target="#editRecord_${recId}" data-toggle="modal" >
-                                                        <i class="fa fa-pencil"></i>
+                                                        <span class="fa fa-pencil"></span>
                                                     </a>
 
                                                     <a href="#" title="delete" data-target="#deleteRecord_${recId}" data-toggle="modal">
-                                                        <i class="fa fa-trash-o"></i>
+                                                        <span class="fa fa-trash-o"></span>
                                                     </a>
                                                 </g:if>
                                             </center>
@@ -857,7 +814,7 @@
                                         <td id="img_${result.guid}">
                                             <g:if test="${result.imageUrl}">
                                                 <a href="${bieUrl}/species/${result.guid}" title="${bieTitle}">
-                                                    <img style="max-width: 400px;" src="${result.imageUrl}" class="smallSpeciesImage"/>
+                                                    <img style="max-width: 400px;" src="${result.imageUrl}" class="smallSpeciesImage" />
                                                 </a>
                                             </g:if>
                                         </td>
@@ -887,25 +844,25 @@
 
                 <div class="tab-pane" id="grid-tab" role="tabpanel">
                     <g:each var="result" in="${results}" status="i">
-                        <g:set var="recId" value="${result.id}"/>
-                        <g:set var="bieTitle">species page for <i>${result.rawScientificName}</i></g:set>
+                        <g:set var="recId" value="${result.id}" />
+                        <g:set var="bieTitle">species page for <span>${result.rawScientificName}</span></g:set>
 
                         <div class="imgCon">
                             <a class="thumbImage viewRecordButton" rel="thumbs" title="click to view details" href="#viewRecord"
                                 data-id="${recId}">
-                                <img src="${result.imageUrl?:g.createLink(uri:'/images/infobox_info_icon.png\" style=\"opacity:0.5')}" alt="thumbnail species image"/>
+                                <img src="${result.imageUrl?:g.createLink(uri:'/images/infobox_info_icon.png\" style=\"opacity:0.5')}" alt="thumbnail species image" />
                             </a>
 
                             <g:if test="${true}">
                                 <g:set var="displayName">
-                                    <i>
+                                    <span>
                                         <g:if test="${result.guid == null}">
                                             ${fieldValue(bean: result, field: "rawScientificName")}
                                         </g:if>
                                         <g:else>
                                             ${result.matchedName}
                                         </g:else>
-                                    </i>
+                                    </span>
                                 </g:set>
 
                                 <div class="meta brief">
@@ -925,17 +882,17 @@
 
                                     <div class="float-right" style="display:inline-block; padding: 5px;">
                                         <a href="#viewRecord" class="viewRecordButton" title="view record" data-id="${recId}">
-                                            <i class="fa fa-info-circle"></i>
+                                            <span class="fa fa-info-circle"></span>
                                         </a>&nbsp;
 
                                         <g:if test="${userCanEditData}">
                                             <a href="#" title="edit" data-remote="${createLink(controller: 'editor', action: 'editRecordScreen', id: result.id)}"
                                                data-target="#editRecord_${recId}" data-toggle="modal" >
-                                               <i class="fa fa-pencil"></i>
+                                               <span class="fa fa-pencil"></span>
                                             </a>&nbsp;
 
                                             <a href="#" title="delete" data-target="#deleteRecord_${recId}" data-toggle="modal">
-                                                <i class="fa fa-trash-o"></i>
+                                                <span class="fa fa-trash-o"></span>
                                             </a>&nbsp;
                                         </g:if>
                                     </div>
@@ -950,7 +907,7 @@
                 <div class="col">
                     <div class="pagination float-left">
                         <g:if test="${params.fq}">
-                            <g:paginate total="${totalCount}" action="list" id="${params.id}" params="${[fq: params.fq]}"/>
+                            <g:paginate total="${totalCount}" action="list" id="${params.id}" params="${[fq: params.fq]}" />
                         </g:if>
 
                         <g:else>
@@ -971,7 +928,7 @@
 
             %{-- Output the BS modal divs (hidden until called) --}%
             <g:each var="result" in="${results}" status="i">
-                <g:set var="recId" value="${result.id}"/>
+                <g:set var="recId" value="${result.id}" />
 
                 <div class="modal fade" id="viewRecord">
                     <div class="modal-dialog">
@@ -988,7 +945,7 @@
 
                             <div class="modal-body">
                                 <p class="spinner">
-                                    <img src="${resource(dir:'images',file:'spinner.gif')}" alt="spinner icon"/>
+                                    <img src="${resource(dir:'images',file:'spinner.gif')}" alt="spinner icon" />
                                 </p>
 
                                 %{-- TODO: .hide class. --}%
@@ -1033,7 +990,7 @@
 
                         <div class="modal-body">
                             <p>
-                                <img src="${resource(dir:'images',file:'spinner.gif')}" alt="spinner icon"/>
+                                <img src="${resource(dir:'images',file:'spinner.gif')}" alt="spinner icon" />
                             </p>
                         </div>
 
@@ -1057,7 +1014,7 @@
 
                         <div class="modal-body">
                             <p>
-                                This will permanently delete the data for species <i>${result.rawScientificName}</i>
+                                This will permanently delete the data for species <span>${result.rawScientificName}</span>
                             </p>
                         </div>
 
@@ -1083,7 +1040,6 @@
         $("table .sortable").each(function(i) {
             var href = $(this).find("a").attr("href");
 
-            $(this).css("cursor", "pointer");
             $(this).click(function() {
                 window.location.href = href;
             });

@@ -17,10 +17,6 @@ div.fhtable {
     display: inline-block
 }
 
-#page-header {
-    margin-bottom: 1rem;
-}
-
 .attached {
     border-top: 1px solid #FaF8Ed;
 }
@@ -168,39 +164,6 @@ td.parse { font-size: 11px; border-collapse: collapse; border: 1px solid #000000
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
 }
 
-/* TODO: Remove this class. */
-.yui-skin-sam .yui-dialog .ft span.default button {
-    color: #000000;
-    font-weight: bold;
-}
-
-.yui-dialog {
-    text-align: left;
-}
-.yui-dialog label {
-    width: 35%;
-    display: inline-block;
-    text-align: right;
-    padding-right: 10px;
-    color: #444;
-}
-
-.yui-dialog input {
-    float: none;
-}
-.yui-dialog p {
-    margin-bottom:10px;
-}
-/* Styling for GrailsUI components. */
-.button-group.span{
-    border-style: none;
-    background: none;
-}
-
-.yui-dialog.bd {
-    background-color: #FFFFFF;
-}
-
 .message {
     background: #f3f8fc url(../images/skin/information.png) 8px 50% no-repeat;
     border: 1px solid #b2d1ff;
@@ -215,4 +178,3 @@ td.parse { font-size: 11px; border-collapse: collapse; border: 1px solid #000000
     cursor: default;
     background-image:none !important;
 }
-

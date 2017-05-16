@@ -14,69 +14,67 @@
 </head>
 
 <body class="">
-<div id="content" class="container">
+<div id="content" class="container-fluid">
     <header id="page-header">
+        %{-- TITLE --}%
         <div class="row">
             <div class="col">
-                <div id="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="http://www.ala.org.au">
-                                Home
-                            </a>
-                        </li>
+                <div class="page-header-title">
+                    <h1 class="page-header-title__title">
+                        Species lists
+                    </h1>
 
-                        <li class="breadcrumb-item">
-                            <a class="current" href="${request.contextPath}/public/speciesLists">
-                                Species lists
-                            </a>
-                        </li>
-                    </ol>
+                    <div class="page-header-title__subtitle">
+                        <div>
+                            Below is a listing of all species lists that can be administered.
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
+        %{-- LINKS --}%
         <div class="row">
-            <hgroup class="col">
-                <h1>
-                    Species lists
+            <div class="col">
+                <div class="page-header-links">
+                    <a href="${request.contextPath}/public/speciesLists" class="page-header-links__link">
+                        Species lists
+                    </a>
 
-                    <span class="float-right">
-                        <a class="erk-button erk-button--light" title="Add Species List" href="${request.contextPath}/speciesList/upload">
-                            Upload a list
-                        </a>
+                    %{--
+                    <a title="My Lists" href="${request.contextPath}/speciesList/list" class="page-header-links__link">
+                        My Lists
+                    </a>
+                    --}%
 
-                        <a class="erk-button erk-button--light" title="My Lists" href="${request.contextPath}/speciesList/list">
-                            My Lists
-                        </a>
+                    <g:link controller="speciesList" action="upload" title="Add Species List" class="page-header-links__link">
+                        Upload a list
+                    </g:link>
 
-                        <a class="erk-button erk-button--light" title="Rematch" href="${request.contextPath}/speciesList/rematch">
-                            Rematch All
+                    <a title="Rematch" href="${request.contextPath}/speciesList/rematch" class="page-header-links__link">
+                        Rematch All
+                    </a>
+
+                    <g:if test="${lists && total>0}">
+                        <a href="${g.createLink(action: 'updateListsWithUserIds')}" class="page-header-links__link">
+                            Update List user details (name & email address)
                         </a>
-                    </span>
-                </h1>
-            </hgroup>
+                    </g:if>
+                </div>
+            </div>
         </div>
     </header>
 
     <div class="row">
         <div class="col">
             <g:if test="${flash.message}">
-                <div class="message alert alert-info">${flash.message}</div>
+                <div class="message alert alert-info">
+                    ${flash.message}
+                </div>
             </g:if>
 
             <g:if test="${lists && total>0}">
                 <div class="row">
-                    <div class="col-12">
-                        <a href="${g.createLink(action: 'updateListsWithUserIds')}" class="erk-button erk-button--light">
-                            Update List user details (name & email address)
-                        </a>
-
-                        <p>
-                            Below is a listing of all species lists that can be administered.
-                        </p>
-                    </div>
-
                     <div class="col-12">
                         <g:render template="/speciesList"/>
                     </div>

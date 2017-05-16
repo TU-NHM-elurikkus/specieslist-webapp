@@ -15,54 +15,31 @@
 <!doctype html>
 <html>
 <head>
-    <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
-    <title>Species lists |${grailsApplication.config.skin.orgNameLong}</title>
     <r:require modules="application"/>
+    <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
+    <title>
+        Species lists |${grailsApplication.config.skin.orgNameLong}
+    </title>
 </head>
 
-<body class="">
-<div id="content" class="container">
+<body>
+<div id="content" class="container-fluid">
     <header id="page-header">
+        %{-- TITLE --}%
         <div class="row">
             <div class="col">
-                <div id="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="${request.contextPath}">
-                                Home
-                            </a>
-                        </li>
+                <div class="page-header-title">
+                    <h1 class="page-header-title__title">
+                        Species lists
+                    </h1>
 
-                        <li class="breadcrumb-item">
-                            <a class="current" href="${request.contextPath}/admin/speciesLists">
-                                Species lists
-                            </a>
-                        </li>
-                    </ol>
+                    <div class="page-header-title__subtitle">
+                        <div>
+                            This tool allows you to wrok with user species lists.
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="row">
-            <hgroup class="col">
-                <h2 class="float-left">
-                    Species lists
-                </h2>
-
-                <ul class="erk-ulist list-external-links float-right">
-                    <li class="erk-ulist--item">
-                        <a title="Add Species List" href="${request.contextPath}/speciesList/upload">
-                            Upload a list
-                        </a>
-                    </li>
-
-                    <li class="erk-ulist--item">
-                        <a title="My Lists" href="${request.contextPath}/speciesList/list">
-                            My Lists
-                        </a>
-                    </li>
-                </ul>
-            </hgroup>
         </div>
     </header>
 
@@ -75,20 +52,10 @@
                 </div>
             </g:if>
 
-            <p>
-                This tool allows you to upload a list of species, and work with that list within the Atlas.
-                <br/>
-                Click "Upload a list" to upload your own list of taxa.
-            </p>
-
             <g:if test="${lists && total>0}">
                 <div class="row">
-                    <div class="col-12">
-                        <p>
-                            Below is a listing of user provided species lists. You can use these lists to work with parts of the Atlas.
-                        </p>
-
-                        <form class="listSearchForm" >
+                    <div class="col">
+                        <form class="list-search-form" >
                             <div class="input-plus">
                                 <input class="input-plus" id="appendedInputButton" name="q" type="text" value="${params.q}" placeholder="Search in list name, description or owner">
 
@@ -98,9 +65,8 @@
                             </div>
                         </form>
 
-                        <form class="listSearchForm" >
+                        <form class="list-search-form" >
                             <g:if test="${params.q}">
-                                %{--<input type="hidden" name="q" value=""/>--}%
                                 <button class="erk-button erk-button--light" type="submit">
                                     Clear search
                                 </button>
@@ -111,14 +77,16 @@
                             <g:render template="/pageSize"/>
                         </div>
                     </div>
+                </div>
 
-                    <div class="col-12">
+                <div class="row">
+                    <div class="col">
                         <g:render template="/speciesList"/>
                     </div>
                 </div>
             </g:if>
             <g:elseif test="${params.q}">
-                <form class="listSearchForm" >
+                <form class="list-search-form" >
                     <p>
                         No Species Lists found for: <strong>${params.q}</strong>
                     </p>
