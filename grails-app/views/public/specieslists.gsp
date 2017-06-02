@@ -24,22 +24,13 @@
 
 <body>
 <div id="content" class="container-fluid">
-    <header id="page-header">
-        %{-- TITLE --}%
-        <div class="row">
-            <div class="col">
-                <div class="page-header-title">
-                    <h1 class="page-header-title__title">
-                        Species lists
-                    </h1>
+    <header id="page-header" class="page-header">
+        <h1 class="page-header__title">
+            Species lists
+        </h1>
 
-                    <div class="page-header-title__subtitle">
-                        <div>
-                            This tool allows you to wrok with user species lists.
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="page-header__subtitle">
+            This tool allows you to wrok with user species lists.
         </div>
     </header>
 
@@ -47,7 +38,10 @@
         <div class="col">
             <g:if test="${flash.message}">
                 <div class="message alert alert-info">
-                    <button type="button" class="close" onclick="$(this).parent().hide()">×</button>
+                    <button type="button" class="close" onclick="$(this).parent().hide()">
+                        ×
+                    </button>
+
                     <strong>Alert:</strong> ${flash.message}
                 </div>
             </g:if>
@@ -91,7 +85,9 @@
                         No Species Lists found for: <strong>${params.q}</strong>
                     </p>
 
-                    <button class="erk-button erk-button--light" type="submit">Clear search</button>
+                    <button class="erk-button erk-button--light" type="submit">
+                        Clear search
+                    </button>
                 </form>
             </g:elseif>
             <g:else>

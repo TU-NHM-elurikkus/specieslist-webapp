@@ -289,110 +289,102 @@
 </div>
 
 <div id="content" class="container-fluid">
-    <header id="page-header">
+    <header id="page-header" class="page-header">
         %{-- TITLE --}%
-        <div class="row">
-            <div class="col">
-                <div class="page-header-title">
-                    <h1 class="page-header-title__title">
-                        Species List:
-                        <a href="${collectoryUrl}/lists/speciesListItem/list/${params.id}">
-                            ${speciesList?.listName}
-                        </a>
+        <div class="page-header__title">
+            <h1 class="page-header__title">
+                Species List:
+                <a href="${collectoryUrl}/lists/speciesListItem/list/${params.id}">
+                    ${speciesList?.listName}
+                </a>
 
-                        %{--
-                        <a href="${collectoryUrl}/public/show/${params.id}" title="view Date Resource page">
-                            ${speciesList?.listName}
-                        </a>
-                        --}%
-                    </h1>
+                %{--
+                <a href="${collectoryUrl}/public/show/${params.id}" title="view Date Resource page">
+                    ${speciesList?.listName}
+                </a>
+                --}%
+            </h1>
 
-                    %{--
-                    <div class="page-header-title__subtitle">
-                        <div>
-                            Below is a listing of species lists that you have provided. You can use these lists to work with parts of the Atlas.
-                        </div>
+            %{-- TODD: New text.
+            <div class="page-header__subtitle">
+                <div>
+                    Below is a listing of species lists that you have provided. You can use these lists to work with parts of the Atlas.
+                </div>
 
-                        <div>
-                            Click on the "delete" button next to a list to remove it from the Atlas.
-                        </div>
-                    </div>
-                    --}%
+                <div>
+                    Click on the "delete" button next to a list to remove it from the Atlas.
                 </div>
             </div>
+            --}%
         </div>
 
         %{-- LINKS --}%
-        <div class="row">
-            <div class="col">
-                <div class="page-header-links">
-                    <a href="${request.contextPath}/public/speciesLists" class="page-header-links__link">
-                        Species lists
-                    </a>
+        <div class="page-header-links">
+            <a href="${request.contextPath}/public/speciesLists" class="page-header-links__link">
+                Species lists
+            </a>
 
-                    <a
-                        href="${request.contextPath}/speciesList/occurrences/${params.id}${params.toQueryString()}&type=Search"
-                        title="View occurrences for up to ${maxDownload} species on the list"
-                        class="page-header-links__link"
+            <a
+                href="${request.contextPath}/speciesList/occurrences/${params.id}${params.toQueryString()}&type=Search"
+                title="View occurrences for up to ${maxDownload} species on the list"
+                class="page-header-links__link"
+            >
+                View occurrence records
+            </a>
+
+            <a
+                href="${request.contextPath}/speciesList/spatialPortal/${params.id}${params.toQueryString()}&type=Search"
+                title="View the spatial portal."
+                class="page-header-links__link"
+            >
+                View in spatial portal
+            </a>
+
+            <div class="action-button-block">
+                <button id="toggleListInfo" class="erk-button erk-button--light">
+                    <span class="fa fa-info-circle">
+                    </span>
+                    List info
+                </button>
+
+                <button
+                    type="button"
+                    class="erk-button erk-button--light"
+                    title="View the download options for this species list."
+                    data-toggle="modal"
+                    data-target="#download-dialog"
+                >
+                   <span class="fa fa-download">
+                   </span>
+                   Download
+                </button>
+
+                <g:if test="${userCanEditPermissions}">
+                    <button
+                        type="button"
+                        data-remote="${createLink(controller: 'editor', action: 'editPermissions', id: params.id)}"
+                        data-target="#modal"
+                        data-toggle="modal"
+                        class="erk-button erk-button--light"
                     >
-                        View occurrence records
-                    </a>
+                        <span class="fa fa-user-o">
+                        </span>
+                        Edit permissions
+                    </button>
+                </g:if>
 
+                <g:if test="${userCanEditData}">
                     <a
-                        href="${request.contextPath}/speciesList/spatialPortal/${params.id}${params.toQueryString()}&type=Search"
-                        title="View the spatial portal."
-                        class="page-header-links__link"
+                        href="#"
+                        data-remote="${createLink(controller: 'editor', action: 'addRecordScreen', id: params.id)}"
+                        data-target="#addRecord"
+                        data-toggle="modal"
                     >
-                        View in spatial portal
+                        <span class="fa fa-plus">
+                        </span>
+                        Add species
                     </a>
-
-                    <div class="action-button-block">
-                        <button id="toggleListInfo" class="erk-button erk-button--light">
-                            <span class="fa fa-info-circle">
-                            </span>
-                            List info
-                        </button>
-
-                        <button
-                            type="button"
-                            class="erk-button erk-button--light"
-                            title="View the download options for this species list."
-                            data-toggle="modal"
-                            data-target="#download-dialog"
-                        >
-                           <span class="fa fa-download">
-                           </span>
-                           Download
-                        </button>
-
-                        <g:if test="${userCanEditPermissions}">
-                            <button
-                                type="button"
-                                data-remote="${createLink(controller: 'editor', action: 'editPermissions', id: params.id)}"
-                                data-target="#modal"
-                                data-toggle="modal"
-                                class="erk-button erk-button--light"
-                            >
-                                <span class="fa fa-user-o">
-                                </span>
-                                Edit permissions
-                            </button>
-                        </g:if>
-
-                        <g:if test="${userCanEditData}">
-                            <a
-                                href="#"
-                                data-remote="${createLink(controller: 'editor', action: 'addRecordScreen', id: params.id)}"
-                                data-target="#addRecord"
-                                data-toggle="modal"
-                            >
-                                <span class="fa fa-plus">
-                                </span>
-                                Add species
-                            </a>
-                        </g:if>
-                    </div>
-                </div>
+                </g:if>
             </div>
         </div>
     </header>
