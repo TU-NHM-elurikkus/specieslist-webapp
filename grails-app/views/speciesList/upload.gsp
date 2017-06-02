@@ -277,38 +277,30 @@
 
 <body class="upload">
 <div id="content" class="container">
-    <header id="page-header">
+    <header id="page-header" class="page-header">
         %{-- TITLE --}%
-        <div class="row">
-            <div class="col">
-                <div class="page-header-title">
-                    <g:if test="${list}">
-                        <h1>
-                            <g:message code="upload.heading.hasList" default="Upload a list"/>
-                        </h1>
-                    </g:if>
-                    <g:else>
-                        <h1>
-                            <g:message code="upload.heading" default="Upload a list"/>
-                        </h1>
-                    </g:else>
-                </div>
-            </div>
+        <div class="page-header__title">
+            <g:if test="${list}">
+                <h1>
+                    <g:message code="upload.heading.hasList" default="Upload a list"/>
+                </h1>
+            </g:if>
+            <g:else>
+                <h1>
+                    <g:message code="upload.heading" default="Upload a list"/>
+                </h1>
+            </g:else>
         </div>
 
         %{-- LINKS --}%
-        <div class="row">
-            <div class="col">
-                <div class="page-header-links">
-                    <a href="${request.contextPath}/public/speciesLists" class="page-header-links__link">
-                        Species lists
-                    </a>
+        <div class="page-header-links">
+            <a href="${request.contextPath}/public/speciesLists" class="page-header-links__link">
+                Species lists
+            </a>
 
-                    <a title="My Lists" href="${request.contextPath}/speciesList/list" class="page-header-links__link">
-                        My Lists
-                    </a>
-                </div>
-            </div>
+            <a title="My Lists" href="${request.contextPath}/speciesList/list" class="page-header-links__link">
+                My Lists
+            </a>
         </div>
     </header>
 

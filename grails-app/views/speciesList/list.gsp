@@ -24,49 +24,43 @@
 
 <body>
 <div id="content" class="container-fluid">
-    <header id="page-header">
+    <header id="page-header" class="page-header">
         %{-- TITLE --}%
-        <div class="row">
-            <div class="col">
-                <div class="page-header-title">
-                    <h1 class="page-header-title__title">
-                        My Species lists
-                    </h1>
+        <div class="page-header__title">
+            <h1 class="page-header__title">
+                My Species lists
+            </h1>
 
-                    <div class="page-header-title__subtitle">
-                        <div>
-                            Below is a listing of species lists that you have provided. You can use these lists to work with parts of the Atlas.
-                        </div>
+            <div class="page-header__subtitle">
+                <div>
+                    Below is a listing of species lists that you have provided. You can use these lists to work with parts of the Atlas.
+                </div>
 
-                        <div>
-                            Click on the "delete" button next to a list to remove it from the Atlas.
-                        </div>
-                    </div>
+                <div>
+                    Click on the "delete" button next to a list to remove it from the Atlas.
                 </div>
             </div>
         </div>
 
         %{-- LINKS --}%
-        <div class="row">
-            <div class="col">
-                <div class="page-header-links">
-                    <a href="${request.contextPath}/public/speciesLists" class="page-header-links__link">
-                        Species lists
-                    </a>
+        <div class="page-header-links">
+            <a href="${request.contextPath}/public/speciesLists" class="page-header-links__link">
+                Species lists
+            </a>
 
-                    %{--
-                    <a title="My Lists" href="${request.contextPath}/speciesList/list" class="page-header-links__link">
-                        My Lists
-                    </a>
-                    --}%
+            %{-- Not sure what will become of this page but we are not going to the following links here right now. --}%
 
-                    %{--
-                    <g:link controller="speciesList" action="upload" title="Add Species List" class="page-header-links__link">
-                        Upload a list
-                    </g:link>
-                    --}%
-                </div>
-            </div>
+            %{--
+            <a title="My Lists" href="${request.contextPath}/speciesList/list" class="page-header-links__link">
+                My Lists
+            </a>
+            --}%
+
+            %{--
+            <g:link controller="speciesList" action="upload" title="Add Species List" class="page-header-links__link">
+                Upload a list
+            </g:link>
+            --}%
         </div>
     </header>
 

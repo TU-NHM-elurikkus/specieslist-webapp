@@ -282,12 +282,6 @@ img.smallSpeciesImage {
     padding-right: 0.5em;
 }
 
-.action-button-block {
-    display: inline-block;
-    float: right;
-    margin: 0 .25rem;
-}
-
 /* Override container padding */
 #content.container-fluid {
     padding: 0;
