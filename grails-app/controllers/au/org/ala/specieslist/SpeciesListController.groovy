@@ -57,7 +57,7 @@ class SpeciesListController {
             if(list?.userId == authService.getUserId() || authService.userInRole("ROLE_ADMIN")){
                 render(view: "upload", model: [resourceUid: params.id, list: list, listTypes: ListType.values()])
             } else {
-                flash.message = "${message(code: 'error.message.reloadListPermission', args: [params.id])}"
+                flash.message = "${message(code: 'groovy.permissions', args: [params.id])}"
                 redirect(controller: "public", action:"speciesLists")
             }
         } else {

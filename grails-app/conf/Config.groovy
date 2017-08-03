@@ -60,7 +60,7 @@ grails.mime.types = [ html: ['text/html','application/xhtml+xml'],
 grails.resources.adhoc.patterns = ['/images/*', '/css/*', '/js/*', '/plugins/*']
 
 // The default codec used to encode data with ${}
-grails.views.default.codec = "none" // none, html, base64
+grails.views.default.codec = "none"
 grails.views.gsp.encoding = "UTF-8"
 grails.converters.encoding = "UTF-8"
 //grails.converters.json.default.deep=true
@@ -203,7 +203,7 @@ grails.cache.config = {
 }
 // Uncomment and edit the following lines to start using Grails encoding & escaping improvements
 
-/* remove this line 
+/* remove this line
 // GSP settings
 grails {
     views {

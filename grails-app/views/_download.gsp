@@ -13,24 +13,27 @@
                 </button>
 
                 <h3 id="download-dialog-title">
-                    Downloads
+                    <g:message code="download.downloads" />
                 </h3>
             </div>
 
             <div class="modal-body">
                 <p>
-                    By downloading this content you are agreeing to use it in accordance with the Atlas of Living Australia
-                    <a href="http://www.ala.org.au/about/terms-of-use/#TOUusingcontent">Terms of Use</a> and any Data Provider Terms associated with the data download.
+                    <g:message code="download.terms1" />
+                    <a href="http://www.ala.org.au/about/terms-of-use/#TOUusingcontent">
+                        <g:message code="download.terms2" />
+                    </a>
+                    <g:message code="download.terms3" />
                 </p>
 
                 <p>
-                    Please provide the following details before downloading (* required):
+                    <g:message code="download.sentence" />
                 </p>
 
                 <form>
                     <div class="form-group row">
                         <label for="email" class="col-sm-4 col-md-3 col-lg-2 col-form-label">
-                            Email
+                            <g:message code="general.email" />
                         </label>
 
                         <input
@@ -39,12 +42,12 @@
                             id="email"
                             value="${request.remoteUser}"
                             size="30"
-                            class="col-sm-8 col-md-6 col-lg-4"/>
+                            class="col-sm-8 col-md-6 col-lg-4" />
                     </div>
 
                     <div class="form-group row">
                         <label for="filename" class="col-sm-4 col-md-3 col-lg-2 col-form-label">
-                            File Name
+                            <g:message code="download.file" />
                         </label>
 
                         <input
@@ -53,16 +56,18 @@
                             id="filename"
                             value="${speciesList?.listName?.replaceAll(~/\s+/, "_")?:"data"}"
                             size="30"
-                            class="col-sm-8 col-md-6 col-lg-4"/>
+                            class="col-sm-8 col-md-6 col-lg-4" />
                     </div>
 
                     <div class="form-group row">
                         <label for="reasonTypeId" class="col-sm-4 col-md-3 col-lg-2 col-form-label">
-                            Download Reason *
+                            <g:message code="download.reason" />
                         </label>
 
                         <select name="reasonTypeId" id="reasonTypeId" class="col-sm-8 col-md-6 col-lg-4">
-                            <option value="">-- select a reason --</option>
+                            <option value="">
+                                -- <g:message code="download.select" /> --
+                            </option>
 
                             <g:each in="${downloadReasons}" var="reason">
                                 <option value="${reason.key}">
@@ -75,17 +80,17 @@
                     <div class="form-group row">
                         <div class="col">
                             <button type="button" class="actionButton erk-button erk-button--light" id="downloadSubmitButton" onclick="return downloadOccurrences()">
-                                Download All Records
+                                <g:message code="download.all" />
                             </button>
 
                             <g:if test="${grailsApplication.config.fieldGuide.baseURL}">
                                 <button type="button" class="actionButton erk-button erk-button--light" id="downloadFieldGuideSubmitButton">
-                                    Download Species Field Guide
+                                    <g:message code="download.fieldGuide" />
                                 </button>
                             </g:if>
 
                             <button type="button" class="actionButton erk-button erk-button--light" id="downloadSpeciesListSubmitButton">
-                                Download Species List
+                                <g:message code="download.list" />
                             </button>
                         </div>
                     </div>
@@ -93,7 +98,7 @@
 
                 <g:if test="${grailsApplication.config.fieldGuide.baseURL}">
                     <p>
-                        <strong>Note</strong>: The field guide may take several minutes to prepare and download.
+                        <strong><g:message code="download.note" /></strong>: <g:message code="download.noteDescription" />
                     </p>
                 </g:if>
 
@@ -175,12 +180,8 @@
             </div>
 
             <div class="modal-footer">
-                <button
-                    class="erk-button erk-button--light"
-                    data-dismiss="modal"
-                    aria-hidden="true"
-                >
-                    <g:message code="download.button.close" default="Close"/>
+                <button class="erk-button erk-button--light" data-dismiss="modal" aria-hidden="true">
+                    <g:message code="general.close" />
                 </button>
             </div>
         </div>

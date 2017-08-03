@@ -1,6 +1,5 @@
-<%@page defaultCodec="html" %>
 %{-- Template for diplaying a single facet for a species list. --}%
-<g:set var="facetId" value="${sl.facetAsId(key:key, prefix:"facet")}"/>
+<g:set var="facetId" value="${sl.facetAsId(key:key, prefix:"facet")}" />
 
 <div class="FieldName">
     ${key}
@@ -8,10 +7,10 @@
 
 <div id="${facetId}" class="subnavlist">
     <ul class="erk-ulist">
-        <g:set var="i" value="${0}"/>
+        <g:set var="i" value="${0}" />
 
         <g:while test="${i < 4 && i < values.size()}">
-            <g:set var="arr" value="${values.get(i)}"/>
+            <g:set var="arr" value="${values.get(i)}" />
 
             <g:if test="${isProperty}">
                 <li class="erk-ulist--item">
@@ -41,7 +40,7 @@
 
                 <a href="${sl.facetAsId(key:key, prefix:"#div")}" class="multipleFacetsLinkZ" id="${sl.facetAsId(key:key, prefix:"multi")}"
                    role="button" data-toggle="modal"  title="See full list of values">
-                   choose more...
+                    <g:message code="speciesListItem.facet.choose" />
                 </a>
             </li>
         </g:if>
@@ -57,7 +56,7 @@
                     </button>
 
                     <h3 class="multipleFacetsLabel">
-                        Refine your search
+                        <g:message code="speciesListItem.facet.refine" />
                     </h3>
                 </div>
 
@@ -65,8 +64,12 @@
                     <table class="table table-bordered table-sm table-striped">
                         <thead>
                             <tr>
-                                <th class="indexCol" width="80%">${key}</th>
-                                <th style="border-right-style: none;text-align: right;">Count</th>
+                                <th class="indexCol" width="80%">
+                                    ${key}
+                                </th>
+                                <th style="border-right-style: none;text-align: right;">
+                                    <g:message code="speciesListItem.facet.count" />
+                                </th>
                             </tr>
                         </thead>
 
@@ -103,7 +106,9 @@
                 </div>
 
                 <div class="modal-footer" style="text-align: left;">
-                    <button class="erk-button erk-button--light" data-dismiss="modal" aria-hidden="true" style="float:right;">Close</button>
+                    <button class="erk-button erk-button--light" data-dismiss="modal" aria-hidden="true" style="float:right;">
+                        <g:message code="general.close" />
+                    </button>
                 </div>
             </div>
         </div>

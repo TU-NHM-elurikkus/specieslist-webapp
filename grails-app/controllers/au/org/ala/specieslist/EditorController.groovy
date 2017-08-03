@@ -16,7 +16,7 @@ class EditorController {
         def speciesList = SpeciesList.findByDataResourceUid(params.id)
         log.debug "logged in user: " + localAuthService.email()
         if (!speciesList) {
-            def message = "${message(code: 'default.not.found.message', args: [message(code: 'speciesList.label', default: 'Species List'), params.id])}"
+            def message = "${message(code: 'general.not.found.message', args: [message(code: 'speciesList.label', default: 'Species List'), params.id])}"
             //redirect(controller: "public", action: "speciesLists")
             render(text: message, status: 404 )
         } else if (!isCurrentUserEditorForList(speciesList)) {
@@ -93,7 +93,7 @@ class EditorController {
         }
 
         if (!sli) {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'speciesListItem.label', default: 'Species List Item'), params.id])}"
+            flash.message = "${message(code: 'general.not.found.message', args: [message(code: 'speciesListItem.label', default: 'Species List Item'), params.id])}"
             //redirect(controller: "public", action: "speciesLists")
             render(view: "editRecordScreen")
         }
@@ -198,7 +198,7 @@ class EditorController {
                 render(text: message, status: 500)
             }
         } else {
-            def message = "${message(code: 'default.not.found.message', args: [message(code: 'speciesListItem.label', default: 'Species List Item'), params.id])}"
+            def message = "${message(code: 'general.not.found.message', args: [message(code: 'speciesListItem.label', default: 'Species List Item'), params.id])}"
             render(text: message, status: 404)
         }
     }
@@ -235,7 +235,7 @@ class EditorController {
                 render(text: message, status: 500)
             }
         } else {
-            def message = "${message(code: 'default.not.found.message', args: [message(code: 'speciesListItem.label', default: 'Species List Item'), params.id])}"
+            def message = "${message(code: 'general.not.found.message', args: [message(code: 'speciesListItem.label', default: 'Species List Item'), params.id])}"
             render(text: message, status: 404)
         }
     }

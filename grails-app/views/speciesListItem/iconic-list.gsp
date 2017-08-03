@@ -1,4 +1,3 @@
-<%@ page import="grails.converters.JSON" %>
 %{--
   - Copyright (C) 2012 Atlas of Living Australia
   - All Rights Reserved.
@@ -14,20 +13,22 @@
   - rights and limitations under the License.
   --}%
 <!doctype html>
-<g:set var="bieUrl" value="${grailsApplication.config.bie.baseURL?:'http://bie.ala.org.au'}"/>
+<g:set var="bieUrl" value="${grailsApplication.config.bie.baseURL?:'http://bie.ala.org.au'}" />
 <g:set var="collectoryUrl" value="${grailsApplication.config.collectory.baseURL}" />
 <g:set var="maxDownload" value="${grailsApplication.config.downloadLimit}" />
 
 <html>
 <head>
-    %{--<gui:resources components="['dialog']"/>--}%
-    <r:require modules="application, amplify"/>
-    <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
+    %{--<gui:resources components="['dialog']" />--}%
+    <r:require modules="application, amplify" />
+    <meta name="layout" content="${grailsApplication.config.skin.layout}" />
     <script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'facets.js')}"></script>
     <script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'getQueryParam.js')}"></script>
     <script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'jquery-ui-1.8.17.custom.min.js')}"></script>
     <script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'jquery.doubleScroll.js')}"></script>
-    <title>Species list items | ${grailsApplication.config.skin.orgNameLong}</title>
+    <title>
+        <g:message code="general.speciesListItems" /> | ${grailsApplication.config.skin.orgNameLong}
+    </title>
     <style type="text/css">
         #buttonDiv {display: none;}
         #refine {display:none;}
@@ -202,92 +203,115 @@
 
 </head>
 <body class="yui-skin-sam nav-species">
-<div id="content" class="container-fluid">
+    <div id="content" class="container-fluid">
 
-    <div class="inner row-fluid">
-        <div class="span12">
-            <h2>Australia's Species</h2>
-            <form class="search-form" role="search" action="${bieUrl}/search" method="get" style="margin-bottom: 0">
-                <div class="input-append">
-                    <input class="general-search"  type="text" name="q" placeholder="Search Australia's Species">
-                    <button class="erk-button erk-button--light" type="submit">Search</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <g:if test="${flash.message}">
         <div class="inner row-fluid">
-            <div class="message alert alert-info"><b>Alert:</b> ${flash.message}</div>
-        <div>
-    </g:if>
-    <h3>Browse Iconic Australian species</h3>
-    <div class="inner row-fluid">
-        <div class="span3">
-            <ul id="groupsNav" class="nav nav-list bs-docs-sidenav affix-top">
-                <g:set var="fqs" value="${params.list('fq')}" />
-                <g:each in="${facets.get("listProperties")}" var="group">
-                    <g:if test="${group.getKey() == 'group'}">
-                        <g:each in="${group.getValue().sort{it[1]}}" var="arr" status="i">
-                            <g:set var="active" value="${fqs.any{ it.contains(arr[1])} ? "active" : ""}"/>
-                            <li class="${active}"><a href="?fq=kvp ${arr[0]}:${arr[1]}">${arr[1]} (${arr[3]})<i class="fa fa-chevron-right"></i> </a></li>
-                        </g:each>
-                    </g:if>
-                </g:each>
-            </ul>
-        </div> <!-- /span3 -->
-        <div class="span9">
-            <div id="gridView" class="">
-                <g:each var="result" in="${results}" status="i">
-                    <g:set var="recId" value="${result.id}"/>
-                    <g:set var="bieSpecies" value="${bieItems?.get(result.guid)}"/>
-                    <g:set var="bieTitle">species page for <i>${result.rawScientificName}</i></g:set>
-                    <div class="imgCon">
-                        <a class="thumbImage viewRecordButton" rel="thumbs" title="click to view detailed page" href="${bieUrl}/species/${result.guid?:bieSpecies?.get(2)}"
-                                    data-id="${recId}"><img src="${bieSpecies?.get(0)?:g.createLink(uri:'/images/infobox_info_icon.png\" style=\"opacity:0.5')}" alt="thumbnail species image"/>
+            <div class="span12">
+                <h2>
+                    <g:message code="speciesListItem.iconic.australia" />
+                </h2>
+                <form class="search-form" role="search" action="${bieUrl}/search" method="get" style="margin-bottom: 0">
+                    <div class="input-append">
+                        <input class="general-search"  type="text" name="q" placeholder="Search Australia's Species" />
+                        <button class="erk-button erk-button--light" type="submit">
+                            <g:message code="general.search" />
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <g:if test="${flash.message}">
+            <div class="inner row-fluid">
+                <div class="message alert alert-info">
+                    <b><g:message code="general.alert" />:</b> ${flash.message}
+                </div>
+            <div>
+        </g:if>
+
+        <h3>
+            <g:message code="speciesListItem.iconic.australiaBrowse" />
+        </h3>
+
+        <div class="inner row-fluid">
+            <div class="span3">
+                <ul id="groupsNav" class="nav nav-list bs-docs-sidenav affix-top">
+                    <g:set var="fqs" value="${params.list('fq')}" />
+                    <g:each in="${facets.get("listProperties")}" var="group">
+                        <g:if test="${group.getKey() == 'group'}">
+                            <g:each in="${group.getValue().sort{it[1]}}" var="arr" status="i">
+                                <g:set var="active" value="${fqs.any{ it.contains(arr[1])} ? "active" : ""}" />
+                                <li class="${active}">
+                                    <a href="?fq=kvp ${arr[0]}:${arr[1]}">
+                                        ${arr[1]} (${arr[3]})<i class="fa fa-chevron-right"></i>
+                                    </a>
+                                </li>
+                            </g:each>
+                        </g:if>
+                    </g:each>
+                </ul>
+            </div> <!-- /span3 -->
+
+            <div class="span9">
+                <div id="gridView" class="">
+                    <g:each var="result" in="${results}" status="i">
+                        <g:set var="recId" value="${result.id}" />
+                        <g:set var="bieSpecies" value="${bieItems?.get(result.guid)}" />
+                        <g:set var="bieTitle">
+                            <g:message code="general.speciesPage" /> <i>${result.rawScientificName}</i>
+                        </g:set>
+                        <div class="imgCon">
+                            <a class="thumbImage viewRecordButton" rel="thumbs" title="click to view detailed page" href="${bieUrl}/species/${result.guid?:bieSpecies?.get(2)}"
+                            data-id="${recId}">
+                                <img src="${bieSpecies?.get(0)?:g.createLink(uri:'/images/infobox_info_icon.png')}" style="opacity:0.5" alt="thumbnail species image" />
                             </a>
+
                             <g:if test="${true}">
                                 <g:set var="displayName">
-                                    <g:if test="${bieSpecies?.get(1)}">${bieSpecies?.get(1)}</g:if>
+                                    <g:if test="${bieSpecies?.get(1)}">
+                                        ${bieSpecies?.get(1)}
+                                    </g:if>
                                     <g:else>
-                                        <i><g:if test="${result.guid == null}">
-                                            ${fieldValue(bean: result, field: "rawScientificName")}
-                                        </g:if>
-                                        <g:else>
-                                            ${bieSpecies?.get(2)}
-                                        </g:else></i>
+                                        <i>
+                                            <g:if test="${result.guid == null}">
+                                                ${fieldValue(bean: result, field: "rawScientificName")}
+                                            </g:if>
+                                            <g:else>
+                                                ${bieSpecies?.get(2)}
+                                            </g:else>
+                                        </i>
                                     </g:else>
                                 </g:set>
                                 <div class="meta brief">
                                     ${displayName}
                                 </div>
                             </g:if>
-                        </a>
-                    </div>
-                </g:each>
-            </div><!-- /#iconView -->
-            <g:if test="${params.max<totalCount}">
-                <div class="searchWidgets">
-                    Items per page:
-                    <select id="maxItems" class="input-mini" onchange="reloadWithMax(this)">
-                        <g:each in="${[10,25,50,100]}" var="max">
-                            <option ${(params.max == max)?'selected="selected"':''}>${max}</option>
-                        </g:each>
-                    </select>
-                </div>
+                        </div>
+                    </g:each>
+                </div><!-- /#iconView -->
 
-                <div class="pagination" id="searchNavBar">
-                    <g:if test="${params.fq}">
-                        <g:paginate total="${totalCount}" action="iconicSpecies" id="${params.id}" params="${[fq: params.fq]}"/>
-                    </g:if>
-                    <g:else>
-                        <g:paginate total="${totalCount}" action="iconicSpecies" id="${params.id}" />
-                    </g:else>
-                </div>
-            </g:if>
-        </div> <!-- .span9 -->
-        %{--</div> <!-- results -->--}%
-    </div>
-</div> <!-- content div -->
+                <g:if test="${params.max<totalCount}">
+                    <div class="searchWidgets">
+                        <g:message code="message" />
+                        <select id="maxItems" class="input-mini" onchange="reloadWithMax(this)">
+                            <g:each in="${[10,25,50,100]}" var="max">
+                                <option ${(params.max == max)?'selected="selected"':''}>${max}</option>
+                            </g:each>
+                        </select>
+                    </div>
+
+                    <div class="pagination" id="searchNavBar">
+                        <g:if test="${params.fq}">
+                            <g:paginate total="${totalCount}" action="iconicSpecies" id="${params.id}" params="${[fq: params.fq]}" />
+                        </g:if>
+                        <g:else>
+                            <g:paginate total="${totalCount}" action="iconicSpecies" id="${params.id}" />
+                        </g:else>
+                    </div>
+                </g:if>
+            </div> <!-- .span9 -->
+        </div>
+    </div> <!-- content div -->
 
 </body>
 </html>

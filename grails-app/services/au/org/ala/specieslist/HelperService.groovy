@@ -745,7 +745,7 @@ class HelperService {
             }
         }
         else {
-            def message = "${message(code: 'default.not.found.message', args: [message(code: 'speciesList.label', default: 'Species List'), params.id])}"
+            def message = "${message(code: 'general.not.found.message', args: [message(code: 'speciesList.label', default: 'Species List'), params.id])}"
             return [text: message, status: 404]
             //render(text: message, status: 404)
         }
