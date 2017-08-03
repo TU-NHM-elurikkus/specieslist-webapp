@@ -10,10 +10,10 @@
             <g:layoutTitle />
         </title>
 
-        <r:require modules="jquery, menu"/>
+        <r:require modules="jquery, menu" />
 
         <!-- Resources -->
-        <r:layoutResources/>
+        <r:layoutResources />
 
         <!-- Head -->
         <g:layoutHead />
@@ -23,12 +23,12 @@
         <g:render template="/menu" plugin="elurikkus-commons" />
 
         <div class="wrap">
-            <g:layoutBody/>
+            <g:layoutBody />
         </div>
 
         <g:render template="/footer" plugin="elurikkus-commons" />
 
         <!-- Resources -->
-        <r:layoutResources/>
+        <r:layoutResources />
     </body>
 </html>

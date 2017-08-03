@@ -15,10 +15,10 @@
 <!doctype html>
 <html>
 <head>
-    <r:require modules="application"/>
-    <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
+    <r:require modules="application" />
+    <meta name="layout" content="${grailsApplication.config.skin.layout}" />
     <title>
-        My Species lists | ${grailsApplication.config.skin.orgNameLong}
+        <g:message code="speciesList.list.title" /> | ${grailsApplication.config.skin.orgNameLong}
     </title>
 </head>
 
@@ -28,16 +28,16 @@
         %{-- TITLE --}%
         <div class="page-header__title">
             <h1 class="page-header__title">
-                My Species lists
+                <g:message code="speciesList.list.title" />
             </h1>
 
             <div class="page-header__subtitle">
                 <div>
-                    Below is a listing of species lists that you have provided. You can use these lists to work with parts of the Atlas.
+                    <g:message code="general.listDescription" />
                 </div>
 
                 <div>
-                    Click on the "delete" button next to a list to remove it from the Atlas.
+                    <g:message code="general.deleteDescription" />
                 </div>
             </div>
         </div>
@@ -45,20 +45,20 @@
         %{-- LINKS --}%
         <div class="page-header-links">
             <a href="${request.contextPath}/public/speciesLists" class="page-header-links__link">
-                Species lists
+                <g:message code="general.speciesLists" />
             </a>
 
             %{-- Not sure what will become of this page but we are not going to the following links here right now. --}%
 
             %{--
             <a title="My Lists" href="${request.contextPath}/speciesList/list" class="page-header-links__link">
-                My Lists
+                <g:message code="general.myLists" />
             </a>
             --}%
 
             %{--
             <g:link controller="speciesList" action="upload" title="Add Species List" class="page-header-links__link">
-                Upload a list
+                <g:message code="general.uploadList" />
             </g:link>
             --}%
         </div>
@@ -69,20 +69,20 @@
             <div class="col">
                 %{--
                 <p>
-                    Below is a listing of species lists that you have provided. You can use these lists to work with parts of the Atlas.
-                    Click on the "delete" button next to a list to remove it from the Atlas.
+                    <g:message code="general.listDescription" />
+                    <g:message code="general.deleteDescription" />
                 </p>
                 --}%
 
                 <div class="float-right">
-                    <g:render template="/pageSize"/>
+                    <g:render template="/pageSize" />
                 </div>
             </div>
         </div>
 
         <div class="row">
             <div class="col">
-                <g:render template="/speciesList"/>
+                <g:render template="/speciesList" />
             </div>
         </div>
     </g:if>
@@ -90,7 +90,7 @@
         <div class="row">
             <div class="col">
                 <p>
-                    You do not have any available species lists.
+                    <g:message code="speciesList.list.noAvailable" />
                 </p>
             </div>
         </div>

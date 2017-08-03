@@ -46,7 +46,7 @@ class SpeciesListItemController {
         try {
             def speciesList = SpeciesList.findByDataResourceUid(params.id)
             if (!speciesList) {
-                flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'speciesList.label', default: 'Species List'), params.id])}"
+                flash.message = "${message(code: 'general.not.found.message', args: [message(code: 'speciesList.label', default: 'Species List'), params.id])}"
                 render(view: "iconic-list")
             } else {
                 params.max = Math.min(params.max ? params.int('max') : 25, 100)
@@ -82,7 +82,7 @@ class SpeciesListItemController {
                 //check to see if the list exists
                 def speciesList = SpeciesList.findByDataResourceUid(requestParams.id)
                 if (!speciesList) {
-                    flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'speciesList.label', default: 'Species List'), requestParams.id])}"
+                    flash.message = "${message(code: 'general.not.found.message', args: [message(code: 'speciesList.label', default: 'Species List'), requestParams.id])}"
                     redirect(controller: "public", action: "speciesLists")
                 } else {
                     if (requestParams.message)

@@ -1,4 +1,3 @@
-<%@page defaultCodec="html" %>
 <!-- Template for displaying a list of species list with or without a delete button. -->
 <script type="text/javascript">
     $(document).ready(function() {
@@ -42,31 +41,25 @@
     <table class="table table-sm table-bordered table-striped">
         <thead>
             <tr>
-                <g:sortableColumn property="listName" params="${[q:params.q]}"
-                                  title="${message(code: 'speciesList.listName.label', default: 'List Name')}"/>
-                <g:sortableColumn property="listType" params="${[q:params.q]}"
-                                  title="${message(code: 'speciesList.listType.label', default: 'List Type')}"/>
+                <g:sortableColumn property="listName" params="${[q:params.q]}" titleKey="general.listName" />
+                <g:sortableColumn property="listType" params="${[q:params.q]}" titleKey="general.listType" />
+
                 <g:if test="${request.isUserInRole("ROLE_ADMIN")}">
-                    <g:sortableColumn property="isBIE" params="${[q:params.q]}"
-                                      title="${message(code: 'speciesList.isBIE.label', default: 'Included in BIE')}"/>
-                    <g:sortableColumn property="isSDS" params="${[q:params.q]}"
-                                      title="${message(code: 'speciesList.isSDS.label', default: 'Part of the SDS')}"/>
+                    <g:sortableColumn property="isBIE" params="${[q:params.q]}" titleKey="general.isBIE" />
+                    <g:sortableColumn property="isSDS" params="${[q:params.q]}" titleKey="general.isSDS" />
                 </g:if>
 
-                <g:sortableColumn property="isAuthoritative" params="${[q:params.q]}"
-                                  title="${message(code: 'speciesList.isAuthoritative.label', default: 'Authoritative')}"/>
-                <g:sortableColumn property="isInvasive" params="${[q:params.q]}"
-                                  title="${message(code: 'speciesList.isInvasive.label', default: 'Invasive')}"/>
-                <g:sortableColumn property="isThreatened" params="${[q:params.q]}"
-                                  title="${message(code: 'speciesList.isThreatened.label', default: 'Threatened')}"/>
-                <g:sortableColumn property="ownerFullName" params="${[q:params.q]}"
-                                  title="${message(code: 'speciesList.username.label', default: 'Owner')}"/>
-                <g:sortableColumn property="dateCreated" params="${[q:params.q]}"
-                                  title="${message(code: 'speciesList.name.dateCreated', default: 'Date Submitted')}"/>
-                <g:sortableColumn property="itemsCount" params="${[q:params.q]}"
-                                  title="${message(code: 'speciesList.name.count', default: 'Item Count')}"/>
+                <g:sortableColumn property="isAuthoritative" params="${[q:params.q]}" titleKey="general.isAuthoritative" />
+                <g:sortableColumn property="isInvasive" params="${[q:params.q]}" titleKey="general.isInvasive" />
+                <g:sortableColumn property="isThreatened" params="${[q:params.q]}" titleKey="general.isThreatened" />
+                <g:sortableColumn property="ownerFullName" params="${[q:params.q]}" titleKey="general.owner" />
+                <g:sortableColumn property="dateCreated" params="${[q:params.q]}" titleKey="general.dateCreated" />
+                <g:sortableColumn property="itemsCount" params="${[q:params.q]}" titleKey="default.itemCount" />
+
                 <g:if test="${request.getUserPrincipal()}">
-                    <th colspan="2">Actions</th>
+                    <th colspan="2">
+                        <g:message code="default.actions" />
+                    </th>
                 </g:if>
             </tr>
         </thead>
@@ -85,28 +78,44 @@
                     </td>
 
                     <g:if test="${request.isUserInRole("ROLE_ADMIN")}">
-                        <td><g:formatBoolean boolean="${list.isBIE ?: false}" true="Yes" false="No"/></td>
-                        <td><g:formatBoolean boolean="${list.isSDS ?: false}" true="Yes" false="No"/></td>
+                        <td>
+                            <g:formatBoolean boolean="${list.isBIE ?: false}" true="Yes" false="No" />
+                        </td>
+                        <td>
+                            <g:formatBoolean boolean="${list.isSDS ?: false}" true="Yes" false="No" />
+                        </td>
                     </g:if>
 
-                    <td><g:formatBoolean boolean="${list.isAuthoritative ?: false}" true="Yes" false="No"/></td>
-                    <td><g:formatBoolean boolean="${list.isInvasive ?: false}" true="Yes" false="No"/></td>
-                    <td><g:formatBoolean boolean="${list.isThreatened ?: false}" true="Yes" false="No"/></td>
+                    <td>
+                        <g:formatBoolean boolean="${list.isAuthoritative ?: false}" true="Yes" false="No" />
+                    </td>
+                    <td>
+                        <g:formatBoolean boolean="${list.isInvasive ?: false}" true="Yes" false="No" />
+                    </td>
+                    <td>
+                        <g:formatBoolean boolean="${list.isThreatened ?: false}" true="Yes" false="No" />
+                    </td>
                 %{--<td>${fieldValue(bean: list, field: "firstName")} ${fieldValue(bean: list, field: "surname")}</td>--}%
-                    <td>${list.ownerFullName}</td>
-                    <td><g:formatDate format="yyyy-MM-dd" date="${list.dateCreated}"/></td>
-                    <td>${list.itemsCount}</td>
+                    <td>
+                        ${list.ownerFullName}
+                    </td>
+                    <td>
+                        <g:formatDate format="yyyy-MM-dd" date="${list.dateCreated}" />
+                    </td>
+                    <td>
+                        ${list.itemsCount}
+                    </td>
 
                     <g:if test="${list.username == request.getUserPrincipal()?.attributes?.email || request.isUserInRole("ROLE_ADMIN")}">
                         <td>
-                            <g:set var="test" value="${[id: list.id]}"/>
+                            <g:set var="test" value="${[id: list.id]}" />
 
                             <button
                                 type="button"
                                 onclick="confirmAction('Are you sure that you would like to delete ${list.listName.encodeAsHTML()}', ${list.id}, 'delete');"
                                 class="erk-button erk-button--light"
                             >
-                                Delete
+                                <g:message code="default.delete" />
                             </button>
                         </td>
 
@@ -116,7 +125,7 @@
                                 onclick="confirmAction('Are you sure that you would like to rematch ${list.listName.encodeAsHTML()}', ${list.id}, 'rematch');"
                                 class="erk-button erk-button--light"
                             >
-                                Rematch
+                                <g:message code="default.rematch" />
                             </button>
                         </td>
 
@@ -126,7 +135,7 @@
                                 onclick="window.location='${request.contextPath}/speciesList/upload/${list.dataResourceUid}';"
                                 class="erk-button erk-button--light"
                             >
-                                Reload
+                                <g:message code="default.reload" />
                             </button>
                         </td>
                     </g:if>
@@ -137,7 +146,7 @@
 
     <g:if test="${params.max < total}">
         <div class="pagination" id="searchNavBar" data-total="${total}" data-max="${params.max}">
-            <g:paginate total="${total}" params="${params}"/>
+            <g:paginate total="${total}" params="${params}" />
         </div>
     </g:if>
 </div>
