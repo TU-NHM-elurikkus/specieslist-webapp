@@ -13,7 +13,7 @@
 
     function deleteAction() {
         var listId = this.id.replace("dialog_", "");
-        var url = "${createLink(controller:'speciesList', action:'delete')}" + "/"+listId;
+        var url = "${createLink(controller:'speciesList', action:'delete')}/" + listId;
 
         $.post(url, function(data) {
             window.location.reload()
@@ -23,7 +23,7 @@
     }
 
     function confirmAction(msg, listId, action, callback) {
-        var url = '${request.contextPath}' + '/speciesList/' + action + '/' + listId;
+        var url = '${request.contextPath}/speciesList/' + action + '/' + listId;
         var doProceed = confirm(msg + listId + '?');
 
         if(doProceed) {
@@ -41,24 +41,24 @@
     <table class="table table-sm table-bordered table-striped">
         <thead>
             <tr>
-                <g:sortableColumn property="listName" params="${[q:params.q]}" titleKey="general.listName" />
-                <g:sortableColumn property="listType" params="${[q:params.q]}" titleKey="general.listType" />
+                <g:sortableColumn property="listName" params="${[q:params.q]}" titleKey="general.listName"/>
+                <g:sortableColumn property="listType" params="${[q:params.q]}" titleKey="general.listType"/>
 
-                <g:if test="${request.isUserInRole("ROLE_ADMIN")}">
-                    <g:sortableColumn property="isBIE" params="${[q:params.q]}" titleKey="general.isBIE" />
-                    <g:sortableColumn property="isSDS" params="${[q:params.q]}" titleKey="general.isSDS" />
+                <g:if test="${request.isUserInRole(" ROLE_ADMIN")}">
+                    <g:sortableColumn property="isBIE" params="${[q:params.q]}" titleKey="general.isBIE"/>
+                    <g:sortableColumn property="isSDS" params="${[q:params.q]}" titleKey="general.isSDS"/>
                 </g:if>
 
-                <g:sortableColumn property="isAuthoritative" params="${[q:params.q]}" titleKey="general.isAuthoritative" />
-                <g:sortableColumn property="isInvasive" params="${[q:params.q]}" titleKey="general.isInvasive" />
-                <g:sortableColumn property="isThreatened" params="${[q:params.q]}" titleKey="general.isThreatened" />
-                <g:sortableColumn property="ownerFullName" params="${[q:params.q]}" titleKey="general.owner" />
-                <g:sortableColumn property="dateCreated" params="${[q:params.q]}" titleKey="general.dateCreated" />
-                <g:sortableColumn property="itemsCount" params="${[q:params.q]}" titleKey="default.itemCount" />
+                <g:sortableColumn property="isAuthoritative" params="${[q:params.q]}" titleKey="general.isAuthoritative"/>
+                <g:sortableColumn property="isInvasive" params="${[q:params.q]}" titleKey="general.isInvasive"/>
+                <g:sortableColumn property="isThreatened" params="${[q:params.q]}" titleKey="general.isThreatened"/>
+                <g:sortableColumn property="ownerFullName" params="${[q:params.q]}" titleKey="general.owner"/>
+                <g:sortableColumn property="dateCreated" params="${[q:params.q]}" titleKey="general.dateCreated"/>
+                <g:sortableColumn property="itemsCount" params="${[q:params.q]}" titleKey="default.itemCount"/>
 
                 <g:if test="${request.getUserPrincipal()}">
                     <th colspan="2">
-                        <g:message code="default.actions" />
+                        <g:message code="default.actions"/>
                     </th>
                 </g:if>
             </tr>
@@ -77,65 +77,53 @@
                         ${list.listType?.getDisplayValue()}
                     </td>
 
-                    <g:if test="${request.isUserInRole("ROLE_ADMIN")}">
+                    <g:if test="${request.isUserInRole('ROLE_ADMIN')}">
                         <td>
-                            <g:formatBoolean boolean="${list.isBIE ?: false}" true="Yes" false="No" />
+                            <g:formatBoolean boolean="${list.isBIE ?: false}" true="Yes" false="No"/>
                         </td>
                         <td>
-                            <g:formatBoolean boolean="${list.isSDS ?: false}" true="Yes" false="No" />
+                            <g:formatBoolean boolean="${list.isSDS ?: false}" true="Yes" false="No"/>
                         </td>
                     </g:if>
 
                     <td>
-                        <g:formatBoolean boolean="${list.isAuthoritative ?: false}" true="Yes" false="No" />
+                        <g:formatBoolean boolean="${list.isAuthoritative ?: false}" true="Yes" false="No"/>
                     </td>
                     <td>
-                        <g:formatBoolean boolean="${list.isInvasive ?: false}" true="Yes" false="No" />
+                        <g:formatBoolean boolean="${list.isInvasive ?: false}" true="Yes" false="No"/>
                     </td>
                     <td>
-                        <g:formatBoolean boolean="${list.isThreatened ?: false}" true="Yes" false="No" />
+                        <g:formatBoolean boolean="${list.isThreatened ?: false}" true="Yes" false="No"/>
                     </td>
-                %{--<td>${fieldValue(bean: list, field: "firstName")} ${fieldValue(bean: list, field: "surname")}</td>--}%
+                    %{--<td>${fieldValue(bean: list, field: "firstName")} ${fieldValue(bean: list, field: "surname")}</td>--}%
                     <td>
                         ${list.ownerFullName}
                     </td>
                     <td>
-                        <g:formatDate format="yyyy-MM-dd" date="${list.dateCreated}" />
+                        <g:formatDate format="yyyy-MM-dd" date="${list.dateCreated}"/>
                     </td>
                     <td>
                         ${list.itemsCount}
                     </td>
 
-                    <g:if test="${list.username == request.getUserPrincipal()?.attributes?.email || request.isUserInRole("ROLE_ADMIN")}">
+                    <g:if test="${list.username == request.getUserPrincipal()?.attributes?.email || request.isUserInRole('ROLE_ADMIN')}">
                         <td>
-                            <g:set var="test" value="${[id: list.id]}" />
+                            <g:set var="test" value="${[id: list.id]}"/>
 
-                            <button
-                                type="button"
-                                onclick="confirmAction('Are you sure that you would like to delete ${list.listName.encodeAsHTML()}', ${list.id}, 'delete');"
-                                class="erk-button erk-button--light"
-                            >
-                                <g:message code="default.delete" />
+                            <button type="button" onclick="confirmAction('Are you sure that you would like to delete ${list.listName.encodeAsHTML()}', ${list.id}, 'delete');" class="erk-button erk-button--light">
+                                <g:message code="default.delete"/>
                             </button>
                         </td>
 
                         <td>
-                            <button
-                                type="button"
-                                onclick="confirmAction('Are you sure that you would like to rematch ${list.listName.encodeAsHTML()}', ${list.id}, 'rematch');"
-                                class="erk-button erk-button--light"
-                            >
-                                <g:message code="default.rematch" />
+                            <button type="button" onclick="confirmAction('Are you sure that you would like to rematch ${list.listName.encodeAsHTML()}', ${list.id}, 'rematch');" class="erk-button erk-button--light">
+                                <g:message code="default.rematch"/>
                             </button>
                         </td>
 
                         <td>
-                            <button
-                                type="button"
-                                onclick="window.location='${request.contextPath}/speciesList/upload/${list.dataResourceUid}';"
-                                class="erk-button erk-button--light"
-                            >
-                                <g:message code="default.reload" />
+                            <button type="button" onclick="window.location='${request.contextPath}/speciesList/upload/${list.dataResourceUid}';" class="erk-button erk-button--light">
+                                <g:message code="default.reload"/>
                             </button>
                         </td>
                     </g:if>
@@ -146,7 +134,7 @@
 
     <g:if test="${params.max < total}">
         <div class="pagination" id="searchNavBar" data-total="${total}" data-max="${params.max}">
-            <g:paginate total="${total}" params="${params}" />
+            <g:paginate total="${total}" params="${params}"/>
         </div>
     </g:if>
 </div>
