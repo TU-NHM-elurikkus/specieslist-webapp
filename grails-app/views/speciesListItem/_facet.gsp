@@ -1,4 +1,5 @@
-%{-- Template for diplaying a single facet for a species list. --}%
+<%-- Template for diplaying a single facet for a species list. --%>
+
 <g:set var="facetId" value="${sl.facetAsId(key:key, prefix:"facet")}" />
 
 <div class="FieldName">
@@ -14,7 +15,11 @@
 
             <g:if test="${isProperty}">
                 <li class="erk-ulist--item">
-                    <g:link action="list" id="${params.id}" params="${[fq:sl.buildFqList(fqs:fqs, fq:"kvp ${arr[0]}:${arr[1]}"), max:params.max]}">
+                    <g:link
+                        id="${params.id}"
+                        action="list"
+                        params="${[fq:sl.buildFqList(fqs:fqs, fq:"kvp ${arr[0]}:${arr[1]}"), max:params.max]}"
+                    >
                         ${arr[2]?:arr[1]}
                     </g:link>
 
@@ -23,7 +28,10 @@
             </g:if>
             <g:else>
                 <li class="erk-ulist--item">
-                    <g:link action="list" id="${params.id}" params="${[fq:sl.buildFqList(fqs:fqs, fq:"${key}:${arr[0]}"), max:params.max]}">
+                    <g:link
+                        action="list" id="${params.id}"
+                        params="${[fq:sl.buildFqList(fqs:fqs, fq:"${key}:${arr[0]}"), max:params.max]}"
+                    >
                         ${arr[0]}
                     </g:link>
 
@@ -38,8 +46,14 @@
             <li class="erk-ulist--item showHide">
                 <i class="fa fa-hand-o-right"></i>
 
-                <a href="${sl.facetAsId(key:key, prefix:'#div')}" class="multipleFacetsLinkZ" id="${sl.facetAsId(key:key, prefix:'multi')}" role="button"
-                    data-toggle="modal" title="${message(code: 'speciesListItem.facet.seeFull')}">
+                <a
+                    id="${sl.facetAsId(key:key, prefix:'multi')}"
+                    href="${sl.facetAsId(key:key, prefix:'#div')}"
+                    class="multipleFacetsLinkZ"
+                    role="button"
+                    data-toggle="modal"
+                    title="${message(code: 'speciesListItem.facet.seeFull')}"
+                >
                     <g:message code="speciesListItem.facet.choose"/>
                 </a>
             </li>
@@ -47,7 +61,14 @@
     </ul>
 
     <!-- modal popup for "choose more" link -->
-    <div id="${sl.facetAsId(key:key, prefix:'div')}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="multipleFacetsLabel" aria-hidden="true">
+    <div
+        id="${sl.facetAsId(key:key, prefix:'div')}"
+        class="modal fade"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="multipleFacetsLabel"
+        aria-hidden="true"
+    >
         <!-- BS modal div -->
         <div class="modal-dialog">
             <div class="modal-content">
@@ -79,8 +100,11 @@
                                 <tr>
                                     <g:if test="${isProperty}">
                                         <td>
-                                            <g:link action="list" id="${params.id}"
-                                                params="${[fq:sl.buildFqList(fqs:fqs, fq:"kvp ${arr[0]}:${arr[1]}"), max:params.max]}">
+                                            <g:link
+                                                id="${params.id}"
+                                                action="list"
+                                                params="${[fq:sl.buildFqList(fqs:fqs, fq:"kvp ${arr[0]}:${arr[1]}"), max:params.max]}"
+                                            >
                                                 ${arr[2]?:arr[1]}
                                             </g:link>
                                         </td>
@@ -92,7 +116,11 @@
 
                                     <g:else>
                                         <td>
-                                            <g:link action="list" id="${params.id}" params="${[fq:sl.buildFqList(fqs:fqs, fq:"${key}:${arr[0]}"), max:params.max]}">
+                                            <g:link
+                                                id="${params.id}"
+                                                action="list"
+                                                params="${[fq:sl.buildFqList(fqs:fqs, fq:"${key}:${arr[0]}"), max:params.max]}"
+                                            >
                                                 ${arr[0]}
                                             </g:link>
                                         </td>
@@ -108,7 +136,12 @@
                 </div>
 
                 <div class="modal-footer" style="text-align: left;">
-                    <button class="erk-button erk-button--light" data-dismiss="modal" aria-hidden="true" style="float:right;">
+                    <button
+                        class="erk-button erk-button--light"
+                        data-dismiss="modal"
+                        aria-hidden="true"
+                        style="float:right;"
+                    >
                         <g:message code="general.close"/>
                     </button>
                 </div>

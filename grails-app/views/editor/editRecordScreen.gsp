@@ -5,6 +5,7 @@
   Time: 9:01 AM
   To change this template use File | Settings | File Templates.
 --%>
+
 <html>
 
     <head>
@@ -16,17 +17,28 @@
     <body>
         <g:if test="${flash.message}">
             <div class="message alert alert-error">
-                <b><g:message code="general.alert"/>:</b>
+                <b>
+                    <g:message code="general.alert"/>:
+                </b>
                 ${flash.message}
             </div>
         </g:if>
         <g:if test="${record}">
             <div class="hide">
                 <dl class="dl-horizontal">
-                    <dt><g:message code="general.suppliedName"/></dt>
-                    <dd>${record.rawScientificName}</dd>
-                    <dt><g:message code="general.scientificName"/></dt>
-                    <dd>${record.matchedName}</dd>
+                    <dt>
+                        <g:message code="general.suppliedName"/>
+                    </dt>
+                    <dd>
+                        ${record.rawScientificName}
+                    </dd>
+
+                    <dt>
+                        <g:message code="general.scientificName"/>
+                    </dt>
+                    <dd>
+                        ${record.matchedName}
+                    </dd>
                 </dl>
             </div>
 
@@ -52,11 +64,19 @@
                                 <g:message code="general.suppliedName"/>
                             </td>
                             <td class='dataValue'>
-                                <input name="rawScientificName" id="rawScientificName" type="text" class="input-block-level" value="${record?.rawScientificName?.trim()}"/>
+                                <input
+                                    id="rawScientificName"
+                                    name="rawScientificName"
+                                    type="text"
+                                    class="input-block-level"
+                                    value="${record?.rawScientificName?.trim()}"
+                                />
                             </td>
-                            <td>&nbsp;</td>
+                            <td>
+                                &nbsp;
+                            </td>
                         </tr>
-                        %{--<g:each in="${record.kvpValues}" var="field">--}%
+                        <%--<g:each in="${record.kvpValues}" var="field">--%>
                             <g:each in="${KVPKeys}" var="key" status="i">
                                 <g:set var="hasVocab" value="${keyVocabs}"/>
                                 <g:set var="fieldSet" value="${record.kvpValues.findAll { it.key == key } as List}"/>
@@ -68,19 +88,37 @@
                                     </td>
                                     <td class='dataValue'>
                                         <g:if test="${field?.value?.size() > 50}">
-                                            <textarea name="${key}" class="input-block-level" rows="2" ${(hasVocab)?"readonly='readonly'" :"" }>
+                                            <textarea
+                                                name="${key}"
+                                                class="input-block-level"
+                                                rows="2"
+                                                ${(hasVocab)?"readonly='readonly'":""}
+                                            >
                                                 ${field?.value}
                                             </textarea>
                                         </g:if>
                                         <g:else>
-                                            <input type="text" name="${key}" class="input-block-level" value="${field?.value}" ${(hasVocab)?"readonly='readonly'" :"" }/>
+                                            <input
+                                                type="text"
+                                                name="${key}"
+                                                class="input-block-level"
+                                                value="${field?.value}"
+                                                ${(hasVocab)?"readonly='readonly'":""}
+                                            />
                                         </g:else>
                                     </td>
                                     <td>
-                                        <g:if test="${hasVocab}">%{-- select onChange detected in JS block below --}%
-                                            <select name="vocab_${key}" class="input-block-level vocabDropDown" data-key="${key}">
+                                        <g:if test="${hasVocab}"> <%-- select onChange detected in JS block below --%>
+                                            <select
+                                                name="vocab_${key}"
+                                                class="input-block-level vocabDropDown"
+                                                data-key="${key}"
+                                            >
                                                 <g:each in="${keyVocabs[key]}" var="vocab">
-                                                    <option ${(field?.vocabValue == vocab) ? "selected='selected'" : "" } data-value="${kvpMap[key]?.findAll{it.vocabValue == vocab}[0]?.value}">
+                                                    <option
+                                                        ${(field?.vocabValue == vocab) ? "selected='selected'":""}
+                                                        data-value="${kvpMap[key]?.findAll{it.vocabValue == vocab}[0]?.value}"
+                                                    >
                                                         ${vocab}
                                                     </option>
                                                 </g:each>
@@ -95,10 +133,9 @@
             </g:if>
 
             <script type="text/javascript">
-
-                $(document).ready(function () {
+                $(document).ready(function() {
                     // change raw KVP value if vocab drop down is changed
-                    $("select.vocabDropDown").change(function () {
+                    $("select.vocabDropDown").change(function() {
                         var key = $(this).data("key");
                         var thisFormId = $(this).closest("form").attr("id");
                         var value = $(this).find(":selected").data("value");

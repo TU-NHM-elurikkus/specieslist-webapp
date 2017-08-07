@@ -1,11 +1,11 @@
 <!-- Template for displaying a list of species list with or without a delete button. -->
 <script type="text/javascript">
-    $(document).ready(function () {
+    $(document).ready(function() {
         // make table header cells clickable
-        $("table .sortable").each(function (i) {
+        $("table .sortable").each(function(i) {
             var href = $(this).find("a").attr("href");
 
-            $(this).click(function () {
+            $(this).click(function() {
                 window.location.href = href;
             });
         });
@@ -15,7 +15,7 @@
         var listId = this.id.replace("dialog_", "");
         var url = "${createLink(controller:'speciesList', action:'delete')}/" + listId;
 
-        $.post(url, function (data) {
+        $.post(url, function(data) {
             window.location.reload()
         });
 
@@ -26,11 +26,11 @@
         var url = '${request.contextPath}/speciesList/' + action + '/' + listId;
         var doProceed = confirm(msg + listId + '?');
 
-        if (doProceed) {
-            $.post(url, function (data) {
+        if(doProceed) {
+            $.post(url, function(data) {
                 alert(action + ' was successful');
                 window.location.reload()
-            }).error(function (jqXHR, textStatus, error) {
+            }).error(function(jqXHR, textStatus, error) {
                 alert("An error occurred: " + error + " - " + jqXHR.responseText);
             });
         }
@@ -77,7 +77,7 @@
                         ${list.listType?.getDisplayValue()}
                     </td>
 
-                    <g:if test="${request.isUserInRole(" ROLE_ADMIN")}">
+                    <g:if test="${request.isUserInRole('ROLE_ADMIN')}">
                         <td>
                             <g:formatBoolean boolean="${list.isBIE ?: false}" true="Yes" false="No"/>
                         </td>
@@ -106,7 +106,7 @@
                         ${list.itemsCount}
                     </td>
 
-                    <g:if test="${list.username == request.getUserPrincipal()?.attributes?.email || request.isUserInRole(" ROLE_ADMIN")}">
+                    <g:if test="${list.username == request.getUserPrincipal()?.attributes?.email || request.isUserInRole('ROLE_ADMIN')}">
                         <td>
                             <g:set var="test" value="${[id: list.id]}"/>
 

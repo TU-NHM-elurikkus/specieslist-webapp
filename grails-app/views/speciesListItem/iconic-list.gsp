@@ -1,6 +1,18 @@
-%{-- - Copyright (C) 2012 Atlas of Living Australia - All Rights Reserved. - - The contents of this file are subject to the Mozilla Public - License Version 1.1 (the "License"); you may not use this file - except in compliance with the License. You
-may obtain a copy of - the License at http://www.mozilla.org/MPL/ - - Software distributed under the License is distributed on an "AS - IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or - implied. See the License for the specific language
-governing - rights and limitations under the License. --}%
+<%--
+  - Copyright (C) 2014 Atlas of Living Australia
+  - All Rights Reserved.
+  -
+  - The contents of this file are subject to the Mozilla Public
+  - License Version 1.1 (the "License"); you may not use this file
+  - except in compliance with the License. You may obtain a copy of
+  - the License at http://www.mozilla.org/MPL/
+  -
+  - Software distributed under the License is distributed on an "AS
+  - IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  - implied. See the License for the specific language governing
+  - rights and limitations under the License.
+--%>
+
 <!doctype html>
 <g:set var="bieUrl" value="${grailsApplication.config.bie.baseURL?:'http://bie.ala.org.au'}"/>
 <g:set var="collectoryUrl" value="${grailsApplication.config.collectory.baseURL}"/>
@@ -8,7 +20,7 @@ governing - rights and limitations under the License. --}%
 
 <html>
     <head>
-        %{--<gui:resources components="['dialog']"/>--}%
+        <%--<gui:resources components="['dialog']"/>--%>
         <r:require modules="application, amplify"/>
         <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
         <script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'facets.js')}"></script>
@@ -16,8 +28,7 @@ governing - rights and limitations under the License. --}%
         <script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'jquery-ui-1.8.17.custom.min.js')}"></script>
         <script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'jquery.doubleScroll.js')}"></script>
         <title>
-            <g:message code="general.speciesListItems"/>
-            | ${grailsApplication.config.skin.orgNameLong}
+            <g:message code="general.speciesListItems"/> | ${grailsApplication.config.skin.orgNameLong}
         </title>
         <style type="text/css">
             #buttonDiv {
@@ -174,10 +185,27 @@ governing - rights and limitations under the License. --}%
         </style>
 
         <r:script>
-            $(document).ready(function(){ // BS affix plugin for groups menu $('#groupsNav').affix({ offset: { top: $('#groupsNav').offset().top } }); }); // end document ready function reloadWithMax(el) { var max = $(el).find(":selected").val(); var params = {
-            max: max, sort: "${params.sort}", order: "${params.order}", offset: "${params.offset?:0}", fq: "${params.fq?:'kvp group:Birds'}" } var paramStr = jQuery.param(params); window.location.href = '?' + paramStr; }
-        </r:script>
+            $(document).ready(function(){
+                // BS affix plugin for groups menu
+                $('#groupsNav').affix({
+                    offset: { top: $('#groupsNav').offset().top }
+                });
 
+            }); // end document ready
+
+            function reloadWithMax(el) {
+                var max = $(el).find(":selected").val();
+                var params = {
+                    max: max,
+                    sort: "${params.sort}",
+                    order: "${params.order}",
+                    offset: "${params.offset?:0}",
+                    fq: "${params.fq?:'kvp group:Birds'}"
+                }
+                var paramStr = jQuery.param(params);
+                window.location.href =  '?' + paramStr;
+            }
+        </r:script>
     </head>
     <body class="yui-skin-sam nav-species">
         <div id="content" class="container-fluid">
@@ -187,7 +215,13 @@ governing - rights and limitations under the License. --}%
                     <h2>
                         <g:message code="speciesListItem.iconic.australia"/>
                     </h2>
-                    <form class="search-form" role="search" action="${bieUrl}/search" method="get" style="margin-bottom: 0">
+                    <form
+                        class="search-form"
+                        role="search"
+                        action="${bieUrl}/search"
+                        method="get"
+                        style="margin-bottom: 0"
+                    >
                         <div class="input-append">
                             <input class="general-search" type="text" name="q" placeholder="Search Australia's Species"/>
                             <button class="erk-button erk-button--light" type="submit">
@@ -217,10 +251,14 @@ governing - rights and limitations under the License. --}%
                                 <g:each in="${facets.get(" listProperties")}" var="group">
                                     <g:if test="${group.getKey() == 'group'}">
                                         <g:each in="${group.getValue().sort{it[1]}}" var="arr" status="i">
-                                            <g:set var="active" value="${fqs.any{ it.contains(arr[1])} ? " active" : " "}"/>
+                                            <g:set
+                                                var="active"
+                                                value="${fqs.any{ it.contains(arr[1])} ? " active" : " "}"
+                                            />
                                             <li class="${active}">
                                                 <a href="?fq=kvp ${arr[0]}:${arr[1]}">
-                                                    ${arr[1]} (${arr[3]})<i class="fa fa-chevron-right"></i>
+                                                    ${arr[1]} (${arr[3]})
+                                                    <i class="fa fa-chevron-right"></i>
                                                 </a>
                                             </li>
                                         </g:each>
@@ -237,11 +275,23 @@ governing - rights and limitations under the License. --}%
                                     <g:set var="bieSpecies" value="${bieItems?.get(result.guid)}"/>
                                     <g:set var="bieTitle">
                                         <g:message code="general.speciesPage"/>
-                                        <i>${result.rawScientificName}</i>
+                                        <i>
+                                            ${result.rawScientificName}
+                                        </i>
                                     </g:set>
                                     <div class="imgCon">
-                                        <a class="thumbImage viewRecordButton" rel="thumbs" title="click to view detailed page" href="${bieUrl}/species/${result.guid?:bieSpecies?.get(2)}" data-id="${recId}">
-                                            <img src="${bieSpecies?.get(0)?:g.createLink(uri:'/images/infobox_info_icon.png')}" style="opacity:0.5" alt="thumbnail species image"/>
+                                        <a
+                                            class="thumbImage viewRecordButton"
+                                            rel="thumbs"
+                                            title="click to view detailed page"
+                                            href="${bieUrl}/species/${result.guid?:bieSpecies?.get(2)}"
+                                            data-id="${recId}"
+                                        >
+                                            <img
+                                                src="${bieSpecies?.get(0)?:g.createLink(uri:'/images/infobox_info_icon.png')}"
+                                                style="opacity:0.5"
+                                                alt="thumbnail species image"
+                                            />
                                         </a>
 
                                         <g:if test="${true}">
@@ -274,14 +324,21 @@ governing - rights and limitations under the License. --}%
                                     <g:message code="message"/>
                                     <select id="maxItems" class="input-mini" onchange="reloadWithMax(this)">
                                         <g:each in="${[10,25,50,100]}" var="max">
-                                            <option ${(params.max == max)?'selected="selected"' :'' }>${max}</option>
+                                            <option ${(params.max == max)?'selected="selected"' :'' }>
+                                                ${max}
+                                            </option>
                                         </g:each>
                                     </select>
                                 </div>
 
                                 <div class="pagination" id="searchNavBar">
                                     <g:if test="${params.fq}">
-                                        <g:paginate total="${totalCount}" action="iconicSpecies" id="${params.id}" params="${[fq: params.fq]}"/>
+                                        <g:paginate
+                                            total="${totalCount}"
+                                            action="iconicSpecies"
+                                            id="${params.id}"
+                                            params="${[fq: params.fq]}"
+                                        />
                                     </g:if>
                                     <g:else>
                                         <g:paginate total="${totalCount}" action="iconicSpecies" id="${params.id}"/>

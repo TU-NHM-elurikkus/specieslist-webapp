@@ -1,18 +1,30 @@
-%{-- - Copyright (C) 2012 Atlas of Living Australia - All Rights Reserved. - - The contents of this file are subject to the Mozilla Public - License Version 1.1 (the "License"); you may not use this file - except in compliance with the License. You
-may obtain a copy of - the License at http://www.mozilla.org/MPL/ - - Software distributed under the License is distributed on an "AS - IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or - implied. See the License for the specific language
-governing - rights and limitations under the License. --}%
+<%--
+  - Copyright (C) 2014 Atlas of Living Australia
+  - All Rights Reserved.
+  -
+  - The contents of this file are subject to the Mozilla Public
+  - License Version 1.1 (the "License"); you may not use this file
+  - except in compliance with the License. You may obtain a copy of
+  - the License at http://www.mozilla.org/MPL/
+  -
+  - Software distributed under the License is distributed on an "AS
+  - IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  - implied. See the License for the specific language governing
+  - rights and limitations under the License.
+--%>
+
 <!doctype html>
 <g:set var="bieUrl" value="${grailsApplication.config.bie.baseURL}"/>
 <g:set var="collectoryUrl" value="${grailsApplication.config.collectory.baseURL}"/>
 <g:set var="maxDownload" value="${grailsApplication.config.downloadLimit}"/>
 <g:set var="userCanEditPermissions" value="${
-    (speciesList.username == request.getUserPrincipal()?.attributes?.email || request.isUserInRole(" ROLE_ADMIN"))
+    (speciesList.username == request.getUserPrincipal()?.attributes?.email || request.isUserInRole('ROLE_ADMIN'))
 }"/>
 <g:set
     var="userCanEditData"
     value="${
     (   speciesList.username == request.getUserPrincipal()?.attributes?.email ||
-        request.isUserInRole("ROLE_ADMIN") ||
+        request.isUserInRole('ROLE_ADMIN') ||
         request.getUserPrincipal()?.attributes?.userid in speciesList.editors
     )
 }"/>
@@ -28,11 +40,11 @@ governing - rights and limitations under the License. --}%
             <g:message code="general.speciesListItems"/> | ${grailsApplication.config.skin.orgNameLong}
         </title>
         <script type="text/javascript">
-            $(document).ready(function () {
+            $(document).ready(function() {
                 // in mobile view toggle display of facets
-                $('#toggleFacetDisplay').click(function () {
+                $('#toggleFacetDisplay').click(function() {
                     $(this).find('i').toggleClass('icon-chevron-right icon-chevron-down');
-                    if ($('#accordion').is(':visible')) {
+                    if($('#accordion').is(':visible')) {
                         $('#accordion').removeClass('overrideHide');
                     } else {
                         $('#accordion').addClass('overrideHide');
@@ -43,105 +55,105 @@ governing - rights and limitations under the License. --}%
                 $('#content a').not('.thumbImage').tooltip({placement: "bottom", html: true, delay: 200, container: "body"});
 
                 // submit edit record changes via POST
-                $("button.saveRecord").click(function () {
+                $("button.saveRecord").click(function() {
                     var id = $(this).data("id");
                     var modal = $(this).data("modal");
                     var thisFormData = $("form#editForm_" + id).serializeArray();
 
-                    if (!$("form#editForm_" + id).find("#rawScientificName").val()) {
+                    if(!$("form#editForm_" + id).find("#rawScientificName").val()) {
                         alert("Required field: supplied name cannot be blank");
 
                         return false;
                     }
 
-                    $.post("${createLink(controller: " editor ", action: 'editRecord')}", thisFormData, function (data, textStatus, jqXHR) {
+                    $.post("${createLink(controller: " editor ", action: 'editRecord')}", thisFormData, function(data, textStatus, jqXHR) {
                         //console.log("data", data, "textStatus", textStatus,"jqXHR", jqXHR);
                         $(modal).modal('hide');
                         alert(jqXHR.responseText);
                         window.location.reload(true);
-                    }).error(function (jqXHR, textStatus, error) {
+                    }).error(function(jqXHR, textStatus, error) {
                         alert("An error occurred: " + error + " - " + jqXHR.responseText);
                         $(modal).modal('hide');
                     });
                 });
 
                 // create record via POST
-                $("button#saveNewRecord").click(function () {
+                $("button#saveNewRecord").click(function() {
                     var id = $(this).data("id");
                     var modal = $(this).data("modal");
                     var thisFormData = $("form#editForm_").serializeArray();
 
-                    if (!$("form#editForm_").find("#rawScientificName").val()) {
+                    if(!$("form#editForm_").find("#rawScientificName").val()) {
                         alert("Required field: supplied name cannot be blank");
                         return false;
                     }
                     //thisFormData.push({id: id}); console.log("thisFormData", id, thisFormData)
-                    $.post("${createLink(controller: " editor ", action: 'createRecord')}", thisFormData, function (data, textStatus, jqXHR) {
+                    $.post("${createLink(controller: " editor ", action: 'createRecord')}", thisFormData, function(data, textStatus, jqXHR) {
                         //console.log("data", data, "textStatus", textStatus,"jqXHR", jqXHR);
                         $(modal).modal('hide');
                         alert(jqXHR.responseText);
                         window.location.reload(true);
-                    }).error(function (jqXHR, textStatus, error) {
+                    }).error(function(jqXHR, textStatus, error) {
                         alert("An error occurred: " + error + " - " + jqXHR.responseText);
                         $(modal).modal('hide');
                     });
                 });
 
                 // submit delete record via GET
-                $("button.deleteSpecies").click(function () {
+                $("button.deleteSpecies").click(function() {
                     var id = $(this).data("id");
                     var modal = $(this).data("modal");
 
                     $.get("${createLink(controller: " editor ", action: 'deleteRecord')}", {
                         id: id
-                    }, function (data, textStatus, jqXHR) {
+                    }, function(data, textStatus, jqXHR) {
                         $(modal).modal('hide');
                         //console.log("data", data, "textStatus", textStatus,"jqXHR", jqXHR);
                         alert(jqXHR.responseText + " - reloading page...");
                         window.location.reload(true);
                         //$('#modal').modal('hide');
-                    }).error(function (jqXHR, textStatus, error) {
+                    }).error(function(jqXHR, textStatus, error) {
                         alert("An error occurred: " + error + " - " + jqXHR.responseText);
                         $(modal).modal('hide');
                     });
                 });
 
                 //console.log("owner = ${speciesList.username}"); console.log("logged in user = ${request.getUserPrincipal()?.attributes?.email}"); Toggle display of list meta data editing
-                $("#edit-meta-button").click(function (el) {
+                $("#edit-meta-button").click(function(el) {
                     el.preventDefault();
                     toggleEditMeta(!$("#edit-meta-div").is(':visible'));
                 });
 
                 // submit edit meta data
-                $("#edit-meta-submit").click(function (el) {
+                $("#edit-meta-submit").click(function(el) {
                     el.preventDefault();
                     var $form = $(this).parents("form");
                     var thisFormData = $($form).serializeArray();
                     // serializeArray ignores unchecked checkboxes so explicitly send data for these
-                    thisFormData = thisFormData.concat($($form).find('input[type=checkbox]:not(:checked)').map(function () {
+                    thisFormData = thisFormData.concat($($form).find('input[type=checkbox]:not(:checked)').map(function() {
                         return {"name": this.name, "value": false}
                     }).get());
 
                     //console.log("thisFormData", thisFormData);
 
-                    $.post("${createLink(controller: " editor ", action: 'editSpeciesList')}", thisFormData, function (data, textStatus, jqXHR) {
+                    $.post("${createLink(controller: " editor ", action: 'editSpeciesList')}", thisFormData, function(data, textStatus, jqXHR) {
                         //console.log("data", data, "textStatus", textStatus,"jqXHR", jqXHR);
                         alert(jqXHR.responseText);
                         window.location.reload(true);
-                    }).error(function (jqXHR, textStatus, error) {
+                    }).error(function(jqXHR, textStatus, error) {
                         alert("An error occurred: " + error + " - " + jqXHR.responseText);
                         //$(modal).modal('hide');
                     });
                 });
 
                 // toggle display of list info box
-                $("#toggleListInfo").click(function (el) {
+                $("#toggleListInfo").click(function(el) {
                     el.preventDefault();
                     $("#list-meta-data").slideToggle(!$("#list-meta-data").is(':visible'))
                 });
 
                 // catch click ion view record button (on each row) extract values from main table and display in table inside modal popup
-                $("a.viewRecordButton").click(function (el) {
+                $("a.viewRecordButton").click(function(el) {
                     el.preventDefault();
                     var recordId = $(this).data("id");
                     viewRecordForId(recordId);
@@ -155,12 +167,12 @@ governing - rights and limitations under the License. --}%
                 var e = $("tr[id^=" + prefix + "] > td.rawScientificName");
                 var data = d.add(e);
 
-                $(data).each(function (i, el) {
+                $(data).each(function(i, el) {
                     // Handle case insensitively: http://stackoverflow.com/a/2140644/2495717
                     var hashVal = h.toLocaleUpperCase();
                     var cell = $(el).text().trim().toLocaleUpperCase();
 
-                    if (hashVal === cell) {
+                    if(hashVal === cell) {
                         var id = $(el).parent().attr("id").substring(prefix.length);
                         viewRecordForId(id);
                         return false;
@@ -179,7 +191,7 @@ governing - rights and limitations under the License. --}%
                 var headerRow = $("table#speciesListTable > thead th").not(".action");
                 var headers = [];
 
-                $(headerRow).each(function (i, el) {
+                $(headerRow).each(function(i, el) {
                     headers.push($(this).text());
                 });
 
@@ -187,9 +199,9 @@ governing - rights and limitations under the License. --}%
                 var valueTds = $("tr#row_" + recordId + " > td").not(".action");
                 var values = [];
 
-                $(valueTds).each(function (i, el) {
+                $(valueTds).each(function(i, el) {
                     var val = $(this).html();
-                    if ($.type(val) === "string") {
+                    if($.type(val) === "string") {
                         val = $.trim(val);
                     }
                     values.push(val);
@@ -198,7 +210,7 @@ governing - rights and limitations under the License. --}%
                 //console.log("values", values.length, "headers", headers.length); console.log("values & headers", headers, values);
                 $("#viewRecord p.spinner").hide();
                 $("#viewRecord tbody").html(""); // clear values
-                $.each(headers, function (i, el) {
+                $.each(headers, function(i, el) {
                     var row = "<tr><td>" + el + "</td><td>" + values[i] + "</td></tr>";
 
                     $("#viewRecord tbody").append(row);
@@ -208,7 +220,7 @@ governing - rights and limitations under the License. --}%
             }
 
             function downloadOccurrences(o) {
-                if (validateForm()) {
+                if(validateForm()) {
                     this.cancel();
                     //downloadURL = $("#email").val();
                     downloadURL = "${request.contextPath}/speciesList/occurrences/${params.id}${params.toQueryString()}&type=Download&email=" + $("#email").val() + "&reasonTypeId=" + $("#reasonTypeId").val() + "&file=" + $("#filename").val();
@@ -217,7 +229,7 @@ governing - rights and limitations under the License. --}%
             }
 
             function downloadFieldGuide(o) {
-                if (validateForm()) {
+                if(validateForm()) {
                     this.cancel();
                     //alert(${params.toQueryString()})
                     window.location = "${request.contextPath}/speciesList/fieldGuide/${params.id}${params.toQueryString()}"
@@ -226,7 +238,7 @@ governing - rights and limitations under the License. --}%
             }
 
             function downloadList(o) {
-                if (validateForm()) {
+                if(validateForm()) {
                     this.cancel();
                     window.location = "${request.contextPath}/speciesListItem/downloadList/${params.id}${params.toQueryString()}&file=" + $("#filename").val()
                 }
@@ -236,7 +248,7 @@ governing - rights and limitations under the License. --}%
                 var isValid = false;
                 var reasonId = $("#reasonTypeId option:selected").val();
 
-                if (reasonId) {
+                if(reasonId) {
                     isValid = true;
                 } else {
                     $("#reasonTypeId").focus();
@@ -264,14 +276,14 @@ governing - rights and limitations under the License. --}%
     </head>
 
     <body>
-        %{-- Download dialog modal --}%
+        <%-- Download dialog modal --%>
         <div class="inline-block">
             <g:render template="/download"/>
         </div>
 
         <div id="content" class="container-fluid">
             <header id="page-header" class="page-header">
-                %{-- TITLE --}%
+                <%-- TITLE --%>
                 <div class="page-header__title">
                     <h1 class="page-header__title">
                         <g:message code="speciesListItem.list.speciesList"/>:
@@ -279,14 +291,14 @@ governing - rights and limitations under the License. --}%
                             ${speciesList?.listName}
                         </a>
 
-                        %{--
+                        <%--
                         <a href="${collectoryUrl}/public/show/${params.id}" title="view Date Resource page">
                             ${speciesList?.listName}
                         </a>
-                        --}%
+                        --%>
                     </h1>
 
-                    %{-- TODD: New text.
+                    <%-- TODD: New text.
                     <div class="page-header__subtitle">
                         <div>
                             <g:message code="general.listDescription"/>
@@ -296,10 +308,10 @@ governing - rights and limitations under the License. --}%
                             <g:message code="general.deleteDescription"/>
                         </div>
                     </div>
-                    --}%
+                    --%>
                 </div>
 
-                %{-- LINKS --}%
+                <%-- LINKS --%>
                 <div class="page-header-links">
                     <a href="${request.contextPath}/public/speciesLists" class="page-header-links__link">
                         <g:message code="general.speciesLists"/>
@@ -396,7 +408,9 @@ governing - rights and limitations under the License. --}%
                             ${message(code: 'general.url')}
                         </dt>
                         <dd class="col-sm-6 col-md-9">
-                            <a href="${speciesList.url}" target="_blank">${speciesList.url}</a>
+                            <a href="${speciesList.url}" target="_blank">
+                                ${speciesList.url}
+                            </a>
                         </dd>
                     </g:if>
 
@@ -413,7 +427,8 @@ governing - rights and limitations under the License. --}%
                         ${message(code: 'general.dateCreated')}
                     </dt>
                     <dd class="col-sm-6 col-md-9">
-                        <g:formatDate format="yyyy-MM-dd" date="${speciesList.dateCreated?:0}"/><!-- ${speciesList.lastUpdated} --></dd>
+                        <g:formatDate format="yyyy-MM-dd" date="${speciesList.dateCreated?:0}"/><!-- ${speciesList.lastUpdated} -->
+                    </dd>
 
                     <dt class="col-sm-6 col-md-3">
                         ${message(code: 'speciesListItem.list.isPrivate')}
@@ -511,7 +526,7 @@ governing - rights and limitations under the License. --}%
                         </dd>
                     </g:if>
 
-                    %{-- The link is broken
+                    <%-- The link is broken
                     <dt class="col-sm-6 col-md-3">
                         ${message(code: 'speciesListItem.list.metadata')}
                     </dt>
@@ -520,7 +535,7 @@ governing - rights and limitations under the License. --}%
                             ${grailsApplication.config.collectory.baseURL}/public/show/${speciesList.dataResourceUid}
                         </a>
                     </dd>
-                    --}%
+                    --%>
                 </dl>
 
                 <g:if test="${userCanEditPermissions}">
@@ -533,7 +548,13 @@ governing - rights and limitations under the License. --}%
                                     ${message(code: 'general.listName')}
                                 </label>
                                 <div class="controls">
-                                    <input type="text" name="listName" id="listName" class="input-xlarge" value="${speciesList.listName}"/>
+                                    <input
+                                        type="text"
+                                        name="listName"
+                                        id="listName"
+                                        class="input-xlarge"
+                                        value="${speciesList.listName}"
+                                    />
                                 </div>
                             </div>
 
@@ -544,7 +565,10 @@ governing - rights and limitations under the License. --}%
                                 <div class="controls">
                                     <select name="owner" id="owner" class="input-xlarge">
                                         <g:each in="${users}" var="userId">
-                                            <option value="${userId}" ${(speciesList.username == userId) ? 'selected="selected"' :'' }>
+                                            <option
+                                                value="${userId}"
+                                                ${(speciesList.username == userId) ? 'selected="selected"' :'' }
+                                            >
                                                 <sl:getFullNameForUserId userId="${userId}"/>
                                             </option>
                                         </g:each>
@@ -559,7 +583,10 @@ governing - rights and limitations under the License. --}%
                                 <div class="controls">
                                     <select name="listType" id="listType" class="input-xlarge">
                                         <g:each in="${au.org.ala.specieslist.ListType.values()}" var="type">
-                                            <option value="${type.name()}" ${(speciesList.listType == type) ? 'selected="selected"' :'' }>
+                                            <option
+                                                value="${type.name()}"
+                                                ${(speciesList.listType == type) ? 'selected="selected"' :'' }
+                                            >
                                                 ${type.displayValue}
                                             </option>
                                         </g:each>
@@ -603,8 +630,15 @@ governing - rights and limitations under the License. --}%
                                     ${message(code: 'general.dateCreated')}
                                 </label>
                                 <div class="controls">
-                                    <input type="date" name="dateCreated" id="dateCreated" data-date-format="yyyy-mm-dd" class="input-xlarge" value="<g:formatDate format=" yyyy-MM-dd" date=" ${speciesList.dateCreated?:0}" />"/>
-                                    %{--<g:datePicker name="dateCreated" value="${speciesList.dateCreated}" precision="day" relativeYears="[-2..7]" class="input-small"/>--}%
+                                    <input
+                                        type="date"
+                                        name="dateCreated"
+                                        id="dateCreated"
+                                        data-date-format="yyyy-mm-dd"
+                                        class="input-xlarge"
+                                        value="<g:formatDate format='yyyy-MM-dd' date='${speciesList.dateCreated?:0}'/>"
+                                    />
+                                    <%--<g:datePicker name="dateCreated" value="${speciesList.dateCreated}" precision="day" relativeYears="[-2..7]" class="input-small"/>--%>
                                 </div>
                             </div>
 
@@ -613,7 +647,15 @@ governing - rights and limitations under the License. --}%
                                     ${message(code: 'speciesListItem.list.isPrivate')}
                                 </label>
                                 <div class="controls">
-                                    <input type="checkbox" id="isPrivate" name="isPrivate" class="input-xlarge" value="true" data-value="${speciesList.isPrivate}" ${(speciesList.isPrivate == true) ? 'checked="checked"' :'' }/>
+                                    <input
+                                        type="checkbox"
+                                        id="isPrivate"
+                                        name="isPrivate"
+                                        class="input-xlarge"
+                                        value="true"
+                                        data-value="${speciesList.isPrivate}"
+                                        ${(speciesList.isPrivate == true) ? 'checked="checked"' :''}
+                                    />
                                 </div>
                             </div>
 
@@ -623,7 +665,15 @@ governing - rights and limitations under the License. --}%
                                         ${message(code: 'general.isBIE')}
                                     </label>
                                     <div class="controls">
-                                        <input type="checkbox" id="isBIE" name="isBIE" class="input-xlarge" value="true" data-value="${speciesList.isBIE}" ${(speciesList.isBIE == true) ? 'checked="checked"' :'' }/>
+                                        <input
+                                            type="checkbox"
+                                            id="isBIE"
+                                            name="isBIE"
+                                            class="input-xlarge"
+                                            value="true"
+                                            data-value="${speciesList.isBIE}"
+                                            ${(speciesList.isBIE == true) ? 'checked="checked"' :''}
+                                        />
                                     </div>
                                 </div>
 
@@ -632,7 +682,15 @@ governing - rights and limitations under the License. --}%
                                         ${message(code:'general.isAuthoritative')}
                                     </label>
                                     <div class="controls">
-                                        <input type="checkbox" id="isAuthoritative" name="isAuthoritative" class="input-xlarge" value="true" data-value="${speciesList.isAuthoritative}" ${(speciesList.isAuthoritative == true) ? 'checked="checked"' :'' }/>
+                                        <input
+                                            type="checkbox"
+                                            id="isAuthoritative"
+                                            name="isAuthoritative"
+                                            class="input-xlarge"
+                                            value="true"
+                                            data-value="${speciesList.isAuthoritative}"
+                                            ${(speciesList.isAuthoritative == true) ? 'checked="checked"' :''}
+                                        />
                                     </div>
                                 </div>
 
@@ -641,7 +699,15 @@ governing - rights and limitations under the License. --}%
                                         ${message(code:'general.isInvasive')}
                                     </label>
                                     <div class="controls">
-                                        <input type="checkbox" id="isInvasive" name="isInvasive" class="input-xlarge" value="true" data-value="${speciesList.isInvasive}" ${(speciesList.isInvasive == true) ? 'checked="checked"' :'' }/>
+                                        <input
+                                            type="checkbox"
+                                            id="isInvasive"
+                                            name="isInvasive"
+                                            class="input-xlarge"
+                                            value="true"
+                                            data-value="${speciesList.isInvasive}"
+                                            ${(speciesList.isInvasive == true) ? 'checked="checked"' :''}
+                                        />
                                     </div>
                                 </div>
 
@@ -650,7 +716,15 @@ governing - rights and limitations under the License. --}%
                                         ${message(code:'general.isThreatened')}
                                     </label>
                                     <div class="controls">
-                                        <input type="checkbox" id="isThreatened" name="isThreatened" class="input-xlarge" value="true" data-value="${speciesList.isThreatened}" ${(speciesList.isThreatened == true) ? 'checked="checked"' :'' }/>
+                                        <input
+                                            type="checkbox"
+                                            id="isThreatened"
+                                            name="isThreatened"
+                                            class="input-xlarge"
+                                            value="true"
+                                            data-value="${speciesList.isThreatened}"
+                                            ${(speciesList.isThreatened == true) ? 'checked="checked"' :''}
+                                        />
                                     </div>
                                 </div>
 
@@ -659,7 +733,15 @@ governing - rights and limitations under the License. --}%
                                         ${message(code: 'general.isSDS')}
                                     </label>
                                     <div class="controls">
-                                        <input type="checkbox" id="isSDS" name="isSDS" class="input-xlarge" value="true" data-value="${speciesList.isSDS}" ${(speciesList.isSDS == true) ? 'checked="checked"' :'' }/>
+                                        <input
+                                            type="checkbox"
+                                            id="isSDS"
+                                            name="isSDS"
+                                            class="input-xlarge"
+                                            value="true"
+                                            data-value="${speciesList.isSDS}"
+                                            ${(speciesList.isSDS == true) ? 'checked="checked"' :''}
+                                        />
                                     </div>
                                 </div>
 
@@ -668,7 +750,13 @@ governing - rights and limitations under the License. --}%
                                         ${message(code: 'general.region')}
                                     </label>
                                     <div class="controls">
-                                        <input type="text" name="region" id="region" class="input-xlarge" value="${speciesList.region}"/>
+                                        <input
+                                            type="text"
+                                            name="region"
+                                            id="region"
+                                            class="input-xlarge"
+                                            value="${speciesList.region}"
+                                        />
                                     </div>
                                 </div>
 
@@ -678,7 +766,13 @@ governing - rights and limitations under the License. --}%
                                             ${message(code: 'speciesListItem.list.authority')}
                                         </label>
                                         <div class="controls">
-                                            <input type="text" name="authority" id="authority" class="input-xlarge" value="${speciesList.authority}"/>
+                                            <input
+                                                type="text"
+                                                name="authority"
+                                                id="authority"
+                                                class="input-xlarge"
+                                                value="${speciesList.authority}"
+                                            />
                                         </div>
                                     </div>
 
@@ -687,7 +781,13 @@ governing - rights and limitations under the License. --}%
                                             ${message(code: 'speciesListItem.list.category')}
                                         </label>
                                         <div class="controls">
-                                            <input type="text" name="category" id="category" class="input-xlarge" value="${speciesList.category}"/>
+                                            <input
+                                                type="text"
+                                                name="category"
+                                                id="category"
+                                                class="input-xlarge"
+                                                value="${speciesList.category}"
+                                            />
                                         </div>
                                     </div>
 
@@ -696,7 +796,13 @@ governing - rights and limitations under the License. --}%
                                             ${message(code: 'speciesListItem.list.generalisation')}
                                         </label>
                                         <div class="controls">
-                                            <input type="text" name="generalisation" id="generalisation" class="input-xlarge" value="${speciesList.generalisation}"/>
+                                            <input
+                                                type="text"
+                                                name="generalisation"
+                                                id="generalisation"
+                                                class="input-xlarge"
+                                                value="${speciesList.generalisation}"
+                                            />
                                         </div>
                                     </div>
 
@@ -705,7 +811,13 @@ governing - rights and limitations under the License. --}%
                                             ${message(code: 'general.sdsType')}
                                         </label>
                                         <div class="controls">
-                                            <input type="text" name="sdsType" id="sdsType" class="input-xlarge" value="${speciesList.sdsType}"/>
+                                            <input
+                                                type="text"
+                                                name="sdsType"
+                                                id="sdsType"
+                                                class="input-xlarge"
+                                                value="${speciesList.sdsType}"
+                                            />
                                         </div>
                                     </div>
                                 </g:if>
@@ -729,7 +841,9 @@ governing - rights and limitations under the License. --}%
             <g:if test="${flash.message}">
                 <div class="row">
                     <div class="message alert alert-info">
-                        <b><g:message code="general.alert"/>:</b>
+                        <b>
+                            <g:message code="general.alert"/>:
+                        </b>
                         ${flash.message}
                     </div>
                 </div>
@@ -756,8 +870,12 @@ governing - rights and limitations under the License. --}%
 
                                 <g:if test="${hasUnrecognised && noMatchCount!=totalCount}">
                                     <li class="erk-ulist--item">
-                                        <g:link action="list" id="${params.id}" title="${message(code: 'speciesListItem.list.viewUnrecognised')}"
-                                            params="${[fq:sl.buildFqList(fqs:fqs, fq:' guid:null'), max:params.max]}">
+                                        <g:link
+                                            action="list"
+                                            id="${params.id}"
+                                            title="${message(code: 'speciesListItem.list.viewUnrecognised')}"
+                                            params="${[fq:sl.buildFqList(fqs:fqs, fq:' guid:null'), max:params.max]}"
+                                        >
                                             <g:message code="speciesListItem.list.unknownTaxa"/>
                                         </g:link>
 
@@ -767,13 +885,13 @@ governing - rights and limitations under the License. --}%
                                     </li>
                                 </g:if>
 
-                                %{--
+                                <%--
                                 <li class="erk-ulist--item">
                                     <g:link controller="speciesList" action="list" class="wrk-button" title="My Lists">
                                         <g:message code="general.myLists"/>
                                     </g:link>
                                 </li>
-                                --}%
+                                --%>
                             </ul>
                         </section>
 
@@ -817,11 +935,16 @@ governing - rights and limitations under the License. --}%
                                     <g:each in="${facets}" var="entry">
                                         <g:if test="${entry.key == " listProperties"}">
                                             <g:each in="${facets.get(" listProperties")}" var="value">
-                                                <g:render template="facet" model="${[key:value.getKey(), values:value.getValue(), isProperty:true]}"/>
+                                                <g:render
+                                                    template="facet"
+                                                    model="${[key:value.getKey(), values:value.getValue(), isProperty:true]}"
+                                                />
                                             </g:each>
                                         </g:if>
                                         <g:else>
-                                            <g:render template="facet" model="${[key:entry.key, values:entry.value, isProperty:false]}"/>
+                                            <g:render
+                                                template="facet"
+                                                model="${[key:entry.key, values:entry.value, isProperty:false]}"/>
                                         </g:else>
                                     </g:each>
                                 </div>
@@ -833,14 +956,26 @@ governing - rights and limitations under the License. --}%
                 <div class="col-md-9">
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#list-tab" role="tab" title="${message(code: 'speciesListItem.list.viewList')}">
+                            <a
+                                class="nav-link active"
+                                data-toggle="tab"
+                                href="#list-tab"
+                                role="tab"
+                                title="${message(code: 'speciesListItem.list.viewList')}"
+                            >
                                 <span class="fa fa-th-list"></span>
                                 <g:message code="speciesListItem.list.list"/>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#grid-tab" role="tab" title="${message(code: 'speciesListItem.list.viewThumb')}">
+                            <a
+                                class="nav-link"
+                                data-toggle="tab"
+                                href="#grid-tab"
+                                role="tab"
+                                title="${message(code: 'speciesListItem.list.viewThumb')}"
+                            >
                                 <span class="fa fa-th"></span>
                                 <g:message code="speciesListItem.list.grid"/>
                             </a>
@@ -856,17 +991,33 @@ governing - rights and limitations under the License. --}%
                                             <th class="action">
                                                 <g:message code="general.action"/>
                                             </th>
-                                            <g:sortableColumn property="rawScientificName" params="${[fq: fqs]}"
-                                                titleKey="general.suppliedName"/>
-                                            <g:sortableColumn property="matchedName" params="${[fq: fqs]}"
-                                                titleKey="general.scientificName"/>
+                                            <g:sortableColumn
+                                                property="rawScientificName"
+                                                params="${[fq: fqs]}"
+                                                titleKey="general.suppliedName"
+                                            />
+                                            <g:sortableColumn
+                                                property="matchedName"
+                                                params="${[fq: fqs]}"
+                                                titleKey="general.scientificName"
+                                            />
                                             <th>
                                                 <g:message code="speciesListItem.list.image"/>
                                             </th>
-                                            <g:sortableColumn property="author" params="${[fq: fqs]}" titleKey="speciesListItem.list.author"/>
-                                            <g:sortableColumn property="commonName" params="${[fq: fqs]}" titleKey="speciesListItem.list.commonName"/>
+                                            <g:sortableColumn
+                                                property="author"
+                                                params="${[fq: fqs]}"
+                                                titleKey="speciesListItem.list.author"
+                                            />
+                                            <g:sortableColumn
+                                                property="commonName"
+                                                params="${[fq: fqs]}"
+                                                titleKey="speciesListItem.list.commonName"
+                                            />
                                             <g:each in="${keys}" var="key">
-                                                <th>${key}</th>
+                                                <th>
+                                                    ${key}
+                                                </th>
                                             </g:each>
                                         </tr>
                                     </thead>
@@ -884,19 +1035,32 @@ governing - rights and limitations under the License. --}%
                                             <tr class="${(i % 2) == 0 ? 'odd' : 'even'}" id="row_${recId}">
                                                 <td class="action">
                                                     <center>
-                                                        <a class="viewRecordButton" href="#viewRecord" title="view record" data-id="${recId}">
+                                                        <a
+                                                            class="viewRecordButton"
+                                                            href="#viewRecord"
+                                                            title="view record"
+                                                            data-id="${recId}"
+                                                        >
                                                             <span class="fa fa-info-circle"></span>
                                                         </a>
 
                                                         <g:if test="${userCanEditData}">
-                                                            <a href="#" title="edit"
+                                                            <a
+                                                                href="#"
+                                                                title="edit"
                                                                 data-remote="${createLink(controller: 'editor', action: 'editRecordScreen', id: result.id)}"
-                                                                data-target="#editRecord_${recId}" data-toggle="modal">
-
+                                                                data-target="#editRecord_${recId}"
+                                                                data-toggle="modal"
+                                                            >
                                                                 <span class="fa fa-pencil"></span>
                                                             </a>
 
-                                                            <a href="#" title="delete" data-target="#deleteRecord_${recId}" data-toggle="modal">
+                                                            <a
+                                                                href="#"
+                                                                title="delete"
+                                                                data-target="#deleteRecord_${recId}"
+                                                                data-toggle="modal"
+                                                            >
                                                                 <span class="fa fa-trash-o"></span>
                                                             </a>
                                                         </g:if>
@@ -913,11 +1077,17 @@ governing - rights and limitations under the License. --}%
                                                         </strong>
                                                         -
                                                         <g:message code="speciesListItem.list.try"/>
-                                                        <a href="http://google.com/search?q=${fieldValue(bean: result, field: 'rawScientificName').trim()}" target="google">
+                                                        <a
+                                                            href="http://google.com/search?q=${fieldValue(bean: result, field: 'rawScientificName').trim()}"
+                                                            target="google"
+                                                        >
                                                             <g:message code="speciesListItem.list.google"/>
                                                         </a>
                                                         <g:message code="speciesListItem.list.or"/>
-                                                        <a href="${grailsApplication.config.biocache.baseURL}/occurrences/search?q=${fieldValue(bean: result, field: 'rawScientificName').trim()}" target="biocache">
+                                                        <a
+                                                            href="${grailsApplication.config.biocache.baseURL}/occurrences/search?q=${fieldValue(bean: result, field: 'rawScientificName').trim()}"
+                                                            target="biocache"
+                                                        >
                                                             <g:message code="speciesListItem.list.occurrences"/>
                                                         </a>
                                                     </g:if>
@@ -937,7 +1107,11 @@ governing - rights and limitations under the License. --}%
                                                 <td id="img_${result.guid}">
                                                     <g:if test="${result.imageUrl}">
                                                         <a href="${bieUrl}/species/${result.guid}" title="${bieTitle}">
-                                                            <img style="max-width: 400px;" src="${result.imageUrl}" class="smallSpeciesImage"/>
+                                                            <img
+                                                                style="max-width: 400px;"
+                                                                src="${result.imageUrl}"
+                                                                class="smallSpeciesImage"
+                                                            />
                                                         </a>
                                                     </g:if>
                                                 </td>
@@ -955,7 +1129,9 @@ governing - rights and limitations under the License. --}%
                                                     <g:set var="val" value="${kvp?.vocabValue?:kvp?.value}"/>
 
                                                     <td class="kvp ${val?.length() > 35 ? 'scrollWidth':''}">
-                                                        <div>${val}</div>
+                                                        <div>
+                                                            ${val}
+                                                        </div>
                                                     </td>
                                                 </g:each>
                                             </tr>
@@ -970,12 +1146,24 @@ governing - rights and limitations under the License. --}%
                                 <g:set var="recId" value="${result.id}"/>
                                 <g:set var="bieTitle">
                                     <g:message code="general.speciesPage"/>
-                                    <span>${result.rawScientificName}</span>
+                                    <span>
+                                        ${result.rawScientificName}
+                                    </span>
                                 </g:set>
 
                                 <div class="imgCon">
-                                    <a class="thumbImage viewRecordButton" rel="thumbs" title="click to view details" href="#viewRecord" data-id="${recId}">
-                                        <img src="${result.imageUrl?:g.createLink(uri:'/images/infobox_info_icon.png')}" style="opacity:0.5" alt="thumbnail species image"/>
+                                    <a
+                                        class="thumbImage viewRecordButton"
+                                        rel="thumbs"
+                                        title="click to view details"
+                                        href="#viewRecord"
+                                        data-id="${recId}"
+                                    >
+                                        <img
+                                            src="${result.imageUrl?:g.createLink(uri:'/images/infobox_info_icon.png')}"
+                                            style="opacity:0.5"
+                                            alt="thumbnail species image"
+                                        />
                                     </a>
 
                                     <g:if test="${true}">
@@ -1007,16 +1195,34 @@ governing - rights and limitations under the License. --}%
                                             </g:if>
 
                                             <div class="float-right" style="display:inline-block; padding: 5px;">
-                                                <a href="#viewRecord" class="viewRecordButton" title="view record" data-id="${recId}">
+                                                <a
+                                                    href="#viewRecord"
+                                                    class="viewRecordButton"
+                                                    title="view record"
+                                                    data-id="${recId}"
+                                                >
                                                     <span class="fa fa-info-circle"></span>
-                                                </a>&nbsp;
+                                                </a>
+                                                &nbsp;
 
                                                 <g:if test="${userCanEditData}">
-                                                    <a href="#" title="edit" data-remote="${createLink(controller: 'editor', action: 'editRecordScreen', id: result.id)}" data-target="#editRecord_${recId}" data-toggle="modal">
+                                                    <a
+                                                        href="#"
+                                                        title="edit"
+                                                        data-remote="${createLink(controller: 'editor', action: 'editRecordScreen', id: result.id)}"
+                                                        data-target="#editRecord_${recId}"
+                                                        data-toggle="modal"
+                                                    >
                                                         <span class="fa fa-pencil"></span>
-                                                    </a>&nbsp;
+                                                    </a>
+                                                    &nbsp;
 
-                                                    <a href="#" title="delete" data-target="#deleteRecord_${recId}" data-toggle="modal">
+                                                    <a
+                                                        href="#"
+                                                        title="delete"
+                                                        data-target="#deleteRecord_${recId}"
+                                                        data-toggle="modal"
+                                                    >
                                                         <span class="fa fa-trash-o"></span>
                                                     </a>&nbsp;
                                                 </g:if>
@@ -1032,7 +1238,12 @@ governing - rights and limitations under the License. --}%
                         <div class="col">
                             <div class="pagination float-left">
                                 <g:if test="${params.fq}">
-                                    <g:paginate total="${totalCount}" action="list" id="${params.id}" params="${[fq: params.fq]}"/>
+                                    <g:paginate
+                                        total="${totalCount}"
+                                        action="list"
+                                        id="${params.id}"
+                                        params="${[fq: params.fq]}"
+                                    />
                                 </g:if>
 
                                 <g:else>
@@ -1053,7 +1264,7 @@ governing - rights and limitations under the License. --}%
                         </div>
                     </div>
 
-                    %{-- Output the BS modal divs (hidden until called) --}%
+                    <%-- Output the BS modal divs (hidden until called) --%>
                     <g:each var="result" in="${results}" status="i">
                         <g:set var="recId" value="${result.id}"/>
 
@@ -1061,7 +1272,13 @@ governing - rights and limitations under the License. --}%
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <button type="button" class="close" onclick="$('#viewRecord .modal-body').scrollTop(0);" data-dismiss="modal" aria-hidden="true">
+                                        <button
+                                            type="button"
+                                            class="close"
+                                            onclick="$('#viewRecord .modal-body').scrollTop(0);"
+                                            data-dismiss="modal"
+                                            aria-hidden="true"
+                                        >
                                             ×
                                         </button>
 
@@ -1075,7 +1292,7 @@ governing - rights and limitations under the License. --}%
                                             <img src="${resource(dir:'images',file:'spinner.gif')}" alt="spinner icon"/>
                                         </p>
 
-                                        %{-- TODO: .hide class. --}%
+                                        <%-- TODO: .hide class. --%>
                                         <table class="table table-sm table-bordered table-striped hide">
                                             <thead>
                                                 <th>
@@ -1091,7 +1308,8 @@ governing - rights and limitations under the License. --}%
                                         </table>
                                     </div>
 
-                                    %{-- TODO: .hide class. --}% %{--
+                                    <%-- TODO: .hide class. --%>
+                                    <%--
                                     <div class="modal-footer">
                                         <button class="erk-button erk-button--light hide" data-id="${recId}">
                                             <g:message code="speciesListItem.list.previous"/>
@@ -1103,7 +1321,7 @@ governing - rights and limitations under the License. --}%
                                             <g:message code="general.close"/>
                                         </button>
                                     </div>
-                                    --}%
+                                    --%>
                                 </div>
                             </div>
                         </div>
@@ -1131,7 +1349,11 @@ governing - rights and limitations under the License. --}%
                                         <g:message code="speciesListItem.list.cancel"/>
                                     </button>
 
-                                    <button class="erk-button erk-button--light saveRecord" data-modal="#editRecord_${recId}" data-id="${recId}">
+                                    <button
+                                        class="erk-button erk-button--light saveRecord"
+                                        data-modal="#editRecord_${recId}"
+                                        data-id="${recId}"
+                                    >
                                         <g:message code="speciesListItem.list.saveChanges"/>
                                     </button>
                                 </div>
@@ -1147,7 +1369,9 @@ governing - rights and limitations under the License. --}%
                                 <div class="modal-body">
                                     <p>
                                         <g:message code="speciesListItem.list.deleteDescription"/>
-                                        <span>${result.rawScientificName}</span>
+                                        <span>
+                                            ${result.rawScientificName}
+                                        </span>
                                     </p>
                                 </div>
 
@@ -1156,7 +1380,11 @@ governing - rights and limitations under the License. --}%
                                         <g:message code="speciesListItem.list.cancel"/>
                                     </button>
 
-                                    <button class="erk-button erk-button--light deleteSpecies" data-modal="#deleteRecord_${recId}" data-id="${recId}">
+                                    <button
+                                        class="erk-button erk-button--light deleteSpecies"
+                                        data-modal="#deleteRecord_${recId}"
+                                        data-id="${recId}"
+                                    >
                                         <g:message code=""/>
                                     </button>
                                 </div>

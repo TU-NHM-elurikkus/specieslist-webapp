@@ -1,6 +1,18 @@
-%{-- - Copyright (C) 2012 Atlas of Living Australia - All Rights Reserved. - - The contents of this file are subject to the Mozilla Public - License Version 1.1 (the "License"); you may not use this file - except in compliance with the License. You
-may obtain a copy of - the License at http://www.mozilla.org/MPL/ - - Software distributed under the License is distributed on an "AS - IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or - implied. See the License for the specific language
-governing - rights and limitations under the License. --}%
+<%--
+  - Copyright (C) 2012 Atlas of Living Australia
+  - All Rights Reserved.
+  -
+  - The contents of this file are subject to the Mozilla Public
+  - License Version 1.1 (the "License"); you may not use this file
+  - except in compliance with the License. You may obtain a copy of
+  - the License at http://www.mozilla.org/MPL/
+  -
+  - Software distributed under the License is distributed on an "AS
+  - IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  - implied. See the License for the specific language governing
+  - rights and limitations under the License.
+--%>
+
 <!doctype html>
 <html>
     <head>
@@ -16,7 +28,7 @@ governing - rights and limitations under the License. --}%
             function reset() {
                 $('#recognisedDataDiv').addClass('hidden-node');
 
-                if ("${list}") {
+                if("${list}") {
                     $('#uploadDiv').removeClass('hidden-node');
                 } else {
                     $('#uploadDiv').addClass('hidden-node');
@@ -31,7 +43,7 @@ governing - rights and limitations under the License. --}%
                 var ischecked = $('#isSDS').is(':checked');
                 var rows = $('table.listDetailTable tr');
 
-                if (ischecked) {
+                if(ischecked) {
                     rows.filter('.SDSOnly').removeClass('hidden-node');
                 } else {
                     rows.filter('.SDSOnly').addClass('hidden-node');
@@ -39,9 +51,9 @@ governing - rights and limitations under the License. --}%
             }
 
             function parseColumns() {
-                if ($('#copyPasteData').val().trim() == "" && $('#csvFileUpload').val().trim() == "") {
+                if($('#copyPasteData').val().trim() == "" && $('#csvFileUpload').val().trim() == "") {
                     reset();
-                } else if ($('#copyPasteData').val().trim() != "" && $('#csvFileUpload').val().trim() != "") {
+                } else if($('#copyPasteData').val().trim() != "" && $('#csvFileUpload').val().trim() != "") {
                     reportError("<b>Error:</b> You must either upload a file <i>or</i> copy and paste the list into the provided field, not both.");
                 } else {
                     //console.log($('#copyPasteData').val())
@@ -56,15 +68,15 @@ governing - rights and limitations under the License. --}%
                         data: isFileUpload
                             ? new FormData(document.forms.namedItem("csvUploadForm"))
                             : $('#copyPasteData').val(),
-                        success: function (data) {
+                        success: function data) {
                             $('#recognisedDataDiv').show();
                             $('#recognisedData').html(data);
-                            if (isFileUpload)
+                            if(isFileUpload)
                                 $('#recognisedData input:first').focus();
                             $('#uploadDiv').removeClass('hidden-node');
                             $('#listvocab').addClass('hidden-node');
                         },
-                        error: function (jqXHR, textStatus, error) {
+                        error: function(jqXHR, textStatus, error) {
                             //console.log("jqXHR", jqXHR);
                             var ExtractedErrorMsg = $(jqXHR.responseText).find(".error-details").clone().wrap('<p>').parent().html(); // hack to get outerHtml
                             reportError("<b>Error:</b> " + error + " (" + jqXHR.status + ")<br /><code style='background-color:inherit;'>" + ExtractedErrorMsg + "</code>");
@@ -74,7 +86,7 @@ governing - rights and limitations under the License. --}%
             }
 
             function updateCustom(checked) {
-                if (checked) {
+                if(checked) {
                     hide('manualMapping');
                 } else {
                     show('manualMapping');
@@ -102,15 +114,15 @@ governing - rights and limitations under the License. --}%
             function validateForm() {
                 var isValid = false;
                 var typeId = $("#listTypeId option:selected").val();
-                if ($('#listTitle').val().length > 0) {
+                if($('#listTitle').val().length > 0) {
                     isValid = true
                 } else {
                     $('#listTitle').focus();
                     alert("You must supply a species list title");
                 }
-                if (isValid) {
+                if(isValid) {
 
-                    if (typeId) {
+                    if(typeId) {
                         isValid = true
                     } else {
                         isValid = false
@@ -128,7 +140,7 @@ governing - rights and limitations under the License. --}%
             }
 
             function uploadSpeciesList() {
-                if (validateForm()) {
+                if(validateForm()) {
                     var isFileUpload = $('#csvFileUpload').val().trim() != "";
 
                     var map = getVocabularies();
@@ -137,22 +149,22 @@ governing - rights and limitations under the License. --}%
                     map['description'] = $('#listDesc').val();
                     map['listUrl'] = $('#listURL').val();
                     map['listWkt'] = $('#listWkt').val();
-                    if (!isFileUpload) {
+                    if(!isFileUpload) {
                         map['rawData'] = $('#copyPasteData').val();
                     }
                     map['listType'] = $('#listTypeId').val();
                     //add the existing data resource uid if it is provided to handle a resubmit
-                    if ("${resourceUid}")
+                    if("${resourceUid}")
                         map['id'] = "${resourceUid}"
                         //if the isBIE checkbox exists add the value
-                    if ($('#isBIE').length > 0) {
+                    if($('#isBIE').length > 0) {
                         map['isBIE'] = $('#isBIE').is(':checked');
                     }
                     //if the isSDS checkbox exists add the value
-                    if ($('#isSDS').length > 0) {
+                    if($('#isSDS').length > 0) {
                         map['isSDS'] = $('#isSDS').is(':checked');
                         var ischecked = $('#isSDS').is(':checked');
-                        if (ischecked) {
+                        if(ischecked) {
                             //add the SDS only properties
                             map['region'] = $('#sdsRegion').val();
                             map['authority'] = $('#authority').val();
@@ -168,7 +180,7 @@ governing - rights and limitations under the License. --}%
                     var url = "${createLink(controller:'speciesList', action:'uploadList')}";
 
                     var data
-                    if (isFileUpload) {
+                    if(isFileUpload) {
                         data = new FormData(document.forms.namedItem("csvUploadForm"))
                         data.append("formParams", JSON.stringify(map))
                     } else {
@@ -180,16 +192,16 @@ governing - rights and limitations under the License. --}%
                         processData: !isFileUpload,
                         contentType: !isFileUpload,
                         data: data,
-                        success: function (response) {
+                        success: function(response) {
                             //console.log(response, response.url)
-                            if (response.url != null && response.error == null) {
+                            if(response.url != null && response.error == null) {
                                 window.location.href = response.url;
                             } else {
                                 reportError(response.error)
                             }
 
                         },
-                        error: function (xhr, textStatus, errorThrown) {
+                        error: function(xhr, textStatus, errorThrown) {
                             //console.log('Error!  Status = ' ,xhr.status, textStatus, errorThrown, xhr.responseText);
                             reportError("Error: " + errorThrown);
                         }
@@ -201,19 +213,19 @@ governing - rights and limitations under the License. --}%
             function getVocabularies() {
                 var potentialVocabH3s = $('div.vocabDiv');
                 var vocabMap = {};
-                $.each(potentialVocabH3s, function (index, vdiv) {
+                $.each(potentialVocabH3s, function(index, vdiv) {
                     var value = "";
                     var h3value = "vocab_" + $(vdiv).find('h3:first').text();
 
-                    $(vdiv).find('table').find('tbody').find('tr').each(function (index2, vrow) {
+                    $(vdiv).find('table').find('tbody').find('tr').each(function(index2, vrow) {
 
-                        if (value.length > 0)
+                        if(value.length > 0)
                             value = value + ",";
 
                         var vkey = $(vrow).children().eq(0).text();
 
                         var vvalue = $(vrow).children().eq(1).children().eq(0).val();
-                        if (vvalue.length > 0)
+                        if(vvalue.length > 0)
                             value = value + vkey + ":" + vvalue;
                         }
                     )
@@ -228,8 +240,8 @@ governing - rights and limitations under the License. --}%
                 var columnHeaderInputs = $('input.columnHeaderInput');
                 var columnHeadersCSV = "";
                 var i = 0;
-                $.each(columnHeaderInputs, function (index, input) {
-                    if (index > 0) {
+                $.each(columnHeaderInputs, function(index, input) {
+                    if(index > 0) {
                         columnHeadersCSV = columnHeadersCSV + ",";
                     }
                     columnHeadersCSV = columnHeadersCSV + input.value;
@@ -241,15 +253,15 @@ governing - rights and limitations under the License. --}%
 
             function updateH3(column) {
                 var columnHeaderInputs = $('input.columnHeaderInput');
-                $.each(columnHeaderInputs, function (index, input) {
+                $.each(columnHeaderInputs, function(index, input) {
                     $("h3[for='" + input.id + "']").html($(input).val());
                 })
             }
 
             //setup the page
-            $(document).ready(function () {
+            $(document).ready(function() {
                 init();
-                $("#isSDS").change(function () {
+                $("#isSDS").change(function() {
                     refreshSDSRows();
                 });
             });
@@ -323,11 +335,21 @@ governing - rights and limitations under the License. --}%
                                 <input id="csvFileUpload" type="file" name="csvFile" class="file-selector"/>
 
                                 <p>
-                                    <button type="button" class="erk-button erk-button--light" onclick="javascript:this.form.reset();parseColumns();">
+                                    <button
+                                        type="button"
+                                        class="erk-button erk-button--light"
+                                        onclick="javascript:this.form.reset();parseColumns();"
+                                    >
                                         <g:message code="general.remove"/>
                                     </button>
 
-                                    <button type="button" id="checkData2" class="erk-button erk-button--light" name="checkData" onclick="javascript:parseColumns();">
+                                    <button
+                                        id="checkData2"
+                                        type="button"
+                                        class="erk-button erk-button--light"
+                                        name="checkData"
+                                        onclick="javascript:parseColumns();"
+                                    >
                                         <g:message code="speciesList.upload.check"/>
                                     </button>
                                 </p>
@@ -342,9 +364,22 @@ governing - rights and limitations under the License. --}%
                             <g:message code="speciesList.upload.pasteDescription"/>
                         </p>
 
-                        <g:textArea id="copyPasteData" name="copyPasteData" rows="10" cols="120" style="width:100%;" onkeyup="javascript:window.setTimeout('parseColumns()', 500, true);"></g:textArea>
+                        <g:textArea
+                            id="copyPasteData"
+                            name="copyPasteData"
+                            rows="10"
+                            cols="120"
+                            style="width:100%;"
+                            onkeyup="javascript:window.setTimeout('parseColumns()', 500, true);"
+                        />
 
-                        <g:submitButton id="checkData" class="actionButton erk-button erk-button--light" name="checkData" value="Check Data" onclick="javascript:parseColumns();"/>
+                        <g:submitButton
+                            id="checkData"
+                            class="actionButton erk-button erk-button--light"
+                            name="checkData"
+                            value="Check Data"
+                            onclick="javascript:parseColumns();"
+                        />
 
                         <p id="processingInfo"></p>
                     </div>
@@ -401,7 +436,7 @@ governing - rights and limitations under the License. --}%
                                         </td>
                                     </tr>
 
-                                    <g:if test="${request.isUserInRole(" ROLE_ADMIN")}">
+                                    <g:if test="${request.isUserInRole('ROLE_ADMIN')}">
                                         <tr>
                                             <td>
                                                 <label for="isBIE">
@@ -471,7 +506,11 @@ governing - rights and limitations under the License. --}%
                                         </td>
 
                                         <td>
-                                            <g:textField name="generalisation" style="width:99%" value="${list?.generalisation}"/>
+                                            <g:textField
+                                                name="generalisation"
+                                                style="width:99%"
+                                                value="${list?.generalisation}"
+                                            />
                                         </td>
                                     </tr>
 
@@ -483,7 +522,12 @@ governing - rights and limitations under the License. --}%
                                         </td>
 
                                         <td>
-                                            <g:select from="['CONSERVATION', 'BIOSECURITY']" name="sdsType" style="width:99%" value="${list?.sdsType}"/>
+                                            <g:select
+                                                from="['CONSERVATION', 'BIOSECURITY']"
+                                                name="sdsType"
+                                                style="width:99%"
+                                                value="${list?.sdsType}"
+                                            />
                                         </td>
                                     </tr>
 
@@ -531,7 +575,13 @@ governing - rights and limitations under the License. --}%
                                 </tbody>
                             </table>
 
-                            <input type="button" id="uploadButton" class="datasetName actionButton erk-button erk-button--light" value="Upload" onclick="javascript:uploadSpeciesList();"/>
+                            <input
+                                id="uploadButton"
+                                type="button"
+                                class="datasetName actionButton erk-button erk-button--light"
+                                value="Upload"
+                                onclick="javascript:uploadSpeciesList();"
+                            />
                         </div>
                     </div>
 

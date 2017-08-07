@@ -12,6 +12,7 @@
   - implied. See the License for the specific language governing
   - rights and limitations under the License.
 --%>
+
 <div id="parsedData" xmlns="http://www.w3.org/1999/html">
     <div id="tabulatedData">
         <style type="text/css">
@@ -63,7 +64,14 @@
                             <g:if test="${columnHeaders}">
                                 <g:each in="${columnHeaders}" var="hdr">
                                     <th class="parse">
-                                        <input id="Head_${hdr}" class="columnHeaderInput" type="text" value="${hdr}" style="${hdr.startsWith(" UNKNOWN") ? 'background-color: #E9AB17;' : ''}" onkeyup="javascript:window.setTimeout('updateH3(this.id)', 500, true);"/>
+                                        <input
+                                            id="Head_${hdr}"
+                                            class="columnHeaderInput"
+                                            type="text"
+                                            value="${hdr}"
+                                            style="${hdr.startsWith('UNKNOWN') ? 'background-color: #E9AB17;' : ''}"
+                                            onkeyup="javascript:window.setTimeout('updateH3(this.id)', 500, true);"
+                                        />
                                     </th>
                                 </g:each>
                             </g:if>
@@ -89,7 +97,13 @@
                     <g:message code="speciesList.parsedData.properties2"/>
                     <br/>
                     <g:message code="speciesList.parsedData.properties3"/>
-                    <input id="viewVocabButton" class="datasetName actionButton erk-button erk-button--light" type="button" value="Click here to map..." onclick="javascript:viewVocab();"/>
+                    <input
+                        id="viewVocabButton"
+                        class="datasetName actionButton erk-button erk-button--light"
+                        type="button"
+                        value="Click here to map..."
+                        onclick="javascript:viewVocab();"
+                    />
                 </p>
 
                 <div class="allVocabs well" id="listvocab">
@@ -102,7 +116,9 @@
 
                     <g:each in="${listProperties.keySet()}" var="key">
                         <div class="vocabDiv">
-                            <h3 class="vocabHeader" for="Head_${key}">${key}</h3>
+                            <h3 class="vocabHeader" for="Head_${key}">
+                                ${key}
+                            </h3>
 
                             <div class="fhtable">
                                 <table class="vocabularyTable table table-condensed" id="Voc_${key}" for="Head_${key}">
@@ -121,25 +137,26 @@
                                                     ${rawKeyVal}
                                                 </td>
                                                 <td class="parse">
-                                                    <input class="vocabHeader_${key}" type="text" value=""></td>
-                                                </tr>
-                                            </g:each>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- fhtable -->
+                                                    <input class="vocabHeader_${key}" type="text" value="">
+                                                </td>
+                                            </tr>
+                                        </g:each>
+                                    </tbody>
+                                </table>
                             </div>
-                            <!-- #vocabDiv -->
-                        </g:each>
-
-                        <div class="pull-right">
-                            <button class="erk-button erk-button--light" onclick="javascript:hideVocab();">
-                                <g:message code="general.close"/>
-                            </button>
+                            <!-- fhtable -->
                         </div>
+                        <!-- #vocabDiv -->
+                    </g:each>
+
+                    <div class="pull-right">
+                        <button class="erk-button erk-button--light" onclick="javascript:hideVocab();">
+                            <g:message code="general.close"/>
+                        </button>
                     </div>
-                    <!-- #listvocab -->
-                </g:if>
-            </g:else>
-        </div>
+                </div>
+                <!-- #listvocab -->
+            </g:if>
+        </g:else>
     </div>
+</div>

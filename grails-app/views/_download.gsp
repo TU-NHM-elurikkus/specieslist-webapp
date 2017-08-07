@@ -4,7 +4,13 @@
     Author     : "Nick dos Remedios <Nick.dosRemedios@csiro.au>"
 --%>
 
-<div class="modal fade" id="download-dialog" tabindex="-1" role="dialog" aria-labelledby="download-dialog-title" aria-hidden="true">
+<div
+    class="modal fade"
+    id="download-dialog"
+    tabindex="-1" role="dialog"
+    aria-labelledby="download-dialog-title"
+    aria-hidden="true"
+>
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -36,7 +42,14 @@
                             <g:message code="general.email"/>
                         </label>
 
-                        <input type="text" name="email" id="email" value="${request.remoteUser}" size="30" class="col-sm-8 col-md-6 col-lg-4"/>
+                        <input
+                            type="text"
+                            name="email"
+                            id="email"
+                            value="${request.remoteUser}"
+                            size="30"
+                            class="col-sm-8 col-md-6 col-lg-4"
+                        />
                     </div>
 
                     <div class="form-group row">
@@ -44,7 +57,14 @@
                             <g:message code="download.file"/>
                         </label>
 
-                        <input type="text" name="filename" id="filename" value="${speciesList?.listName?.replaceAll(~/\s+/, " _")?:" data"}" size="30" class="col-sm-8 col-md-6 col-lg-4"/>
+                        <input
+                            type="text"
+                            name="filename"
+                            id="filename"
+                            value="${speciesList?.listName?.replaceAll(~/\s+/, " _")?:" data"}"
+                            size="30"
+                            class="col-sm-8 col-md-6 col-lg-4"
+                        />
                     </div>
 
                     <div class="form-group row">
@@ -69,17 +89,30 @@
 
                     <div class="form-group row">
                         <div class="col">
-                            <button type="button" class="actionButton erk-button erk-button--light" id="downloadSubmitButton" onclick="return downloadOccurrences()">
+                            <button
+                                type="button"
+                                class="actionButton erk-button erk-button--light"
+                                id="downloadSubmitButton"
+                                onclick="return downloadOccurrences()"
+                            >
                                 <g:message code="download.all"/>
                             </button>
 
                             <g:if test="${grailsApplication.config.fieldGuide.baseURL}">
-                                <button type="button" class="actionButton erk-button erk-button--light" id="downloadFieldGuideSubmitButton">
+                                <button
+                                    type="button"
+                                    class="actionButton erk-button erk-button--light"
+                                    id="downloadFieldGuideSubmitButton"
+                                >
                                     <g:message code="download.fieldGuide"/>
                                 </button>
                             </g:if>
 
-                            <button type="button" class="actionButton erk-button erk-button--light" id="downloadSpeciesListSubmitButton">
+                            <button
+                                type="button"
+                                class="actionButton erk-button erk-button--light"
+                                id="downloadSpeciesListSubmitButton"
+                            >
                                 <g:message code="download.list"/>
                             </button>
                         </div>
@@ -88,7 +121,9 @@
 
                 <g:if test="${grailsApplication.config.fieldGuide.baseURL}">
                     <p>
-                        <strong><g:message code="download.note"/></strong>:
+                        <strong>
+                            <g:message code="download.note"/>
+                        </strong>:
                         <g:message code="download.noteDescription"/>
                     </p>
                 </g:if>
@@ -96,22 +131,22 @@
                 <div id="statusMsg" style="text-align: center; font-weight: bold; "></div>
 
                 <script type="text/javascript">
-                    $(document).ready(function () {
+                    $(document).ready(function() {
                         // catch download submit button Note the unbind().bind() syntax - due to Jquery ready being inside <body> tag.
 
-                        $("#downloadSubmitButton").unbind("click").bind("click", function (e) {
+                        $("#downloadSubmitButton").unbind("click").bind("click", function(e) {
                             e.preventDefault();
 
-                            if (validateForm()) {
+                            if(validateForm()) {
                                 downloadURL = "${request.contextPath}/speciesList/occurrences/${params.id}${params.toQueryString()}&type=Download&email=" + $("#email").val() + "&reasonTypeId=" + $("#reasonTypeId").val() + "&file=" + $("#filename").val();
                                 window.location.href = downloadURL;
                                 notifyDownloadStarted()
                             }
                         });
 
-                        $("#downloadSpeciesListSubmitButton").unbind("click").bind("click", function (e) {
+                        $("#downloadSpeciesListSubmitButton").unbind("click").bind("click", function(e) {
                             e.preventDefault();
-                            if (validateForm()) {
+                            if(validateForm()) {
                                 //alert("${request.contextPath}/speciesListItem/downloadList/${params.id}${params.toQueryString()}&file="+$("#filename").val())
                                 window.location.href = "${request.contextPath}/speciesListItem/downloadList/${params.id}${params.toQueryString()}&file=" + $("#filename").val()
                                 notifyDownloadStarted()
@@ -119,10 +154,10 @@
                         });
 
                         // catch checklist download submit button
-                        $("#downloadFieldGuideSubmitButton").unbind("click").bind("click", function (e) {
+                        $("#downloadFieldGuideSubmitButton").unbind("click").bind("click", function(e) {
                             e.preventDefault();
 
-                            if (validateForm()) {
+                            if(validateForm()) {
                                 var downloadUrl = "${request.contextPath}/speciesList/fieldGuide/${params.id}${params.toQueryString()}"
                                 //alert(downloadUrl)
                                 window.open(downloadUrl);
@@ -134,7 +169,7 @@
                     function generateDownloadPrefix(downloadUrlPrefix) {
                         downloadUrlPrefix = downloadUrlPrefix.replace(/\\ /g, " ");
                         var searchParams = $(":input#searchParams").val();
-                        if (searchParams) {
+                        if(searchParams) {
                             downloadUrlPrefix += searchParams;
                         } else {
                             // EYA page is JS driven
@@ -146,7 +181,7 @@
 
                     function notifyDownloadStarted() {
                         $("#statusMsg").html("Download has commenced");
-                        window.setTimeout(function () {
+                        window.setTimeout(function() {
                             $("#statusMsg").html("");
                             $('#download-dialog').modal('hide')
                         }, 2000);
@@ -156,7 +191,7 @@
                         var isValid = false;
                         var reasonId = $("#reasonTypeId option:selected").val();
 
-                        if (reasonId) {
+                        if(reasonId) {
                             isValid = true;
                         } else {
                             $("#reasonTypeId").focus();
