@@ -7,10 +7,10 @@
 
 <div id="${facetId}" class="subnavlist">
     <ul class="erk-ulist">
-        <g:set var="i" value="${0}" />
+        <g:set var="i" value="${0}"/>
 
         <g:while test="${i < 4 && i < values.size()}">
-            <g:set var="arr" value="${values.get(i)}" />
+            <g:set var="arr" value="${values.get(i)}"/>
 
             <g:if test="${isProperty}">
                 <li class="erk-ulist--item">
@@ -38,16 +38,17 @@
             <li class="erk-ulist--item showHide">
                 <i class="fa fa-hand-o-right"></i>
 
-                <a href="${sl.facetAsId(key:key, prefix:"#div")}" class="multipleFacetsLinkZ" id="${sl.facetAsId(key:key, prefix:"multi")}"
-                   role="button" data-toggle="modal"  title="See full list of values">
-                    <g:message code="speciesListItem.facet.choose" />
+                <a href="${sl.facetAsId(key:key, prefix:'#div')}" class="multipleFacetsLinkZ" id="${sl.facetAsId(key:key, prefix:'multi')}" role="button"
+                    data-toggle="modal" title="${message(code: 'speciesListItem.facet.seeFull')}">
+                    <g:message code="speciesListItem.facet.choose"/>
                 </a>
             </li>
         </g:if>
     </ul>
 
     <!-- modal popup for "choose more" link -->
-    <div id="${sl.facetAsId(key:key, prefix:"div")}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="multipleFacetsLabel" aria-hidden="true"><!-- BS modal div -->
+    <div id="${sl.facetAsId(key:key, prefix:'div')}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="multipleFacetsLabel" aria-hidden="true">
+        <!-- BS modal div -->
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -56,7 +57,7 @@
                     </button>
 
                     <h3 class="multipleFacetsLabel">
-                        <g:message code="speciesListItem.facet.refine" />
+                        <g:message code="speciesListItem.facet.refine"/>
                     </h3>
                 </div>
 
@@ -68,7 +69,7 @@
                                     ${key}
                                 </th>
                                 <th style="border-right-style: none;text-align: right;">
-                                    <g:message code="speciesListItem.facet.count" />
+                                    <g:message code="speciesListItem.facet.count"/>
                                 </th>
                             </tr>
                         </thead>
@@ -78,7 +79,8 @@
                                 <tr>
                                     <g:if test="${isProperty}">
                                         <td>
-                                            <g:link action="list" id="${params.id}" params="${[fq:sl.buildFqList(fqs:fqs, fq:"kvp ${arr[0]}:${arr[1]}"), max:params.max]}">
+                                            <g:link action="list" id="${params.id}"
+                                                params="${[fq:sl.buildFqList(fqs:fqs, fq:"kvp ${arr[0]}:${arr[1]}"), max:params.max]}">
                                                 ${arr[2]?:arr[1]}
                                             </g:link>
                                         </td>
@@ -107,7 +109,7 @@
 
                 <div class="modal-footer" style="text-align: left;">
                     <button class="erk-button erk-button--light" data-dismiss="modal" aria-hidden="true" style="float:right;">
-                        <g:message code="general.close" />
+                        <g:message code="general.close"/>
                     </button>
                 </div>
             </div>

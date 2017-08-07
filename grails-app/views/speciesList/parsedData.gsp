@@ -17,11 +17,14 @@
         <style type="text/css">
             table {
                 border-collapse: collapse;
-                margin-bottom: 0px;
+                margin-bottom: 0;
             }
             .fwtable {
-                overflow-y: hidden; overflow-x: auto; width: 100%;
+                overflow-y: hidden;
+                overflow-x: auto;
+                width: 100%;
             }
+
         </style>
 
         <h1></h1>
@@ -33,11 +36,11 @@
         <g:else>
             <div id="recognisedDataDiv">
                 <h2>
-                    <g:message code="speciesList.parsedData.initial" />
+                    <g:message code="speciesList.parsedData.initial"/>
                 </h2>
                 <g:if test="${!nameFound}">
                     <div class="alert alert-error">
-                        <g:message code="speciesList.parsedData.alert" />
+                        <g:message code="speciesList.parsedData.alert"/>
                         <g:each in="${nameColumns}" var="nc" status="i">
                             <g:if test="${i == nameColumns.size() - 1}">
                                 , or
@@ -51,7 +54,7 @@
                 </g:if>
 
                 <p>
-                    <g:message code="speciesList.parsedData.headingsAdjust" />
+                    <g:message code="speciesList.parsedData.headingsAdjust"/>
                 </p>
 
                 <div class="fwtable table-responsive">
@@ -60,9 +63,7 @@
                             <g:if test="${columnHeaders}">
                                 <g:each in="${columnHeaders}" var="hdr">
                                     <th class="parse">
-                                        <input id="Head_${hdr}" class="columnHeaderInput" type="text" value="${hdr}"
-                                               style="${hdr.startsWith("UNKNOWN") ? 'background-color: #E9AB17;' : ''}"
-                                               onkeyup="javascript:window.setTimeout('updateH3(this.id)', 500, true);" />
+                                        <input id="Head_${hdr}" class="columnHeaderInput" type="text" value="${hdr}" style="${hdr.startsWith(" UNKNOWN") ? 'background-color: #E9AB17;' : ''}" onkeyup="javascript:window.setTimeout('updateH3(this.id)', 500, true);"/>
                                     </th>
                                 </g:each>
                             </g:if>
@@ -78,22 +79,24 @@
                         </tbody>
                     </table>
                 </div>
-            </div><!-- #recognisedDataDiv -->
+            </div>
+            <!-- #recognisedDataDiv -->
 
             <g:if test="${listProperties}">
                 <p>
-                    <g:message code="speciesList.parsedData.properties1" /> <br />
-                    <g:message code="speciesList.parsedData.properties2" /> <br />
-                    <g:message code="speciesList.parsedData.properties3" />
-                    <input id="viewVocabButton" class="datasetName actionButton erk-button erk-button--light"
-                        type="button" value="Click here to map..." onclick="javascript:viewVocab();" />
+                    <g:message code="speciesList.parsedData.properties1"/>
+                    <br/>
+                    <g:message code="speciesList.parsedData.properties2"/>
+                    <br/>
+                    <g:message code="speciesList.parsedData.properties3"/>
+                    <input id="viewVocabButton" class="datasetName actionButton erk-button erk-button--light" type="button" value="Click here to map..." onclick="javascript:viewVocab();"/>
                 </p>
 
                 <div class="allVocabs well" id="listvocab">
 
                     <div class="pull-right">
                         <button class="erk-button erk-button--light" onclick="javascript:hideVocab();">
-                            <g:message code="general.close" />
+                            <g:message code="general.close"/>
                         </button>
                     </div>
 
@@ -105,10 +108,10 @@
                                 <table class="vocabularyTable table table-condensed" id="Voc_${key}" for="Head_${key}">
                                     <thead>
                                         <th class="parse">
-                                            <g:message code="general.value" />
+                                            <g:message code="general.value"/>
                                         </th>
                                         <th class="parse">
-                                            <g:message code="speciesList.parsedData.mapsTo" />
+                                            <g:message code="speciesList.parsedData.mapsTo"/>
                                         </th>
                                     </thead>
                                     <tbody class="vocabBody">
@@ -117,23 +120,26 @@
                                                 <td class="parse">
                                                     ${rawKeyVal}
                                                 </td>
-                                                <td class="parse"><input class="vocabHeader_${key}" type="text" value="">
-                                                </td>
-                                            </tr>
-                                        </g:each>
-                                    </tbody>
-                                </table>
-                            </div> <!-- fhtable -->
-                        </div><!-- #vocabDiv -->
-                    </g:each>
+                                                <td class="parse">
+                                                    <input class="vocabHeader_${key}" type="text" value=""></td>
+                                                </tr>
+                                            </g:each>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- fhtable -->
+                            </div>
+                            <!-- #vocabDiv -->
+                        </g:each>
 
-                    <div class="pull-right">
-                        <button class="erk-button erk-button--light" onclick="javascript:hideVocab();">
-                            <g:message code="general.close" />
-                        </button>
+                        <div class="pull-right">
+                            <button class="erk-button erk-button--light" onclick="javascript:hideVocab();">
+                                <g:message code="general.close"/>
+                            </button>
+                        </div>
                     </div>
-                </div><!-- #listvocab -->
-            </g:if>
-        </g:else>
+                    <!-- #listvocab -->
+                </g:if>
+            </g:else>
+        </div>
     </div>
-</div>
