@@ -187,10 +187,20 @@ img.smallSpeciesImage {
     padding: 8px;
 }
 
-.list-search-form {
-    display: inline-block;
-    float: left;
+.list-search-row {
+}
+
+.list-search-row__search {
+    display: flex;
+}
+
+.list-search-row__search-form {
+    flex: 1;
     margin-right: 1rem;
+}
+
+.list-search-row__pagination-controls {
+    text-align: right;
 }
 
 #listItemView {

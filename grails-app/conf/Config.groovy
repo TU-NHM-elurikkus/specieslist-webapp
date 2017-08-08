@@ -93,7 +93,9 @@ auth.userNamesForNumericIdPath='getUserListWithIds'
 
 // set per-environment serverURL stem for creating absolute links
 environments {
-    development {}
+    development {
+        grails.resources.debug = true
+    }
     production {}
 }
 
