@@ -371,106 +371,108 @@
             </g:if>
 
             <div class="row">
-                <div class="col-md-3 well" id="facets-column">
-                    <div class="boxedZ attachedZ">
-                        <section class="meta">
-                            <ul class="erk-ulist">
-                                <li class="erk-ulist--item">
-                                    <g:message code="speciesListItem.list.taxonNumber"/>
-                                    <span class="count">
-                                        ${totalCount}
-                                    </span>
-                                </li>
-
-                                <li class="erk-ulist--item">
-                                    <g:message code="speciesListItem.list.distinctSpecies"/>
-                                    <span class="count">
-                                        ${distinctCount}
-                                    </span>
-                                </li>
-
-                                <g:if test="${hasUnrecognised && noMatchCount!=totalCount}">
+                <div class="col-md-3" id="facets-column">
+                    <div class="card card-block">
+                        <div class="boxedZ attachedZ">
+                            <section class="meta">
+                                <ul class="erk-ulist">
                                     <li class="erk-ulist--item">
-                                        <g:link
-                                            action="list"
-                                            id="${params.id}"
-                                            title="${message(code: 'speciesListItem.list.viewUnrecognised')}"
-                                            params="${[fq:sl.buildFqList(fqs:fqs, fq:' guid:null'), max:params.max]}"
-                                        >
-                                            <g:message code="speciesListItem.list.unknownTaxa"/>
-                                        </g:link>
-
+                                        <g:message code="speciesListItem.list.taxonNumber"/>
                                         <span class="count">
-                                            ${noMatchCount}
+                                            ${totalCount}
                                         </span>
                                     </li>
-                                </g:if>
 
-                                <%--
-                                <li class="erk-ulist--item">
-                                    <g:link controller="speciesList" action="list" class="wrk-button" title="My Lists">
-                                        <g:message code="general.myLists"/>
-                                    </g:link>
-                                </li>
-                                --%>
-                            </ul>
-                        </section>
+                                    <li class="erk-ulist--item">
+                                        <g:message code="speciesListItem.list.distinctSpecies"/>
+                                        <span class="count">
+                                            ${distinctCount}
+                                        </span>
+                                    </li>
 
-                        <section>
-                            <g:if test="${facets.size()>0 || params.fq}">
-                                <h4>
-                                    <g:message code="speciesListItem.list.refine"/>
-                                </h4>
+                                    <g:if test="${hasUnrecognised && noMatchCount!=totalCount}">
+                                        <li class="erk-ulist--item">
+                                            <g:link
+                                                action="list"
+                                                id="${params.id}"
+                                                title="${message(code: 'speciesListItem.list.viewUnrecognised')}"
+                                                params="${[fq:sl.buildFqList(fqs:fqs, fq:' guid:null'), max:params.max]}"
+                                            >
+                                                <g:message code="speciesListItem.list.unknownTaxa"/>
+                                            </g:link>
 
-                                <div id="accordion">
-                                    <g:set var="fqs" value="${params.list('fq')}"/>
-                                    <g:if test="${fqs.size()>0&& fqs.get(0).length()>0}">
-                                        <div id="currentFilter">
-                                            <div class="FieldName">
-                                                <g:message code="speciesListItem.list.filters"/>
-                                            </div>
-
-                                            <div id="currentFilters" class="subnavlist">
-                                                <ul class="erk-ulist">
-                                                    <g:each in="${fqs}" var="fq">
-                                                        <g:if test="${fq.length() >0}">
-                                                            <li class="erk-ulist--item">
-                                                                <g:link
-                                                                    action="list"
-                                                                    id="${params.id}"
-                                                                    params="${[fq:sl.excludedFqList(fqs:fqs, fq:fq), max:params.max]}"
-                                                                    class="removeLink"
-                                                                    title="Uncheck (remove filter)"
-                                                                >
-                                                                    <span class="fa fa-check"></span>
-                                                                </g:link>
-                                                                ${fq.replaceFirst("kvp ","")}
-                                                            </li>
-                                                        </g:if>
-                                                    </g:each>
-                                                </ul>
-                                            </div>
-                                        </div>
+                                            <span class="count">
+                                                ${noMatchCount}
+                                            </span>
+                                        </li>
                                     </g:if>
 
-                                    <g:each in="${facets}" var="entry">
-                                        <g:if test="${entry.key == " listProperties"}">
-                                            <g:each in="${facets.get(" listProperties")}" var="value">
+                                    <%--
+                                    <li class="erk-ulist--item">
+                                        <g:link controller="speciesList" action="list" class="wrk-button" title="My Lists">
+                                            <g:message code="general.myLists"/>
+                                        </g:link>
+                                    </li>
+                                    --%>
+                                </ul>
+                            </section>
+
+                            <section>
+                                <g:if test="${facets.size()>0 || params.fq}">
+                                    <h4>
+                                        <g:message code="speciesListItem.list.refine"/>
+                                    </h4>
+
+                                    <div id="accordion">
+                                        <g:set var="fqs" value="${params.list('fq')}"/>
+                                        <g:if test="${fqs.size()>0&& fqs.get(0).length()>0}">
+                                            <div id="currentFilter">
+                                                <div class="FieldName">
+                                                    <g:message code="speciesListItem.list.filters"/>
+                                                </div>
+
+                                                <div id="currentFilters" class="subnavlist">
+                                                    <ul class="erk-ulist">
+                                                        <g:each in="${fqs}" var="fq">
+                                                            <g:if test="${fq.length() >0}">
+                                                                <li class="erk-ulist--item">
+                                                                    <g:link
+                                                                        action="list"
+                                                                        id="${params.id}"
+                                                                        params="${[fq:sl.excludedFqList(fqs:fqs, fq:fq), max:params.max]}"
+                                                                        class="removeLink"
+                                                                        title="Uncheck (remove filter)"
+                                                                    >
+                                                                        <span class="fa fa-check"></span>
+                                                                    </g:link>
+                                                                    ${fq.replaceFirst("kvp ","")}
+                                                                </li>
+                                                            </g:if>
+                                                        </g:each>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </g:if>
+
+                                        <g:each in="${facets}" var="entry">
+                                            <g:if test="${entry.key == " listProperties"}">
+                                                <g:each in="${facets.get(" listProperties")}" var="value">
+                                                    <g:render
+                                                        template="facet"
+                                                        model="${[key:value.getKey(), values:value.getValue(), isProperty:true]}"
+                                                    />
+                                                </g:each>
+                                            </g:if>
+                                            <g:else>
                                                 <g:render
                                                     template="facet"
-                                                    model="${[key:value.getKey(), values:value.getValue(), isProperty:true]}"
-                                                />
-                                            </g:each>
-                                        </g:if>
-                                        <g:else>
-                                            <g:render
-                                                template="facet"
-                                                model="${[key:entry.key, values:entry.value, isProperty:false]}"/>
-                                        </g:else>
-                                    </g:each>
-                                </div>
-                            </g:if>
-                        </section>
+                                                    model="${[key:entry.key, values:entry.value, isProperty:false]}"/>
+                                            </g:else>
+                                        </g:each>
+                                    </div>
+                                </g:if>
+                            </section>
+                        </div>
                     </div>
                 </div>
 
