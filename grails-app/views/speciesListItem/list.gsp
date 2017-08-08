@@ -507,6 +507,17 @@
 
                     <div class="tab-content">
                         <div class="tab-pane active" id="list-tab" role="tabpanel">
+                            <div class="float-right">
+                                <g:message code="general.pageItems"/>:
+                                <select class="input-mini" onchange="reloadWithMax(this)">
+                                    <g:each in="${[10,25,50,100]}" var="max">
+                                        <option ${(params.max == max)?'selected="selected"' :'' }>
+                                            ${max}
+                                        </option>
+                                    </g:each>
+                                </select>
+                            </div>
+
                             <div class="speciesList table-responsive">
                                 <table class="table table-sm table-bordered table-striped" id="speciesListTable">
                                     <thead>
@@ -772,17 +783,6 @@
                                 <g:else>
                                     <g:paginate total="${totalCount}" action="list" id="${params.id}"/>
                                 </g:else>
-                            </div>
-
-                            <div class="float-right">
-                                <g:message code="general.pageItems"/>:
-                                <select id="maxItems" class="input-mini" onchange="reloadWithMax(this)">
-                                    <g:each in="${[10,25,50,100]}" var="max">
-                                        <option ${(params.max == max)?'selected="selected"' :'' }>
-                                            ${max}
-                                        </option>
-                                    </g:each>
-                                </select>
                             </div>
                         </div>
                     </div>
