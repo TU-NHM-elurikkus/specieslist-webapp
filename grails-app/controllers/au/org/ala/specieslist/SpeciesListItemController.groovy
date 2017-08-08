@@ -102,7 +102,37 @@ class SpeciesListItemController {
 
                     def fqs, distinctCount, speciesListItems, totalCount, noMatchCount, facets
 
-                    if(requestParams.fq) {
+                    if(requestParams.query) {
+                        // TODO: Take fq into account
+                        fqs = null
+
+                        def baseQuery = "dataResourceUid=? AND raw_scientific_name LIKE ?"
+                        def baseParams = [requestParams.id, "%" + requestParams.query + "%"]
+
+                        distinctCount = SpeciesListItem.executeQuery(
+                            "SELECT COUNT(DISTINCT guid) FROM SpeciesListItem WHERE " + baseQuery,
+                            baseParams
+                        ).head()
+
+                        speciesListItems = SpeciesListItem.findAll(
+                            "FROM SpeciesListItem WHERE " + baseQuery,
+                            baseParams,
+                            requestParams
+                        )
+
+                        totalCount = SpeciesListItem.executeQuery(
+                            "SELECT COUNT(guid) FROM SpeciesListItem WHERE " + baseQuery,
+                            baseParams
+                        ).head()
+
+                        noMatchCount = SpeciesListItem.executeQuery(
+                            "SELECT COUNT(guid) FROM SpeciesListItem WHERE guid IS NOT NULL AND " + baseQuery,
+                            baseParams
+                        ).head()
+
+                        // TODO: Facet using query
+                        facets = generateFacetValues(null, null)
+                    } else if(requestParams.fq) {
                         fqs = [requestParams.fq].flatten().findAll { it != null }
 
                         def baseQueryAndParams = queryService.constructWithFacets(" from SpeciesListItem sli ", fqs, requestParams.id)

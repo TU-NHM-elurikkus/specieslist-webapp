@@ -295,6 +295,8 @@ class QueryService {
         }
 
         query.append(whereBuilder.toString())
+
+        log.debug('constructWithFacets query:')
         log.debug(query.toString())
 
         [query.toString(), queryparams]
