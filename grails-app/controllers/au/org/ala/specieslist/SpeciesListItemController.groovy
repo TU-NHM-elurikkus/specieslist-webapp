@@ -81,69 +81,109 @@ class SpeciesListItemController {
             try {
                 //check to see if the list exists
                 def speciesList = SpeciesList.findByDataResourceUid(requestParams.id)
+
                 if (!speciesList) {
                     flash.message = "${message(code: 'general.not.found.message', args: [message(code: 'speciesList.label', default: 'Species List'), requestParams.id])}"
                     redirect(controller: "public", action: "speciesLists")
                 } else {
-                    if (requestParams.message)
+                    if (requestParams.message) {
                         flash.message = requestParams.message
-                    requestParams.max = Math.min(requestParams.max ? requestParams.int('max') : 10, 100)
+                    }
+
+                    requestParams.max = Math.min(requestParams.max ? requestParams.int('max') : 25, 100)
                     requestParams.sort = requestParams.sort ?: "itemOrder"
                     requestParams.offset = requestParams.int('offset') ?: 0
                     requestParams.fetch = [kvpValues: 'select']
 
                     log.debug(requestParams.toQueryString())
-                    //println(params.facets)
-                    def fqs = requestParams.fq ? [requestParams.fq].flatten().findAll { it != null } : null
-                    //println(queryService.constructWithFacets("select count(distinct guid)",facets, params.id))
 
-                    def baseQueryAndParams = requestParams.fq ? queryService.constructWithFacets(" from SpeciesListItem sli ", fqs, requestParams.id) : null
-                    log.debug(baseQueryAndParams)
-
-                    // to sort on a column 'order by' clause has to be added explicitly since executeQuery function does
-                    // not accept sort and order as named parameters. Named parameters accepted by executeQuery includes
-                    // max and offset. check documentation for more details.
-                    List baseQueryAndParamsForListingSLI = baseQueryAndParams?.clone()
-                    if(requestParams.sort && baseQueryAndParams){
-                        baseQueryAndParamsForListingSLI[0] +=" order by sli.${requestParams.sort} ${requestParams.order?:'asc'}"
-                    }
-
-                    //This is used for the stats - should these be for the whole list or just the fq-ed version?
-                    def distinctCount = requestParams.fq ? SpeciesList.executeQuery("select count(distinct guid) " + baseQueryAndParams[0], baseQueryAndParams[1]).head() : SpeciesListItem.executeQuery("select count(distinct guid) from SpeciesListItem where dataResourceUid=?", requestParams.id).head()//SpeciesListItem.executeQuery(queryparams[0],[queryparams[1]]).head()
                     //need to get all keys to be included in the table so no need to add the filter.
                     def keys = SpeciesListKVP.executeQuery("select distinct key from SpeciesListKVP where dataResourceUid=? order by itemOrder", requestParams.id)
 
-                    def speciesListItems = requestParams.fq ? SpeciesListItem.executeQuery("select sli " + baseQueryAndParamsForListingSLI[0], baseQueryAndParamsForListingSLI[1], requestParams) : SpeciesListItem.findAllByDataResourceUid(requestParams.id, requestParams)
+                    def fqs, distinctCount, speciesListItems, totalCount, noMatchCount, facets
 
-                    def totalCount = requestParams.fq ? SpeciesListItem.executeQuery("select count(*) " + baseQueryAndParams[0], baseQueryAndParams[1]).head() : SpeciesListItem.countByDataResourceUid(requestParams.id)
+                    if(requestParams.fq) {
+                        fqs = [requestParams.fq].flatten().findAll { it != null }
 
-                    def noMatchCount = requestParams.fq ? SpeciesListItem.executeQuery("select count(*) " + baseQueryAndParams[0] + " AND sli.guid is null", baseQueryAndParams[1]).head() : SpeciesListItem.countByDataResourceUidAndGuidIsNull(requestParams.id)
+                        def baseQueryAndParams = queryService.constructWithFacets(" from SpeciesListItem sli ", fqs, requestParams.id)
+                        def baseQuery = baseQueryAndParams[0]
+                        def baseQueryParams = baseQueryAndParams[1]
+
+                        log.debug("Base query & params:")
+                        log.debug(baseQueryAndParams)
+
+                        def sliQuery = baseQuery
+
+                        if(requestParams.sort) {
+                            sliQuery += " order by sli.${requestParams.sort} ${requestParams.order?:'asc'}"
+                        }
+
+                        distinctCount = SpeciesList.executeQuery(
+                            "select count(distinct guid) " + baseQuery,
+                            baseQueryParams
+                        ).head()
+
+                        speciesListItems = SpeciesListItem.executeQuery(
+                            "select sli " + sliQuery,
+                            baseQueryParams,
+                            requestParams
+                        )
+
+                        totalCount = SpeciesListItem.executeQuery(
+                            "select count(*) " + baseQuery,
+                            baseQueryParams
+                        ).head()
+
+                        noMatchCount = SpeciesListItem.executeQuery(
+                            "select count(*) " + baseQuery + " AND sli.guid is null",
+                            baseQueryParams,
+                        ).head()
+
+                        facets = generateFacetValues(fqs, baseQueryAndParams)
+                    } else {
+                        fqs = null
+
+                        distinctCount = SpeciesListItem.executeQuery(
+                            "select count(distinct guid) from SpeciesListItem where dataResourceUid=?",
+                            requestParams.id
+                        ).head()
+
+                        speciesListItems = SpeciesListItem.findAllByDataResourceUid(
+                            requestParams.id,
+                            requestParams
+                        )
+
+                        totalCount = SpeciesListItem.countByDataResourceUid(requestParams.id)
+
+                        noMatchCount = SpeciesListItem.countByDataResourceUidAndGuidIsNull(requestParams.id)
+
+                        facets = generateFacetValues(null, null)
+                    }
 
                     def users = SpeciesList.executeQuery("select distinct sl.username from SpeciesList sl")
 
-                    //println(speciesListItems)
-                    //log.debug("KEYS: " + keys)
                     def guids = speciesListItems.collect { it.guid }
                     log.debug("guids " + guids)
+
                     def downloadReasons = loggerService.getReasons()
                     log.debug("Retrieved Logger Reasons")
-                    def facets = generateFacetValues(fqs, baseQueryAndParams)
-                    log.debug("Retrieved facets")
+
                     log.debug("Checking speciesList: " + speciesList)
                     log.debug("Checking editors: " + speciesList.editors)
+
                     render(view: 'list', model: [
-                            speciesList: speciesList,
-                            params: requestParams,
-                            results: speciesListItems,
-                            totalCount: totalCount,
-                            noMatchCount: noMatchCount,
-                            distinctCount: distinctCount,
-                            hasUnrecognised: noMatchCount > 0,
-                            keys: keys,
-                            downloadReasons: downloadReasons,
-                            users: users,
-                            facets: facets,
-                            fqs : fqs
+                        speciesList: speciesList,
+                        params: requestParams,
+                        results: speciesListItems,
+                        totalCount: totalCount,
+                        noMatchCount: noMatchCount,
+                        distinctCount: distinctCount,
+                        hasUnrecognised: noMatchCount > 0,
+                        keys: keys,
+                        downloadReasons: downloadReasons,
+                        users: users,
+                        facets: facets,
+                        fqs : fqs
                     ])
                 }
             } catch (Exception e) {

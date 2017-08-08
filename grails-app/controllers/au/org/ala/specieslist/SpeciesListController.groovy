@@ -164,7 +164,7 @@ class SpeciesListController {
                             header.split(","),
                             vocabs)
 
-                    def url = createLink(controller:'speciesListItem', action:'list', id: druid) +"?max=10"
+                    def url = createLink(controller:'speciesListItem', action:'list', id: druid) +"?max=25"
                     //update the URL for the list
                     helperService.updateDataResourceForList(druid,
                         [
@@ -240,7 +240,7 @@ class SpeciesListController {
             flash.params
             //[max:10, sort:"title", order:"desc", offset:100]
             //render(view:'list', model:[results: speciesListItems])
-            redirect(controller: "speciesListItem",action: "list",id: druid,params: [max: 10, sort:"id"])//,id: druid, max: 10, sort:"id")
+            redirect(controller: "speciesListItem",action: "list",id: druid,params: [max: 25, sort:"id"])//,id: druid, max: 10, sort:"id")
         }
     }
 
@@ -280,7 +280,7 @@ class SpeciesListController {
         try{
             if (params.message)
                 flash.message = params.message
-            params.max = Math.min(params.max ? params.int('max') : 10, 100)
+            params.max = Math.min(params.max ? params.int('max') : 25, 100)
             params.sort = params.sort ?: "id"
             //force the SpeciesListItem to perform a join on the kvp table.
             //params.fetch = [kvpValues: 'join'] -- doesn't work for a 1 ro many query because it doesn't correctly obey the "max" param

@@ -51,13 +51,13 @@
                     </g:if>
 
                     <g:if test="${lists && total>0}">
-                        <div class="row">
-                            <div class="col">
-                                <form class="list-search-form">
-                                    <div class="input-plus">
+                        <div class="row list-search-row">
+                            <div class="col-md-9 col-sm-12">
+                                <div class="list-search-row__search">
+                                    <form class="input-plus list-search-row__search-form">
                                         <input
                                             id="appendedInputButton"
-                                            class="input-plus"
+                                            class="input-plus__field"
                                             name="q"
                                             type="text"
                                             value="${params.q}"
@@ -66,20 +66,20 @@
                                         <button class="erk-button erk-button--dark input-plus__addon" type="submit">
                                             <g:message code="general.search"/>
                                         </button>
-                                    </div>
-                                </form>
+                                    </form>
 
-                                <form class="list-search-form">
                                     <g:if test="${params.q}">
-                                        <button class="erk-button erk-button--light" type="submit">
-                                            <g:message code="public.speciesLists.clearSearch"/>
-                                        </button>
+                                        <form>
+                                            <button class="erk-button erk-button--light" type="submit">
+                                                <g:message code="public.speciesLists.clearSearch"/>
+                                            </button>
+                                        </form>
                                     </g:if>
-                                </form>
-
-                                <div class="float-right">
-                                    <g:render template="/pageSize"/>
                                 </div>
+                            </div>
+
+                            <div class="list-search-row__pagination-controls col-md-3 col-sm-12">
+                                <g:render template="/pageSize"/>
                             </div>
                         </div>
 
