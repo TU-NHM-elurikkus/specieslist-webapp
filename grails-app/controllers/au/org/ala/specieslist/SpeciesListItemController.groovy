@@ -102,6 +102,10 @@ class SpeciesListItemController {
 
                     def fqs, distinctCount, speciesListItems, totalCount, noMatchCount, facets
 
+                    // XXX TODO: Don't fully branch, but merge fq and search query and then
+                    // execute them (can probably merge all three branches). But that will
+                    // require some non-trivial refactoring because related methods are
+                    // very fq-specific and are used in other places
                     if(requestParams.fq) {
                         fqs = [requestParams.fq].flatten().findAll { it != null }
 
@@ -169,8 +173,7 @@ class SpeciesListItemController {
                             baseParams
                         ).head()
 
-                        // TODO: Facet using query
-                        facets = generateFacetValues(null, [baseQuery, baseParams])
+                        facets = generateFacetValues([requestParams.query], ['FROM SpeciesListItem AS sli WHERE ' + baseQuery, baseParams])
                     } else {
                         fqs = null
 
@@ -227,6 +230,7 @@ class SpeciesListItemController {
         }
     }
 
+    // XXX: Doesn't actually use fqs
     private def generateFacetValues(List fqs, baseQueryParams){
         def map = [:]
 
@@ -267,7 +271,6 @@ class SpeciesListItemController {
                 map.family = commonResults
             }
 
-            //println(results)
             properties = results.findAll{ it[1].length()<maxLengthForFacet }.groupBy { it[0] }.findAll{ it.value.size()>1}
 
         } else {
