@@ -87,15 +87,13 @@ class SpeciesListItemController {
                 } else {
                     if (requestParams.message)
                         flash.message = requestParams.message
-                    requestParams.max = Math.min(requestParams.max ? requestParams.int('max') : 10, 100)
+                    requestParams.max = Math.min(requestParams.max ? requestParams.int('max') : 25, 100)
                     requestParams.sort = requestParams.sort ?: "itemOrder"
                     requestParams.offset = requestParams.int('offset') ?: 0
                     requestParams.fetch = [kvpValues: 'select']
 
                     log.debug(requestParams.toQueryString())
-                    //println(params.facets)
                     def fqs = requestParams.fq ? [requestParams.fq].flatten().findAll { it != null } : null
-                    //println(queryService.constructWithFacets("select count(distinct guid)",facets, params.id))
 
                     def baseQueryAndParams = requestParams.fq ? queryService.constructWithFacets(" from SpeciesListItem sli ", fqs, requestParams.id) : null
                     log.debug(baseQueryAndParams)
@@ -109,7 +107,10 @@ class SpeciesListItemController {
                     }
 
                     //This is used for the stats - should these be for the whole list or just the fq-ed version?
-                    def distinctCount = requestParams.fq ? SpeciesList.executeQuery("select count(distinct guid) " + baseQueryAndParams[0], baseQueryAndParams[1]).head() : SpeciesListItem.executeQuery("select count(distinct guid) from SpeciesListItem where dataResourceUid=?", requestParams.id).head()//SpeciesListItem.executeQuery(queryparams[0],[queryparams[1]]).head()
+                    def distinctCount = requestParams.fq ?
+                        SpeciesList.executeQuery("select count(distinct guid) " + baseQueryAndParams[0], baseQueryAndParams[1]).head() :
+                        SpeciesListItem.executeQuery("select count(distinct guid) from SpeciesListItem where dataResourceUid=?", requestParams.id).head()
+
                     //need to get all keys to be included in the table so no need to add the filter.
                     def keys = SpeciesListKVP.executeQuery("select distinct key from SpeciesListKVP where dataResourceUid=? order by itemOrder", requestParams.id)
 
@@ -121,8 +122,6 @@ class SpeciesListItemController {
 
                     def users = SpeciesList.executeQuery("select distinct sl.username from SpeciesList sl")
 
-                    //println(speciesListItems)
-                    //log.debug("KEYS: " + keys)
                     def guids = speciesListItems.collect { it.guid }
                     log.debug("guids " + guids)
                     def downloadReasons = loggerService.getReasons()
