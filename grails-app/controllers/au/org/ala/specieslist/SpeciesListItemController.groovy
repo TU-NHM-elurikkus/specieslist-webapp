@@ -217,7 +217,8 @@ class SpeciesListItemController {
                         downloadReasons: downloadReasons,
                         users: users,
                         facets: facets,
-                        fqs : fqs
+                        fqs : fqs,
+                        query: requestParams.query
                     ])
                 }
             } catch (Exception e) {

@@ -296,3 +296,15 @@ img.smallSpeciesImage {
 #content.container-fluid {
     padding: 0;
 }
+
+.item-search {
+    margin-bottom: 1em;
+}
+
+.item-search__filter-line {
+    margin-top: 1em;
+}
+
+.item-search__filters-label {
+    font-weight: 700;
+}
