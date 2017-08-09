@@ -12,7 +12,6 @@ class BiocacheService {
     def getQid(guids, unMatchedNames, title, wkt){
         def http = new HTTPBuilder(grailsApplication.config.biocacheService.baseURL +"/webportal/params")
 
-        http.getClient().getParams().setParameter("http.socket.timeout", getTimeout())
         def query = ""
 
         if (guids) {

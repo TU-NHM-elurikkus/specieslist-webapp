@@ -358,7 +358,6 @@ class SpeciesListController {
      * @return
      */
     def occurrences(){
-
         if(biocacheService.isListIndexed(params.id)){
             redirect(url:biocacheService.getQueryUrlForList(params.id))
         } else if (params.id && params.type){
@@ -371,7 +370,9 @@ class SpeciesListController {
 
             log.debug "downloadDto = " + downloadDto
             log.debug "unMatchedNames = " + unMatchedNames
+
             def url = biocacheService.performBatchSearchOrDownload(guids, unMatchedNames, downloadDto, title, splist.wkt)
+
             if(url){
                 redirect(url:url)
             } else {

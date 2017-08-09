@@ -311,12 +311,12 @@
                         <g:message code="general.speciesLists"/>
                     </a>
 
-                    <a href="${request.contextPath}/speciesList/occurrences/${params.id}${params.toQueryString()}type=Search"
+                    <a href="${request.contextPath}/speciesList/occurrences/${params.id}${params.toQueryString()}&type=Search"
                         title="${message(code: 'speciesListItem.list.viewUpTo', args: [maxDownload])}" class="page-header-links__link">
                         <g:message code="speciesListItem.list.viewOccurrence"/>
                     </a>
 
-                    <a href="${request.contextPath}/speciesList/spatialPortal/${params.id}${params.toQueryString()}type=Search"
+                    <a href="${request.contextPath}/speciesList/spatialPortal/${params.id}${params.toQueryString()}&type=Search"
                         title="${message(code: 'speciesListItem.list.viewSpatialDecription')}"
                         class="page-header-links__link">
 

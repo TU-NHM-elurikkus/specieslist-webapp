@@ -10,12 +10,6 @@ class SecurityFilters {
     AuthService authService
 
     def filters = {
-        speciesListItem(controller:'speciesListItem', action:'list|listAuth|downloadList') {
-            before = {
-                checkSecurity(delegate, params.id, authService, localAuthService)
-            }
-        }
-
         speciesList(controller:'speciesList', action:'deleteList') {
             before = {
                 checkSecurity(delegate, params.id, authService, localAuthService)
