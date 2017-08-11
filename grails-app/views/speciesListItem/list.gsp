@@ -311,12 +311,12 @@
                         <g:message code="general.speciesLists"/>
                     </a>
 
-                    <a href="${request.contextPath}/speciesList/occurrences/${params.id}${params.toQueryString()}type=Search"
+                    <a href="${request.contextPath}/speciesList/occurrences/${params.id}${params.toQueryString()}&type=Search"
                         title="${message(code: 'speciesListItem.list.viewUpTo', args: [maxDownload])}" class="page-header-links__link">
                         <g:message code="speciesListItem.list.viewOccurrence"/>
                     </a>
 
-                    <a href="${request.contextPath}/speciesList/spatialPortal/${params.id}${params.toQueryString()}type=Search"
+                    <a href="${request.contextPath}/speciesList/spatialPortal/${params.id}${params.toQueryString()}&type=Search"
                         title="${message(code: 'speciesListItem.list.viewSpatialDecription')}"
                         class="page-header-links__link">
 
@@ -369,6 +369,52 @@
                     </div>
                 </div>
             </g:if>
+
+            <div class="row">
+                <div class="col">
+                    <div class="item-search">
+                        <div class="input-plus">
+                            <input type="text" id="queryInput" name="query" class="input-plus__field">
+
+                            <button
+                                type="button"
+                                class="input-plus__addon erk-button erk-button--dark"
+                                onclick="searchByQuery()"
+                            >
+                                <g:message code="general.search" />
+                            </button>
+                        </div>
+
+                        <div class="item-search__filter-line">
+                            <g:if test="${query || fqs}">
+                                <label class="item-search__filters-label">
+                                    <g:message code="speciesListItem.list.filters" />
+                                </label>
+
+                                <g:if test="${query}">
+                                    <button
+                                        type="button"
+                                        class="erk-button erk-button--light erk-button--inline"
+                                        onclick="clearQuery()"
+                                    >
+                                        <g:message code="general.scientificName" />: ${query}
+                                    </button>
+                                </g:if>
+
+                                <g:each in="${fqs}" var="fq">
+                                    <button
+                                        type="button"
+                                        class="erk-button erk-button--light erk-button--inline"
+                                        onclick="removeFq('${fq}')"
+                                    >
+                                        ${fq}
+                                    </button>
+                                </g:each>
+                            </g:if>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col-md-3" id="facets-column">
@@ -1416,6 +1462,71 @@
         </div>
 
         <script>
+            var paramString = window.location.href.split('?')[1] || "";
+            var params = paramString.split('&').map(function(param) {
+                var parts = param.split('=');
+
+                return {
+                    key: parts[0],
+                    value: parts[1]
+                };
+            });
+
+            function reloadWithParams(params) {
+                var queryString = params.map(function(param) {
+                    return param.key + '=' + param.value;
+                }).join('&');
+
+                window.location.href = window.location.pathname + '?' + queryString;
+            }
+
+            function searchByQuery() {
+                var query = document.getElementById('queryInput').value;
+
+                var newParams = params.filter(function(param) {
+                    return params.key !== 'query';
+                });
+
+                newParams.push({
+                    key: 'query',
+                    value: query
+                });
+
+                reloadWithParams(newParams);
+            }
+
+            function clearQuery() {
+                var newParams = params.filter(function(param) {
+                    return param.key !== 'query';
+                });
+
+                reloadWithParams(newParams);
+            }
+
+            function removeFq(fq) {
+                var encodedfq = window.encodeURIComponent(fq);
+                var newParams = [];
+
+                params.forEach(function(param) {
+                    if(param.key === 'fq') {
+                        var facets = param.value.split(',').filter(function(facet) {
+                            return facet !== encodedfq;
+                        });
+
+                        if(facets.length > 1) {
+                            newParams.push({
+                                key: fq,
+                                value: facets.join(',')
+                            });
+                        }
+                    } else {
+                        newParams.push(param);
+                    }
+                });
+
+                reloadWithParams(newParams);
+            }
+
             $(document).ready(function() {
                 // make table header cells clickable
                 $("table .sortable").each(function(i) {

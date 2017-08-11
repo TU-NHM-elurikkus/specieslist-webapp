@@ -102,12 +102,20 @@ class SpeciesListItemController {
 
                     def fqs, distinctCount, speciesListItems, totalCount, noMatchCount, facets
 
+                    // XXX TODO: Don't fully branch, but merge fq and search query and then
+                    // execute them (can probably merge all three branches). But that will
+                    // require some non-trivial refactoring because related methods are
+                    // very fq-specific and are used in other places
                     if(requestParams.fq) {
                         fqs = [requestParams.fq].flatten().findAll { it != null }
 
                         def baseQueryAndParams = queryService.constructWithFacets(" from SpeciesListItem sli ", fqs, requestParams.id)
                         def baseQuery = baseQueryAndParams[0]
                         def baseQueryParams = baseQueryAndParams[1]
+
+                        if(requestParams.query) {
+                            baseQuery += "AND sli.rawScientificName LIKE '%${requestParams.query}%' "
+                        }
 
                         log.debug("Base query & params:")
                         log.debug(baseQueryAndParams)
@@ -140,6 +148,32 @@ class SpeciesListItemController {
                         ).head()
 
                         facets = generateFacetValues(fqs, baseQueryAndParams)
+                    } else if(requestParams.query) {
+                        def baseQuery = "dataResourceUid=? AND raw_scientific_name LIKE ?"
+                        def baseParams = [requestParams.id, "%" + requestParams.query + "%"]
+
+                        distinctCount = SpeciesListItem.executeQuery(
+                            "SELECT COUNT(DISTINCT guid) FROM SpeciesListItem WHERE " + baseQuery,
+                            baseParams
+                        ).head()
+
+                        speciesListItems = SpeciesListItem.findAll(
+                            "FROM SpeciesListItem WHERE " + baseQuery,
+                            baseParams,
+                            requestParams
+                        )
+
+                        totalCount = SpeciesListItem.executeQuery(
+                            "SELECT COUNT(guid) FROM SpeciesListItem WHERE " + baseQuery,
+                            baseParams
+                        ).head()
+
+                        noMatchCount = SpeciesListItem.executeQuery(
+                            "SELECT COUNT(guid) FROM SpeciesListItem WHERE guid IS NOT NULL AND " + baseQuery,
+                            baseParams
+                        ).head()
+
+                        facets = generateFacetValues([requestParams.query], ['FROM SpeciesListItem AS sli WHERE ' + baseQuery, baseParams])
                     } else {
                         fqs = null
 
@@ -183,7 +217,8 @@ class SpeciesListItemController {
                         downloadReasons: downloadReasons,
                         users: users,
                         facets: facets,
-                        fqs : fqs
+                        fqs : fqs,
+                        query: requestParams.query
                     ])
                 }
             } catch (Exception e) {
@@ -196,47 +231,76 @@ class SpeciesListItemController {
         }
     }
 
+    // XXX: Doesn't actually use fqs
     private def generateFacetValues(List fqs, baseQueryParams){
         def map = [:]
 
         //handle the user defined properties -- this will also make up the facets
-        String selectPart = "select distinct kvp.key, kvp.value, kvp.vocabValue, count(sli) as cnt";
-        def middlePart = fqs ? queryService.constructWithFacets(" from SpeciesListItem as sli join sli.kvpValues kvp1 join sli.kvpValues kvp", fqs, params.id) : null
-        def properties = null
-        if(fqs){
-            //get the ids for the query -- this allows correct counts when joins are being performed.
-            def ids = SpeciesListItem.executeQuery("select distinct sli.id " + baseQueryParams[0], baseQueryParams[1])
+        String selectPart = "SELECT DISTINCT kvp.key, kvp.value, kvp.vocabValue, COUNT(sli) AS cnt";
 
-            //println(ids)
+        def properties = null
+
+        if(fqs) {
+            //get the ids for the query -- this allows correct counts when joins are being performed.
+            def ids = SpeciesListItem.executeQuery("SELECT DISTINCT sli.id " + baseQueryParams[0], baseQueryParams[1])
+
             Map queryParameters = [druid: params.id]
             if (ids) {
                 queryParameters.ids = ids
             }
 
-            def results = SpeciesListItem.executeQuery("select kvp.key, kvp.value, kvp.vocabValue, count(sli) as cnt  from SpeciesListItem as sli join sli.kvpValues  as kvp where sli.dataResourceUid=:druid ${ids ? 'and sli.id in (:ids)' : ''} group by kvp.key, kvp.value, kvp.vocabValue order by kvp.itemOrder,kvp.key,cnt desc", queryParameters)
+            def results = SpeciesListItem.executeQuery(
+                "SELECT kvp.key, kvp.value, kvp.vocabValue, COUNT(sli) AS cnt " +
+                "FROM SpeciesListItem AS sli JOIN sli.kvpValues AS  kvp " +
+                "WHERE sli.dataResourceUid=:druid ${ids ? 'and sli.id in (:ids)' : ''} " +
+                "GROUP BY kvp.key, kvp.value, kvp.vocabValue " +
+                "ORDER BY kvp.itemOrder,kvp.key,cnt DESC",
+                queryParameters
+            )
 
             //obtain the families from the common list facets
-            def commonResults = SpeciesListItem.executeQuery("select sli.family, count(sli) as cnt from SpeciesListItem sli where sli.family is not null AND sli.dataResourceUid=:druid ${ids ? 'and sli.id in (:ids)' : ''} group by sli.family order by cnt desc", queryParameters)
+            def commonResults = SpeciesListItem.executeQuery(
+                "SELECT sli.family, COUNT(sli) AS cnt " +
+                "FROM SpeciesListItem AS sli " +
+                "WHERE sli.family IS NOT NULL AND sli.dataResourceUid=:druid ${ids ? 'and sli.id in (:ids)' : ''} " +
+                "GROUP BY sli.family " +
+                "ORDER BY cnt desc",
+                queryParameters
+            )
+
             if(commonResults.size() > 1) {
                 map.family = commonResults
             }
 
-            //println(results)
             properties = results.findAll{ it[1].length()<maxLengthForFacet }.groupBy { it[0] }.findAll{ it.value.size()>1}
 
         } else {
-            def result = fqs? SpeciesListItem.executeQuery(selectPart+middlePart[0] +
-                    " group by kvp.key, kvp.value, kvp.vocabValue order by kvp.key,cnt desc", middlePart[1]):
-                SpeciesListItem.executeQuery('select kvp.key, kvp.value, kvp.vocabValue, count(sli) as cnt  from SpeciesListItem as sli join sli.kvpValues  as kvp where sli.dataResourceUid=? group by kvp.key, kvp.value, kvp.vocabValue order by kvp.itemOrder,kvp.key,cnt desc', params.id)
+            def result = SpeciesListItem.executeQuery(
+                'SELECT kvp.key, kvp.value, kvp.vocabValue, count(sli) as cnt ' +
+                'FROM SpeciesListItem AS sli JOIN sli.kvpValues AS kvp ' +
+                'WHERE sli.dataResourceUid=? ' +
+                'GROUP BY kvp.key, kvp.value, kvp.vocabValue ' +
+                'ORDER BY kvp.itemOrder,kvp.key,cnt desc',
+                params.id
+            )
 
             properties = result.findAll{it[1].length()<maxLengthForFacet}.groupBy{it[0]}.findAll{it.value.size()>1 }
 
             //obtain the families from the common list facets
-            def commonResults = SpeciesListItem.executeQuery('select family, count(*) as cnt from SpeciesListItem where family is not null AND dataResourceUid=? group by family order by cnt desc',params.id)
+            def commonResults = SpeciesListItem.executeQuery(
+                "SELECT family, count(*) AS cnt " +
+                "FROM SpeciesListItem " +
+                "WHERE family IS NOT NULL AND dataResourceUid=? " +
+                "GROUP BY family " +
+                "ORDER BY cnt DESC",
+                params.id
+            )
+
             if(commonResults.size() > 1) {
                 map.family = commonResults
             }
         }
+
         //if there was a facet included in the result we will need to divide the
         if(properties) {
             map.listProperties = properties

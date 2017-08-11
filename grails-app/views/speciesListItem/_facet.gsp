@@ -18,7 +18,7 @@
                     <g:link
                         id="${params.id}"
                         action="list"
-                        params="${[fq:sl.buildFqList(fqs:fqs, fq:"kvp ${arr[0]}:${arr[1]}"), max:params.max]}"
+                        params="${[fq:sl.buildFqList(fqs:fqs, fq:"kvp ${arr[0]}:${arr[1]}"), max:params.max, query: params.query]}"
                     >
                         ${arr[2]?:arr[1]}
                     </g:link>
@@ -30,7 +30,7 @@
                 <li class="erk-ulist--item">
                     <g:link
                         action="list" id="${params.id}"
-                        params="${[fq:sl.buildFqList(fqs:fqs, fq:"${key}:${arr[0]}"), max:params.max]}"
+                        params="${[fq:sl.buildFqList(fqs:fqs, fq:"${key}:${arr[0]}"), max:params.max, query: params.query]}"
                     >
                         ${arr[0]}
                     </g:link>
