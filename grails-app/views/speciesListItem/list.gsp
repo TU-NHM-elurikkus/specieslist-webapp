@@ -420,7 +420,7 @@
                 <div class="col-md-3" id="facets-column">
                     <div class="card card-block">
                         <div class="boxedZ attachedZ">
-                            <section class="meta">
+                            <div class="meta">
                                 <ul class="erk-ulist">
                                     <li class="erk-ulist--item">
                                         <g:message code="speciesListItem.list.taxonNumber"/>
@@ -461,9 +461,9 @@
                                     </li>
                                     --%>
                                 </ul>
-                            </section>
+                            </div>
 
-                            <section>
+                            <div>
                                 <g:if test="${facets.size()>0 || params.fq}">
                                     <h4>
                                         <g:message code="speciesListItem.list.refine"/>
@@ -517,7 +517,7 @@
                                         </g:each>
                                     </div>
                                 </g:if>
-                            </section>
+                            </div>
                         </div>
                     </div>
                 </div>
