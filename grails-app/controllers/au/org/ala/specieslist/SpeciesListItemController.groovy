@@ -102,6 +102,8 @@ class SpeciesListItemController {
 
                     def fqs, distinctCount, speciesListItems, totalCount, noMatchCount, facets
 
+                    def orderQuery = " ORDER BY ${requestParams.sort} ${requestParams.order ?: 'asc'}"
+
                     // XXX TODO: Don't fully branch, but merge fq and search query and then
                     // execute them (can probably merge all three branches). But that will
                     // require some non-trivial refactoring because related methods are
@@ -120,22 +122,16 @@ class SpeciesListItemController {
                         log.debug("Base query & params:")
                         log.debug(baseQueryAndParams)
 
-                        def sliQuery = baseQuery
-
-                        if(requestParams.sort) {
-                            sliQuery += " order by sli.${requestParams.sort} ${requestParams.order?:'asc'}"
-                        }
+                        speciesListItems = SpeciesListItem.executeQuery(
+                            "select sli " + baseQuery + orderQuery,
+                            baseQueryParams,
+                            requestParams
+                        )
 
                         distinctCount = SpeciesList.executeQuery(
                             "select count(distinct guid) " + baseQuery,
                             baseQueryParams
                         ).head()
-
-                        speciesListItems = SpeciesListItem.executeQuery(
-                            "select sli " + sliQuery,
-                            baseQueryParams,
-                            requestParams
-                        )
 
                         totalCount = SpeciesListItem.executeQuery(
                             "select count(*) " + baseQuery,
@@ -148,20 +144,31 @@ class SpeciesListItemController {
                         ).head()
 
                         facets = generateFacetValues(fqs, baseQueryAndParams)
-                    } else if(requestParams.query) {
-                        def baseQuery = "dataResourceUid=? AND raw_scientific_name LIKE ?"
-                        def baseParams = [requestParams.id, "%" + requestParams.query + "%"]
+                    } else {
+                        def baseQuery, baseParams;
+
+                        if(requestParams.query) {
+                            baseQuery = "dataResourceUid=? AND raw_scientific_name LIKE ?"
+                            baseParams = [requestParams.id, "%" + requestParams.query + "%"]
+
+                            facets = generateFacetValues([requestParams.query], ['FROM SpeciesListItem AS sli WHERE ' + baseQuery, baseParams])
+                        } else {
+                            baseQuery = "dataResourceUid=?"
+                            baseParams = [requestParams.id]
+
+                            facets = generateFacetValues(null, null)
+                        }
+
+                        speciesListItems = SpeciesListItem.findAll(
+                            "FROM SpeciesListItem WHERE " + baseQuery + orderQuery,
+                            baseParams,
+                            requestParams
+                        )
 
                         distinctCount = SpeciesListItem.executeQuery(
                             "SELECT COUNT(DISTINCT guid) FROM SpeciesListItem WHERE " + baseQuery,
                             baseParams
                         ).head()
-
-                        speciesListItems = SpeciesListItem.findAll(
-                            "FROM SpeciesListItem WHERE " + baseQuery,
-                            baseParams,
-                            requestParams
-                        )
 
                         totalCount = SpeciesListItem.executeQuery(
                             "SELECT COUNT(guid) FROM SpeciesListItem WHERE " + baseQuery,
@@ -172,26 +179,6 @@ class SpeciesListItemController {
                             "SELECT COUNT(guid) FROM SpeciesListItem WHERE guid IS NOT NULL AND " + baseQuery,
                             baseParams
                         ).head()
-
-                        facets = generateFacetValues([requestParams.query], ['FROM SpeciesListItem AS sli WHERE ' + baseQuery, baseParams])
-                    } else {
-                        fqs = null
-
-                        distinctCount = SpeciesListItem.executeQuery(
-                            "select count(distinct guid) from SpeciesListItem where dataResourceUid=?",
-                            requestParams.id
-                        ).head()
-
-                        speciesListItems = SpeciesListItem.findAllByDataResourceUid(
-                            requestParams.id,
-                            requestParams
-                        )
-
-                        totalCount = SpeciesListItem.countByDataResourceUid(requestParams.id)
-
-                        noMatchCount = SpeciesListItem.countByDataResourceUidAndGuidIsNull(requestParams.id)
-
-                        facets = generateFacetValues(null, null)
                     }
 
                     def users = SpeciesList.executeQuery("select distinct sl.username from SpeciesList sl")
