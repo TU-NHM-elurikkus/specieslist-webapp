@@ -573,12 +573,12 @@
                                             </th>
                                             <g:sortableColumn
                                                 property="rawScientificName"
-                                                params="${[fq: fqs]}"
+                                                params="${[fq: fqs, query: query]}"
                                                 titleKey="general.suppliedName"
                                             />
                                             <g:sortableColumn
                                                 property="matchedName"
-                                                params="${[fq: fqs]}"
+                                                params="${[fq: fqs, query: query]}"
                                                 titleKey="general.scientificName"
                                             />
                                             <th>
@@ -586,12 +586,12 @@
                                             </th>
                                             <g:sortableColumn
                                                 property="author"
-                                                params="${[fq: fqs]}"
+                                                params="${[fq: fqs, query: query]}"
                                                 titleKey="speciesListItem.list.author"
                                             />
                                             <g:sortableColumn
                                                 property="commonName"
-                                                params="${[fq: fqs]}"
+                                                params="${[fq: fqs, query: query]}"
                                                 titleKey="speciesListItem.list.commonName"
                                             />
                                             <g:each in="${keys}" var="key">
