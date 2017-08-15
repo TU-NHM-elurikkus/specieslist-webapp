@@ -571,29 +571,37 @@
                                             <th class="action">
                                                 <g:message code="general.action"/>
                                             </th>
+
                                             <g:sortableColumn
                                                 property="rawScientificName"
                                                 params="${[fq: fqs, query: query]}"
                                                 titleKey="general.suppliedName"
                                             />
+
                                             <g:sortableColumn
                                                 property="matchedName"
                                                 params="${[fq: fqs, query: query]}"
                                                 titleKey="general.scientificName"
                                             />
-                                            <th>
-                                                <g:message code="speciesListItem.list.image"/>
-                                            </th>
+
+                                            <g:sortableColumn
+                                                property="imageUrl"
+                                                params="${[fq: fqs, query: query]}"
+                                                titleKey="speciesListItem.list.image"
+                                            />
+
                                             <g:sortableColumn
                                                 property="author"
                                                 params="${[fq: fqs, query: query]}"
                                                 titleKey="speciesListItem.list.author"
                                             />
+
                                             <g:sortableColumn
                                                 property="commonName"
                                                 params="${[fq: fqs, query: query]}"
                                                 titleKey="speciesListItem.list.commonName"
                                             />
+
                                             <g:each in="${keys}" var="key">
                                                 <th>
                                                     ${key}

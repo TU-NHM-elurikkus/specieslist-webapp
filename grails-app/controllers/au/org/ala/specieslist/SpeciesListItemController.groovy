@@ -102,6 +102,8 @@ class SpeciesListItemController {
 
                     def fqs, distinctCount, speciesListItems, totalCount, noMatchCount, facets
 
+                    def orderQuery = " ORDER BY ${requestParams.sort} ${requestParams.order ?: 'asc'}"
+
                     // XXX TODO: Don't fully branch, but merge fq and search query and then
                     // execute them (can probably merge all three branches). But that will
                     // require some non-trivial refactoring because related methods are
@@ -120,10 +122,8 @@ class SpeciesListItemController {
                         log.debug("Base query & params:")
                         log.debug(baseQueryAndParams)
 
-                        def sliQuery = baseQuery
-
                         speciesListItems = SpeciesListItem.executeQuery(
-                            "select sli " + sliQuery,
+                            "select sli " + baseQuery + orderQuery,
                             baseQueryParams,
                             requestParams
                         )
@@ -158,8 +158,6 @@ class SpeciesListItemController {
 
                             facets = generateFacetValues(null, null)
                         }
-
-                        def orderQuery = " ORDER BY ${requestParams.sort} ${requestParams.order?:'asc'}"
 
                         speciesListItems = SpeciesListItem.findAll(
                             "FROM SpeciesListItem WHERE " + baseQuery + orderQuery,
