@@ -30,7 +30,7 @@
 }"/>
 <html>
     <head>
-        <r:require modules="application, amplify"/>
+        <r:require modules="application, amplify, filters"/>
         <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
         <script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'facets.js')}"></script>
         <script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'getQueryParam.js')}"></script>
@@ -386,31 +386,50 @@
                         </div>
 
                         <div class="item-search__filter-line">
-                            <g:if test="${query || fqs}">
-                                <label class="item-search__filters-label">
-                                    <g:message code="speciesListItem.list.filters" />
-                                </label>
+                            <div class="active-filters">
+                                <g:if test="${query || fqs}">
+                                    <span class="active-filters__title">
+                                        <g:message code="speciesListItem.list.filters" />
+                                    </span>
 
-                                <g:if test="${query}">
-                                    <button
-                                        type="button"
-                                        class="erk-button erk-button--light erk-button--inline"
-                                        onclick="clearQuery()"
-                                    >
-                                        <g:message code="general.scientificName" />: ${query}
-                                    </button>
+                                    <g:if test="${query}">
+                                        <span class="active-filters__filter">
+                                            <span class="active-filters__label">
+                                                <g:message code="general.scientificName" />: ${query}
+                                            </span>
+
+                                            <span
+                                                class="fa fa-close active-filters__close-button"
+                                                onclick="clearQuery()"
+                                            >
+                                            </span>
+                                        </span>
+                                    </g:if>
+
+                                    <g:each in="${fqs}" var="fq">
+                                        <span class="active-filters__filter">
+                                            <span class="active-filters__label">
+                                                ${fq}
+                                            </span>
+
+                                            <span
+                                                class="fa fa-close active-filters__close-button"
+                                                onclick="removeFq('${fq}')"
+                                            >
+                                            </span>
+                                        </span>
+                                    </g:each>
+
+                                    <g:if test="${query && fqs}">
+                                        <span
+                                            class="active-filters__clear-all-button"
+                                            onclick="clearAll()"
+                                        >
+                                            <g:message code="public.speciesLists.clearSearch" />
+                                        </span>
+                                    </g:if>
                                 </g:if>
-
-                                <g:each in="${fqs}" var="fq">
-                                    <button
-                                        type="button"
-                                        class="erk-button erk-button--light erk-button--inline"
-                                        onclick="removeFq('${fq}')"
-                                    >
-                                        ${fq}
-                                    </button>
-                                </g:each>
-                            </g:if>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1533,6 +1552,10 @@
                 });
 
                 reloadWithParams(newParams);
+            }
+
+            function clearAll() {
+                reloadWithParams([]);
             }
 
             $(document).ready(function() {
