@@ -13,7 +13,9 @@
         <title>
             <g:message code="general.speciesLists"/> | ${grailsApplication.config.skin.orgNameLong}
         </title>
-        <r:require modules="application"/>
+
+        <asset:javascript src="application.js" />
+        <asset:stylesheet src="application.css" />
     </head>
 
     <body class="">
