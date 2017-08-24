@@ -1,4 +1,4 @@
-grails.servlet.version = "2.5" // Change depending on target container compliance (2.5 or 3.0)
+grails.servlet.version = "3.0" // Change depending on target container compliance (2.5 or 3.0)
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
@@ -52,29 +52,23 @@ grails.project.dependency.resolution = {
 
 
     plugins {
-        build ":release:3.0.1"
-
-        runtime ":hibernate:3.6.10.15"
-
-        runtime ":cors:1.1.8"
-
-        runtime ":ala-bootstrap2:2.4.5"
-        runtime (":ala-auth:1.3.2") {
-           exclude "servlet-api"
-        }
-        // runtime ":ala-admin-plugin:1.2"
-
-        compile ":asset-pipeline:2.14.1"
-        compile ':cache:1.1.8'
-        compile ':cache-ehcache:1.0.0'
-        compile ":jsonp:0.2"
-        compile ":rest:0.8"
-
-        build(":tomcat:7.0.55",
-                ":release:3.0.1") {
+        build(":tomcat:7.0.70",
+            ":release:3.0.1") {
             export = false
         }
 
-        runtime ":elurikkus-commons:0.2-SNAPSHOT"
+        runtime ":cors:1.1.8"
+        runtime ":hibernate:3.6.10.15"
+
+        compile (":ala-auth:1.3.2") {
+           exclude "servlet-api"
+        }
+        compile ":ala-bootstrap2:2.4.5"
+        compile ":asset-pipeline:2.14.1"
+        compile ':cache:1.1.8'
+        compile ':cache-ehcache:1.0.0'
+        compile ":elurikkus-commons:0.2-SNAPSHOT"
+        compile ":jsonp:0.2"
+        compile ":rest:0.8"
     }
 }

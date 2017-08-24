@@ -313,6 +313,7 @@
 
                     <a href="${request.contextPath}/speciesList/occurrences/${params.id}${params.toQueryString()}&type=Search"
                         title="${message(code: 'speciesListItem.list.viewUpTo', args: [maxDownload])}" class="page-header-links__link">
+                        <span class="fa fa-list"></span>
                         <g:message code="speciesListItem.list.viewOccurrence"/>
                     </a>
 
