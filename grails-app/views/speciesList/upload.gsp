@@ -16,9 +16,10 @@
 <!doctype html>
 <html>
     <head>
-        <r:require modules="application"/>
-
         <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
+
+        <asset:javascript src="application.js" />
+        <asset:stylesheet src="application.css" />
 
         <script type="text/javascript">
             function init() {
@@ -600,8 +601,10 @@
             <div id="statusMsgDiv" class="hidden-node">
                 <div class="well">
                     <h3>
-                        <img src='${resource(dir:' images',file:' spinner.gif')}' id='spinner'/>
+                        <img id="spinner" src="${assetPath(src: 'spinner.gif')}" />
+
                         &nbsp;&nbsp;
+
                         <span>
                             <g:message code="speciesList.upload.uploading"/>
                         </span>

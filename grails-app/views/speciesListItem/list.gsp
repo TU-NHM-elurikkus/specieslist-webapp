@@ -30,15 +30,15 @@
 }"/>
 <html>
     <head>
-        <r:require modules="application, amplify, filters"/>
+        <asset:javascript src="list.js" />
+        <asset:stylesheet src="application.css" />
+
         <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
-        <script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'facets.js')}"></script>
-        <script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'getQueryParam.js')}"></script>
-        <script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'jquery-ui-1.8.17.custom.min.js')}"></script>
-        <script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'jquery.doubleScroll.js')}"></script>
+
         <title>
             <g:message code="general.speciesListItems"/> | ${grailsApplication.config.skin.orgNameLong}
         </title>
+
         <script type="text/javascript">
             $(document).ready(function() {
                 // in mobile view toggle display of facets
@@ -437,7 +437,7 @@
 
             <div class="row">
                 <div class="col-md-3" id="facets-column">
-                    <div class="card card-block">
+                    <div class="card card-body">
                         <div class="boxedZ attachedZ">
                             <div class="meta">
                                 <ul class="erk-ulist">
@@ -885,7 +885,7 @@
 
                                     <div class="modal-body">
                                         <p class="spinner">
-                                            <img src="${resource(dir:'images',file:'spinner.gif')}" alt="spinner icon"/>
+                                            <img src="${assetPath(src: 'spinner.gif')}" alt="spinner icon"/>
                                         </p>
 
                                         <%-- TODO: .hide class. --%>
@@ -936,7 +936,7 @@
 
                                 <div class="modal-body">
                                     <p>
-                                        <img src="${resource(dir:'images',file:'spinner.gif')}" alt="spinner icon"/>
+                                        <img src="${assetPath(src: 'spinner.gif')}" alt="spinner icon"/>
                                     </p>
                                 </div>
 

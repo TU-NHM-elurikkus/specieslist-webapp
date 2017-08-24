@@ -33,17 +33,19 @@ grails.project.dependency.resolution = {
 
     repositories {
         mavenLocal()
+        mavenCentral()
         mavenRepo("http://nexus.ala.org.au/content/groups/public/") {
-            updatePolicy 'always'
+            updatePolicy 'daily'
         }
     }
 
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
+        compile group: 'com.google.guava', name: 'guava', version: '19.0'
         compile ('au.org.ala:ala-name-matching:2.4.0') {
             excludes "log4j","slf4j-log4j12"
         }
-        compile 'org.gbif:gbif-common:0.17'
+        compile "org.gbif:gbif-common:0.17"
         compile "org.nibor.autolink:autolink:0.5.0"
         runtime 'mysql:mysql-connector-java:5.1.18'
     }
@@ -51,15 +53,18 @@ grails.project.dependency.resolution = {
 
     plugins {
         build ":release:3.0.1"
+
         runtime ":hibernate:3.6.10.15"
 
         runtime ":cors:1.1.8"
 
         runtime ":ala-bootstrap2:2.4.5"
         runtime (":ala-auth:1.3.2") {
-            exclude "servlet-api"
+           exclude "servlet-api"
         }
-        runtime ":ala-admin-plugin:1.2"
+        // runtime ":ala-admin-plugin:1.2"
+
+        compile ":asset-pipeline:2.14.1"
         compile ':cache:1.1.8'
         compile ':cache-ehcache:1.0.0'
         compile ":jsonp:0.2"

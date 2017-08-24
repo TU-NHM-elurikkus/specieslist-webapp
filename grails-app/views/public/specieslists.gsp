@@ -16,11 +16,13 @@
 <!doctype html>
 <html>
     <head>
-        <r:require modules="application"/>
         <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
         <title>
             <g:message code="general.speciesLists"/> | ${grailsApplication.config.skin.orgNameLong}
         </title>
+
+        <asset:javascript src="application.js" />
+        <asset:stylesheet src="application.css" />
     </head>
 
     <body>

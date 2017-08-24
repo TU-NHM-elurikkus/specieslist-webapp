@@ -10,10 +10,8 @@
             <g:layoutTitle/>
         </title>
 
-        <r:require modules="jquery, menu"/>
-
-        <!-- Resources -->
-        <r:layoutResources/>
+        <asset:javascript src="jquery.js" />
+        <asset:stylesheet src="elurikkus-common.css" />
 
         <!-- Head -->
         <g:layoutHead/>
@@ -27,8 +25,5 @@
         </div>
 
         <g:render template="/footer" plugin="elurikkus-commons"/>
-
-        <!-- Resources -->
-        <r:layoutResources/>
     </body>
 </html>

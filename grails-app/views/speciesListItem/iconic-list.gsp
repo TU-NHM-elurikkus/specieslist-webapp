@@ -21,12 +21,12 @@
 <html>
     <head>
         <%--<gui:resources components="['dialog']"/>--%>
-        <r:require modules="application, amplify"/>
+
+        <asset:javascript src="list.js" />
+        <asset:stylesheet src="application.css" />
+
         <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
-        <script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'facets.js')}"></script>
-        <script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'getQueryParam.js')}"></script>
-        <script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'jquery-ui-1.8.17.custom.min.js')}"></script>
-        <script language="JavaScript" type="text/javascript" src="${resource(dir:'js',file:'jquery.doubleScroll.js')}"></script>
+
         <title>
             <g:message code="general.speciesListItems"/> | ${grailsApplication.config.skin.orgNameLong}
         </title>
