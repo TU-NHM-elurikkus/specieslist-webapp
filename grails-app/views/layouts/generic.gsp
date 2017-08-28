@@ -10,8 +10,8 @@
             <g:layoutTitle/>
         </title>
 
-        <asset:javascript src="jquery.js" />
-        <asset:stylesheet src="elurikkus-common.css" />
+        <asset:javascript src="list.js" />
+        <asset:stylesheet src="application.css" />
 
         <!-- Head -->
         <g:layoutHead/>

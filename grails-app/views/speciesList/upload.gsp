@@ -18,9 +18,6 @@
     <head>
         <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
 
-        <asset:javascript src="application.js" />
-        <asset:stylesheet src="application.css" />
-
         <script type="text/javascript">
             function init() {
                 reset();

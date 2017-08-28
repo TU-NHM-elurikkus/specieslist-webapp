@@ -1,3 +1,7 @@
+/*
+*= require elurikkus-common
+*/
+
 p span.count {
     float: right;
 }

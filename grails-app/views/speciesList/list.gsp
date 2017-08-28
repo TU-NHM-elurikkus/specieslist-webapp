@@ -20,9 +20,6 @@
         <title>
             <g:message code="speciesList.list.title"/> | ${grailsApplication.config.skin.orgNameLong}
         </title>
-
-        <asset:javascript src="application.js" />
-        <asset:stylesheeet src="application.css" />
     </head>
 
     <body>

@@ -14,9 +14,9 @@
 --%>
 
 <!doctype html>
-<g:set var="bieUrl" value="${grailsApplication.config.bie.baseURL}"/>
-<g:set var="collectoryUrl" value="${grailsApplication.config.collectory.baseURL}"/>
-<g:set var="maxDownload" value="${grailsApplication.config.downloadLimit}"/>
+<g:set var="bieUrl" value="${grailsApplication.config.bie.baseURL}" />
+<g:set var="collectoryUrl" value="${grailsApplication.config.collectory.baseURL}" />
+<g:set var="maxDownload" value="${grailsApplication.config.downloadLimit}" />
 <g:set var="userCanEditPermissions" value="${
     (speciesList.username == request.getUserPrincipal()?.attributes?.email || request.isUserInRole('ROLE_ADMIN'))
 }"/>
@@ -30,13 +30,10 @@
 }"/>
 <html>
     <head>
-        <asset:javascript src="list.js" />
-        <asset:stylesheet src="application.css" />
-
-        <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
+        <meta name="layout" content="${grailsApplication.config.skin.layout}" />
 
         <title>
-            <g:message code="general.speciesListItems"/> | ${grailsApplication.config.skin.orgNameLong}
+            <g:message code="general.speciesListItems" /> | ${grailsApplication.config.skin.orgNameLong}
         </title>
 
         <script type="text/javascript">
@@ -272,7 +269,7 @@
     <body>
         <%-- Download dialog modal --%>
         <div class="inline-block">
-            <g:render template="/download"/>
+            <g:render template="/download" />
         </div>
 
         <div id="content" class="container-fluid">
@@ -280,7 +277,7 @@
                 <%-- TITLE --%>
                 <div class="page-header__title">
                     <h1 class="page-header__title">
-                        <g:message code="speciesListItem.list.speciesList"/>:
+                        <g:message code="speciesListItem.list.speciesList" />:
                         <a href="${collectoryUrl}/lists/speciesListItem/list/${params.id}">
                             ${speciesList?.listName}
                         </a>
@@ -295,11 +292,11 @@
                     <%-- TODD: New text.
                     <div class="page-header__subtitle">
                         <div>
-                            <g:message code="general.listDescription"/>
+                            <g:message code="general.listDescription" />
                         </div>
 
                         <div>
-                            <g:message code="general.deleteDescription"/>
+                            <g:message code="general.deleteDescription" />
                         </div>
                     </div>
                     --%>
@@ -308,20 +305,20 @@
                 <%-- LINKS --%>
                 <div class="page-header-links">
                     <a href="${request.contextPath}/public/speciesLists" class="page-header-links__link">
-                        <g:message code="general.speciesLists"/>
+                        <g:message code="general.speciesLists" />
                     </a>
 
                     <a href="${request.contextPath}/speciesList/occurrences/${params.id}${params.toQueryString()}&type=Search"
                         title="${message(code: 'speciesListItem.list.viewUpTo', args: [maxDownload])}" class="page-header-links__link">
                         <span class="fa fa-list"></span>
-                        <g:message code="speciesListItem.list.viewOccurrence"/>
+                        <g:message code="speciesListItem.list.viewOccurrence" />
                     </a>
 
                     <a href="${request.contextPath}/speciesList/spatialPortal/${params.id}${params.toQueryString()}&type=Search"
                         title="${message(code: 'speciesListItem.list.viewSpatialDecription')}"
                         class="page-header-links__link">
 
-                        <g:message code="speciesListItem.list.viewSpatial"/>
+                        <g:message code="speciesListItem.list.viewSpatial" />
                     </a>
 
                     <div class="action-button-block">
@@ -332,7 +329,7 @@
                             data-target="#list-info-modal"
                         >
                             <span class="fa fa-info-circle"></span>
-                            <g:message code="speciesListItem.list.listInfo"/>
+                            <g:message code="speciesListItem.list.listInfo" />
                         </button>
 
                         <button type="button" class="erk-button erk-button--light"
@@ -340,20 +337,20 @@
                             data-target="#download-dialog">
 
                             <span class="fa fa-download"></span>
-                            <g:message code="speciesListItem.list.download"/>
+                            <g:message code="speciesListItem.list.download" />
                         </button>
 
                         <g:if test="${userCanEditPermissions}">
                             <button type="button" data-remote="${createLink(controller: 'editor', action: 'editPermissions', id: params.id)}" data-target="#modal" data-toggle="modal" class="erk-button erk-button--light">
                                 <span class="fa fa-user-o"></span>
-                                <g:message code="speciesListItem.list.editPerm"/>
+                                <g:message code="speciesListItem.list.editPerm" />
                             </button>
                         </g:if>
 
                         <g:if test="${userCanEditData}">
                             <a href="#" data-remote="${createLink(controller: 'editor', action: 'addRecordScreen', id: params.id)}" data-target="#addRecord" data-toggle="modal">
                                 <span class="fa fa-plus"></span>
-                                <g:message code="speciesListItem.list.add"/>
+                                <g:message code="speciesListItem.list.add" />
                             </a>
                         </g:if>
                     </div>
@@ -364,7 +361,7 @@
                 <div class="row">
                     <div class="message alert alert-info">
                         <b>
-                            <g:message code="general.alert"/>:
+                            <g:message code="general.alert" />:
                         </b>
                         ${flash.message}
                     </div>
@@ -374,17 +371,16 @@
             <div class="row">
                 <div class="col">
                     <div class="item-search">
-                        <div class="input-plus">
+                        <form class="input-plus">
                             <input type="text" id="queryInput" name="query" class="input-plus__field">
-
                             <button
-                                type="button"
+                                type="sumbit"
                                 class="input-plus__addon erk-button erk-button--dark"
                                 onclick="searchByQuery()"
                             >
                                 <g:message code="general.search" />
                             </button>
-                        </div>
+                        </form>
 
                         <div class="item-search__filter-line">
                             <div class="active-filters">
@@ -443,14 +439,14 @@
                             <div class="meta">
                                 <ul class="erk-ulist">
                                     <li class="erk-ulist--item">
-                                        <g:message code="speciesListItem.list.taxonNumber"/>
+                                        <g:message code="speciesListItem.list.taxonNumber" />
                                         <span class="count">
                                             ${totalCount}
                                         </span>
                                     </li>
 
                                     <li class="erk-ulist--item">
-                                        <g:message code="speciesListItem.list.distinctSpecies"/>
+                                        <g:message code="speciesListItem.list.distinctSpecies" />
                                         <span class="count">
                                             ${distinctCount}
                                         </span>
@@ -464,7 +460,7 @@
                                                 title="${message(code: 'speciesListItem.list.viewUnrecognised')}"
                                                 params="${[fq:sl.buildFqList(fqs:fqs, fq:' guid:null'), max:params.max]}"
                                             >
-                                                <g:message code="speciesListItem.list.unknownTaxa"/>
+                                                <g:message code="speciesListItem.list.unknownTaxa" />
                                             </g:link>
 
                                             <span class="count">
@@ -476,7 +472,7 @@
                                     <%--
                                     <li class="erk-ulist--item">
                                         <g:link controller="speciesList" action="list" class="wrk-button" title="My Lists">
-                                            <g:message code="general.myLists"/>
+                                            <g:message code="general.myLists" />
                                         </g:link>
                                     </li>
                                     --%>
@@ -486,15 +482,15 @@
                             <div>
                                 <g:if test="${facets.size()>0 || params.fq}">
                                     <h4>
-                                        <g:message code="speciesListItem.list.refine"/>
+                                        <g:message code="speciesListItem.list.refine" />
                                     </h4>
 
                                     <div id="accordion">
-                                        <g:set var="fqs" value="${params.list('fq')}"/>
+                                        <g:set var="fqs" value="${params.list('fq')}" />
                                         <g:if test="${fqs.size()>0&& fqs.get(0).length()>0}">
                                             <div id="currentFilter">
                                                 <div class="FieldName">
-                                                    <g:message code="speciesListItem.list.filters"/>
+                                                    <g:message code="speciesListItem.list.filters" />
                                                 </div>
 
                                                 <div id="currentFilters" class="subnavlist">
@@ -532,7 +528,7 @@
                                             <g:else>
                                                 <g:render
                                                     template="facet"
-                                                    model="${[key:entry.key, values:entry.value, isProperty:false]}"/>
+                                                    model="${[key:entry.key, values:entry.value, isProperty:false]}" />
                                             </g:else>
                                         </g:each>
                                     </div>
@@ -552,8 +548,8 @@
                                 role="tab"
                                 title="${message(code: 'speciesListItem.list.viewList')}"
                             >
-                                <span class="fa fa-th-list"></span>
-                                <g:message code="speciesListItem.list.list"/>
+                                <span class="fa fa-list"></span>
+                                <g:message code="speciesListItem.list.list" />
                             </a>
                         </li>
 
@@ -566,7 +562,7 @@
                                 title="${message(code: 'speciesListItem.list.viewThumb')}"
                             >
                                 <span class="fa fa-th"></span>
-                                <g:message code="speciesListItem.list.grid"/>
+                                <g:message code="speciesListItem.list.grid" />
                             </a>
                         </li>
                     </ul>
@@ -574,7 +570,7 @@
                     <div class="tab-content">
                         <div class="tab-pane active" id="list-tab" role="tabpanel">
                             <div class="float-right">
-                                <g:message code="general.pageItems"/>:
+                                <g:message code="general.pageItems" />:
                                 <select class="input-mini" onchange="reloadWithMax(this)">
                                     <g:each in="${[10,25,50,100]}" var="max">
                                         <option ${(params.max == max)?'selected="selected"' :'' }>
@@ -589,7 +585,7 @@
                                     <thead>
                                         <tr>
                                             <th class="action">
-                                                <g:message code="general.action"/>
+                                                <g:message code="general.action" />
                                             </th>
 
                                             <g:sortableColumn
@@ -632,9 +628,9 @@
 
                                     <tbody>
                                         <g:each var="result" in="${results}" status="i">
-                                            <g:set var="recId" value="${result.id}"/>
+                                            <g:set var="recId" value="${result.id}" />
                                             <g:set var="bieTitle">
-                                                <g:message code="general.speciesPage"/>
+                                                <g:message code="general.speciesPage" />
                                                 <span>
                                                     ${result.rawScientificName}
                                                 </span>
@@ -679,24 +675,24 @@
                                                     ${fieldValue(bean: result, field: "rawScientificName")}
 
                                                     <g:if test="${result.guid == null}">
-                                                        <br/>
+                                                        <br />
                                                         <strong>
-                                                            <g:message code="speciesListItem.list.unmatched"/>
+                                                            <g:message code="speciesListItem.list.unmatched" />
                                                         </strong>
                                                         -
-                                                        <g:message code="speciesListItem.list.try"/>
+                                                        <g:message code="speciesListItem.list.try" />
                                                         <a
                                                             href="http://google.com/search?q=${fieldValue(bean: result, field: 'rawScientificName').trim()}"
                                                             target="google"
                                                         >
-                                                            <g:message code="speciesListItem.list.google"/>
+                                                            <g:message code="speciesListItem.list.google" />
                                                         </a>
-                                                        <g:message code="speciesListItem.list.or"/>
+                                                        <g:message code="speciesListItem.list.or" />
                                                         <a
                                                             href="${grailsApplication.config.biocache.baseURL}/occurrences/search?q=${fieldValue(bean: result, field: 'rawScientificName').trim()}"
                                                             target="biocache"
                                                         >
-                                                            <g:message code="speciesListItem.list.occurrences"/>
+                                                            <g:message code="speciesListItem.list.occurrences" />
                                                         </a>
                                                     </g:if>
                                                 </td>
@@ -733,8 +729,8 @@
                                                 </td>
 
                                                 <g:each in="${keys}" var="key">
-                                                    <g:set var="kvp" value="${result.kvpValues.find {it.key == key}}"/>
-                                                    <g:set var="val" value="${kvp?.vocabValue?:kvp?.value}"/>
+                                                    <g:set var="kvp" value="${result.kvpValues.find {it.key == key}}" />
+                                                    <g:set var="val" value="${kvp?.vocabValue?:kvp?.value}" />
 
                                                     <td class="kvp ${val?.length() > 35 ? 'scrollWidth':''}">
                                                         <div>
@@ -751,9 +747,9 @@
 
                         <div class="tab-pane" id="grid-tab" role="tabpanel">
                             <g:each var="result" in="${results}" status="i">
-                                <g:set var="recId" value="${result.id}"/>
+                                <g:set var="recId" value="${result.id}" />
                                 <g:set var="bieTitle">
-                                    <g:message code="general.speciesPage"/>
+                                    <g:message code="general.speciesPage" />
                                     <span>
                                         ${result.rawScientificName}
                                     </span>
@@ -798,7 +794,7 @@
                                             </g:if>
 
                                             <g:if test="${result.commonName}">
-                                                <br/>
+                                                <br />
                                                 ${result.commonName}
                                             </g:if>
 
@@ -855,7 +851,7 @@
                                 </g:if>
 
                                 <g:else>
-                                    <g:paginate total="${totalCount}" action="list" id="${params.id}"/>
+                                    <g:paginate total="${totalCount}" action="list" id="${params.id}" />
                                 </g:else>
                             </div>
                         </div>
@@ -863,7 +859,7 @@
 
                     <%-- Output the BS modal divs (hidden until called) --%>
                     <g:each var="result" in="${results}" status="i">
-                        <g:set var="recId" value="${result.id}"/>
+                        <g:set var="recId" value="${result.id}" />
 
                         <div class="modal fade" id="viewRecord">
                             <div class="modal-dialog modal-lg">
@@ -880,24 +876,24 @@
                                         </button>
 
                                         <h3>
-                                            <g:message code="speciesListItem.list.viewRecord"/>
+                                            <g:message code="speciesListItem.list.viewRecord" />
                                         </h3>
                                     </div>
 
                                     <div class="modal-body">
                                         <p class="spinner">
-                                            <img src="${assetPath(src: 'spinner.gif')}" alt="spinner icon"/>
+                                            <img src="${assetPath(src: 'spinner.gif')}" alt="spinner icon" />
                                         </p>
 
                                         <%-- TODO: .hide class. --%>
                                         <table class="table table-sm table-bordered table-striped hide">
                                             <thead>
                                                 <th>
-                                                    <g:message code="general.field"/>
+                                                    <g:message code="general.field" />
                                                 </th>
 
                                                 <th>
-                                                    <g:message code="general.value"/>
+                                                    <g:message code="general.value" />
                                                 </th>
                                             </thead>
 
@@ -909,13 +905,13 @@
                                     <%--
                                     <div class="modal-footer">
                                         <button class="erk-button erk-button--light hide" data-id="${recId}">
-                                            <g:message code="speciesListItem.list.previous"/>
+                                            <g:message code="speciesListItem.list.previous" />
                                         </button>
                                         <button class="erk-button erk-button--light hide" data-id="${recId}">
-                                            <g:message code="speciesListItem.list.next"/>
+                                            <g:message code="speciesListItem.list.next" />
                                         </button>
                                         <button class="erk-button erk-button--light" onclick="$('#viewRecord .modal-body').scrollTop(0);" data-dismiss="modal" aria-hidden="true">
-                                            <g:message code="general.close"/>
+                                            <g:message code="general.close" />
                                         </button>
                                     </div>
                                     --%>
@@ -931,19 +927,19 @@
                                     </button>
 
                                     <h3>
-                                        <g:message code="general.editRecord"/>
+                                        <g:message code="general.editRecord" />
                                     </h3>
                                 </div>
 
                                 <div class="modal-body">
                                     <p>
-                                        <img src="${assetPath(src: 'spinner.gif')}" alt="spinner icon"/>
+                                        <img src="${assetPath(src: 'spinner.gif')}" alt="spinner icon" />
                                     </p>
                                 </div>
 
                                 <div class="modal-footer">
                                     <button class="erk-button erk-button--light" data-dismiss="modal" aria-hidden="true">
-                                        <g:message code="speciesListItem.list.cancel"/>
+                                        <g:message code="speciesListItem.list.cancel" />
                                     </button>
 
                                     <button
@@ -951,7 +947,7 @@
                                         data-modal="#editRecord_${recId}"
                                         data-id="${recId}"
                                     >
-                                        <g:message code="speciesListItem.list.saveChanges"/>
+                                        <g:message code="speciesListItem.list.saveChanges" />
                                     </button>
                                 </div>
                             </div>
@@ -959,13 +955,13 @@
                             <div class="modal fade" id="deleteRecord_${recId}">
                                 <div class="modal-header">
                                     <h3>
-                                        <g:message code="speciesListItem.list.confirmDelete"/>
+                                        <g:message code="speciesListItem.list.confirmDelete" />
                                     </h3>
                                 </div>
 
                                 <div class="modal-body">
                                     <p>
-                                        <g:message code="speciesListItem.list.deleteDescription"/>
+                                        <g:message code="speciesListItem.list.deleteDescription" />
                                         <span>
                                             ${result.rawScientificName}
                                         </span>
@@ -974,7 +970,7 @@
 
                                 <div class="modal-footer">
                                     <button class="erk-button erk-button--light" data-dismiss="modal" aria-hidden="true">
-                                        <g:message code="speciesListItem.list.cancel"/>
+                                        <g:message code="speciesListItem.list.cancel" />
                                     </button>
 
                                     <button
@@ -982,7 +978,7 @@
                                         data-modal="#deleteRecord_${recId}"
                                         data-id="${recId}"
                                     >
-                                        <g:message code=""/>
+                                        <g:message code="" />
                                     </button>
                                 </div>
                             </div>
@@ -1005,7 +1001,7 @@
                             <g:if test="${userCanEditPermissions}">
                                 <a href="#" class="erk-button erk-button--light" id="edit-meta-button">
                                     <span class="fa fa-pencil"></span>
-                                    <g:message code="speciesListItem.list.edit"/>
+                                    <g:message code="speciesListItem.list.edit" />
                                 </a>
                             </g:if>
 
@@ -1064,49 +1060,49 @@
                                     ${message(code: 'general.dateCreated')}
                                 </dt>
                                 <dd class="col-sm-6 col-md-6">
-                                    <g:formatDate format="yyyy-MM-dd" date="${speciesList.dateCreated?:0}"/><!-- ${speciesList.lastUpdated} -->
+                                    <g:formatDate format="yyyy-MM-dd" date="${speciesList.dateCreated?:0}" /><!-- ${speciesList.lastUpdated} -->
                                 </dd>
 
                                 <dt class="col-sm-6 col-md-6">
                                     ${message(code: 'speciesListItem.list.isPrivate')}
                                 </dt>
                                 <dd class="col-sm-6 col-md-6">
-                                    <g:formatBoolean boolean="${speciesList.isPrivate?:false}" true="Yes" false="No"/>
+                                    <g:formatBoolean boolean="${speciesList.isPrivate?:false}" true="Yes" false="No" />
                                 </dd>
 
                                 <dt class="col-sm-6 col-md-6">
                                     ${message(code: 'general.isBIE')}
                                 </dt>
                                 <dd class="col-sm-6 col-md-6">
-                                    <g:formatBoolean boolean="${speciesList.isBIE?:false}" true="Yes" false="No"/>
+                                    <g:formatBoolean boolean="${speciesList.isBIE?:false}" true="Yes" false="No" />
                                 </dd>
 
                                 <dt class="col-sm-6 col-md-6">
                                     ${message(code: 'general.isAuthoritative')}
                                 </dt>
                                 <dd class="col-sm-6 col-md-6">
-                                    <g:formatBoolean boolean="${speciesList.isAuthoritative?:false}" true="Yes" false="No"/>
+                                    <g:formatBoolean boolean="${speciesList.isAuthoritative?:false}" true="Yes" false="No" />
                                 </dd>
 
                                 <dt class="col-sm-6 col-md-6">
                                     ${message(code: 'general.isInvasive')}
                                 </dt>
                                 <dd class="col-sm-6 col-md-6">
-                                    <g:formatBoolean boolean="${speciesList.isInvasive?:false}" true="Yes" false="No"/>
+                                    <g:formatBoolean boolean="${speciesList.isInvasive?:false}" true="Yes" false="No" />
                                 </dd>
 
                                 <dt class="col-sm-6 col-md-6">
                                     ${message(code: 'general.isThreatened')}
                                 </dt>
                                 <dd class="col-sm-6 col-md-6">
-                                    <g:formatBoolean boolean="${speciesList.isThreatened?:false}" true="Yes" false="No"/>
+                                    <g:formatBoolean boolean="${speciesList.isThreatened?:false}" true="Yes" false="No" />
                                 </dd>
 
                                 <dt class="col-sm-6 col-md-6">
                                     ${message(code: 'general.isSDS')}
                                 </dt>
                                 <dd class="col-sm-6 col-md-6">
-                                    <g:formatBoolean boolean="${speciesList.isSDS?:false}" true="Yes" false="No"/>
+                                    <g:formatBoolean boolean="${speciesList.isSDS?:false}" true="Yes" false="No" />
                                 </dd>
 
                                 <dt class="col-sm-6 col-md-6">
@@ -1178,7 +1174,7 @@
                             <g:if test="${userCanEditPermissions}">
                                 <div style="display: none;" id="edit-meta-div">
                                     <form class="form-horizontal" id="edit-meta-form">
-                                        <input type="hidden" name="id" value="${speciesList.id}"/>
+                                        <input type="hidden" name="id" value="${speciesList.id}" />
 
                                         <div class="control-group">
                                             <label class="control-label" for="listName">
@@ -1191,7 +1187,7 @@
                                                     id="listName"
                                                     class="input-xlarge"
                                                     value="${speciesList.listName}"
-                                                    />
+                                                />
                                             </div>
                                         </div>
 
@@ -1206,7 +1202,7 @@
                                                             value="${userId}"
                                                             ${(speciesList.username == userId) ? 'selected="selected"' :'' }
                                                             >
-                                                            <sl:getFullNameForUserId userId="${userId}"/>
+                                                            <sl:getFullNameForUserId userId="${userId}" />
                                                         </option>
                                                     </g:each>
                                                 </select>
@@ -1247,7 +1243,7 @@
                                                 ${message(code: 'general.url')}
                                             </label>
                                             <div class="controls">
-                                                <input type="url" name="url" id="url" class="input-xlarge" value="${speciesList.url}"/>
+                                                <input type="url" name="url" id="url" class="input-xlarge" value="${speciesList.url}" />
                                             </div>
                                         </div>
 
@@ -1273,8 +1269,8 @@
                                                     id="dateCreated"
                                                     data-date-format="yyyy-mm-dd"
                                                     class="input-xlarge"
-                                                    value="<g:formatDate format='yyyy-MM-dd' date='${speciesList.dateCreated?:0}'/>"
-                                                    />
+                                                    value="<g:formatDate format='yyyy-MM-dd' date='${speciesList.dateCreated?:0}' />"
+                                                />
                                                 <%--<g:datePicker name="dateCreated" value="${speciesList.dateCreated}" precision="day" relativeYears="[-2..7]" class="input-small"/>--%>
                                             </div>
                                         </div>
@@ -1292,7 +1288,7 @@
                                                     value="true"
                                                     data-value="${speciesList.isPrivate}"
                                                     ${(speciesList.isPrivate == true) ? 'checked="checked"' :''}
-                                                    />
+                                                />
                                             </div>
                                         </div>
 
@@ -1310,7 +1306,7 @@
                                                         value="true"
                                                         data-value="${speciesList.isBIE}"
                                                         ${(speciesList.isBIE == true) ? 'checked="checked"' :''}
-                                                        />
+                                                    />
                                                 </div>
                                             </div>
 
@@ -1327,7 +1323,7 @@
                                                         value="true"
                                                         data-value="${speciesList.isAuthoritative}"
                                                         ${(speciesList.isAuthoritative == true) ? 'checked="checked"' :''}
-                                                        />
+                                                    />
                                                 </div>
                                             </div>
 
@@ -1344,7 +1340,7 @@
                                                         value="true"
                                                         data-value="${speciesList.isInvasive}"
                                                         ${(speciesList.isInvasive == true) ? 'checked="checked"' :''}
-                                                        />
+                                                    />
                                                 </div>
                                             </div>
 
@@ -1361,7 +1357,7 @@
                                                         value="true"
                                                         data-value="${speciesList.isThreatened}"
                                                         ${(speciesList.isThreatened == true) ? 'checked="checked"' :''}
-                                                        />
+                                                    />
                                                 </div>
                                             </div>
 
@@ -1378,7 +1374,7 @@
                                                         value="true"
                                                         data-value="${speciesList.isSDS}"
                                                         ${(speciesList.isSDS == true) ? 'checked="checked"' :''}
-                                                        />
+                                                    />
                                                 </div>
                                             </div>
 
@@ -1393,7 +1389,7 @@
                                                         id="region"
                                                         class="input-xlarge"
                                                         value="${speciesList.region}"
-                                                        />
+                                                    />
                                                 </div>
                                             </div>
 
@@ -1409,7 +1405,7 @@
                                                             id="authority"
                                                             class="input-xlarge"
                                                             value="${speciesList.authority}"
-                                                            />
+                                                        />
                                                     </div>
                                                 </div>
 
@@ -1424,7 +1420,7 @@
                                                             id="category"
                                                             class="input-xlarge"
                                                             value="${speciesList.category}"
-                                                            />
+                                                        />
                                                     </div>
                                                 </div>
 
@@ -1439,7 +1435,7 @@
                                                             id="generalisation"
                                                             class="input-xlarge"
                                                             value="${speciesList.generalisation}"
-                                                            />
+                                                        />
                                                     </div>
                                                 </div>
 
@@ -1454,7 +1450,7 @@
                                                             id="sdsType"
                                                             class="input-xlarge"
                                                             value="${speciesList.sdsType}"
-                                                            />
+                                                        />
                                                     </div>
                                                 </div>
                                             </g:if>
@@ -1463,10 +1459,10 @@
                                         <div class="control-group">
                                             <div class="controls">
                                                 <button type="submit" id="edit-meta-submit" class="erk-button erk-button--light">
-                                                    <g:message code="speciesListItem.list.save"/>
+                                                    <g:message code="speciesListItem.list.save" />
                                                 </button>
                                                 <button class="erk-button erk-button--light" onclick="toggleEditMeta(false);return false;">
-                                                    <g:message code="speciesListItem.list.cancel"/>
+                                                    <g:message code="speciesListItem.list.cancel" />
                                                 </button>
                                             </div>
                                         </div>

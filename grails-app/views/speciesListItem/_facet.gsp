@@ -43,18 +43,15 @@
         </g:while>
 
         <g:if test="${values.size() > 4}">
-            <li class="erk-ulist--item showHide">
-                <i class="fa fa-hand-o-right"></i>
-
+            <li class="erk-ulist--item">
                 <a
                     id="${sl.facetAsId(key:key, prefix:'multi')}"
                     href="${sl.facetAsId(key:key, prefix:'#div')}"
-                    class="multipleFacetsLinkZ"
                     role="button"
                     data-toggle="modal"
                     title="${message(code: 'speciesListItem.facet.seeFull')}"
                 >
-                    <g:message code="speciesListItem.facet.choose"/>
+                    <g:message code="speciesListItem.facet.choose"/>&hellip;
                 </a>
             </li>
         </g:if>
