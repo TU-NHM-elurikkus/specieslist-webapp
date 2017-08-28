@@ -20,11 +20,6 @@
 
 <html>
     <head>
-        <%--<gui:resources components="['dialog']"/>--%>
-
-        <asset:javascript src="list.js" />
-        <asset:stylesheet src="application.css" />
-
         <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
 
         <title>
