@@ -179,7 +179,7 @@
 
         </style>
 
-        <r:script>
+        <g:javascript>
             $(document).ready(function(){
                 // BS affix plugin for groups menu
                 $('#groupsNav').affix({
@@ -200,7 +200,7 @@
                 var paramStr = jQuery.param(params);
                 window.location.href =  '?' + paramStr;
             }
-        </r:script>
+        </g:javascript>
     </head>
     <body class="yui-skin-sam nav-species">
         <div id="content" class="container-fluid">
@@ -283,7 +283,7 @@
                                             data-id="${recId}"
                                         >
                                             <img
-                                                src="${bieSpecies?.get(0)?:g.createLink(uri:'/images/infobox_info_icon.png')}"
+                                                src="${bieSpecies?.get(0)?:g.createLink(uri:'/assets/infobox_info_icon.png')}"
                                                 style="opacity:0.5"
                                                 alt="thumbnail species image"
                                             />

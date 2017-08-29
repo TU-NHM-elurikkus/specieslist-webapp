@@ -1,11 +1,12 @@
 class UrlMappings {
 
 	static mappings = {
-		"/$controller/$action?/$id?"{
-			constraints {
-				// apply constraints here
-			}
-		}
+        "/$controller/$action?/$id?(.$format)?"{
+            constraints {
+                // apply constraints here
+            }
+        }
+
         "/iconic-species" controller: "speciesListItem", action: "iconicSpecies"
         //ws to support CRUD operations on lists
         "/ws/speciesList/${druid}?" (controller: 'webService'){
@@ -47,8 +48,8 @@ class UrlMappings {
 
 //        "/"(view:"/index")
 
-		"/"(controller: 'public' ,action:  'index')
-		"500"(view:'/error')
-		"401"(view:'/notAuthorised')
+		"/" (controller: 'public', action: 'index')
+		"500" (view:'/error')
+		"401" (view:'/notAuthorised')
 	}
 }

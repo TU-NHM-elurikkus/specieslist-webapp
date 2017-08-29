@@ -764,7 +764,7 @@
                                         data-id="${recId}"
                                     >
                                         <img
-                                            src="${result.imageUrl?:g.createLink(uri:'/images/infobox_info_icon.png')}"
+                                            src="${result.imageUrl?:g.createLink(uri:'/assets/infobox_info_icon.png')}"
                                             style="opacity:0.5"
                                             alt="thumbnail species image"
                                         />

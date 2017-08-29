@@ -56,9 +56,6 @@ grails.mime.types = [ html: ['text/html','application/xhtml+xml'],
                       multipartForm: 'multipart/form-data'
                     ]
 
-// What URL patterns should be processed by the resources plugin
-grails.resources.adhoc.patterns = ['/images/*', '/css/*', '/js/*', '/plugins/*']
-
 // The default codec used to encode data with ${}
 grails.views.default.codec = "none"
 grails.views.gsp.encoding = "UTF-8"
@@ -94,7 +91,6 @@ auth.userNamesForNumericIdPath='getUserListWithIds'
 // set per-environment serverURL stem for creating absolute links
 environments {
     development {
-        grails.resources.debug = true
     }
     production {}
 }
@@ -153,8 +149,6 @@ log4j = {
             'grails.app',
             'net',
             'grails.util.GrailsUtil',
-            'grails.app.service.org.grails.plugin.resource',
-            'grails.app.service.org.grails.plugin.resource.ResourceTagLib',
             'grails.app',
             'grails.plugin.springcache',
             'au.org.ala.cas.client',

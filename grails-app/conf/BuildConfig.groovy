@@ -45,7 +45,6 @@ grails.project.dependency.resolution = {
         compile ('au.org.ala:ala-name-matching:2.4.0') {
             excludes "log4j","slf4j-log4j12"
         }
-        compile "org.gbif:gbif-common:0.17"
         compile "org.nibor.autolink:autolink:0.5.0"
         runtime 'mysql:mysql-connector-java:5.1.18'
     }
@@ -63,12 +62,12 @@ grails.project.dependency.resolution = {
         compile (":ala-auth:1.3.2") {
            exclude "servlet-api"
         }
-        compile ":ala-bootstrap2:2.4.5"
         compile ":asset-pipeline:2.14.1"
         compile ':cache:1.1.8'
         compile ':cache-ehcache:1.0.0'
         compile ":elurikkus-commons:0.2-SNAPSHOT"
         compile ":jsonp:0.2"
         compile ":rest:0.8"
+        compile ":jquery:1.11.1"
     }
 }
