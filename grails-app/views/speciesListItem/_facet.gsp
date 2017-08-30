@@ -2,11 +2,11 @@
 
 <g:set var="facetId" value="${sl.facetAsId(key:key, prefix:"facet")}" />
 
-<div class="FieldName">
-    ${key}
-</div>
+<div id="${facetId}" class="facet">
+    <h4 class="facet__header">
+        ${key}
+    </h4>
 
-<div id="${facetId}" class="subnavlist">
     <ul class="erk-ulist">
         <g:set var="i" value="${0}"/>
 
@@ -14,28 +14,32 @@
             <g:set var="arr" value="${values.get(i)}"/>
 
             <g:if test="${isProperty}">
-                <li class="erk-ulist--item">
+                <li class="facet__value erk-ulist--item">
+                    <span class="fa fa-square-o"></span>
+
                     <g:link
                         id="${params.id}"
                         action="list"
                         params="${[fq:sl.buildFqList(fqs:fqs, fq:"kvp ${arr[0]}:${arr[1]}"), max:params.max, query: params.query]}"
                     >
                         ${arr[2]?:arr[1]}
-                    </g:link>
 
-                    (${arr[3]})
+                        (${arr[3]})
+                    </g:link>
                 </li>
             </g:if>
             <g:else>
-                <li class="erk-ulist--item">
+                <li class="facet__value erk-ulist--item">
+                    <span class="fa fa-square-o"></span>
+
                     <g:link
                         action="list" id="${params.id}"
                         params="${[fq:sl.buildFqList(fqs:fqs, fq:"${key}:${arr[0]}"), max:params.max, query: params.query]}"
                     >
                         ${arr[0]}
-                    </g:link>
 
-                    (${arr[1]})
+                        (${arr[1]})
+                    </g:link>
                 </li>
             </g:else>
 

@@ -456,66 +456,33 @@
                 </div>
             </div>
 
+            <div class="list-items-header">
+                <span class="fa fa-info-circle"></span>
+                <g:message code="speciesListItem.list.refine" />
+            </div>
+
             <div class="row">
                 <div class="col-md-3" id="facets-column">
-                    <div class="card card-body">
-                        <div class="boxedZ attachedZ">
-                            <div>
-                                <g:if test="${facets.size()>0 || params.fq}">
-                                    <h4>
-                                        <g:message code="speciesListItem.list.refine" />
-                                    </h4>
+                    <div class="card card-body facets-panel">
+                        <g:if test="${facets.size()>0 || params.fq}">
+                            <g:set var="fqs" value="${params.list('fq')}" />
 
-                                    <div id="accordion">
-                                        <g:set var="fqs" value="${params.list('fq')}" />
-                                        <g:if test="${fqs.size()>0&& fqs.get(0).length()>0}">
-                                            <div id="currentFilter">
-                                                <div class="FieldName">
-                                                    <g:message code="speciesListItem.list.filters" />
-                                                </div>
-
-                                                <div id="currentFilters" class="subnavlist">
-                                                    <ul class="erk-ulist">
-                                                        <g:each in="${fqs}" var="fq">
-                                                            <g:if test="${fq.length() >0}">
-                                                                <li class="erk-ulist--item">
-                                                                    <g:link
-                                                                        action="list"
-                                                                        id="${params.id}"
-                                                                        params="${[fq:sl.excludedFqList(fqs:fqs, fq:fq), max:params.max]}"
-                                                                        class="removeLink"
-                                                                        title="Uncheck (remove filter)"
-                                                                    >
-                                                                        <span class="fa fa-check"></span>
-                                                                    </g:link>
-                                                                    ${fq.replaceFirst("kvp ","")}
-                                                                </li>
-                                                            </g:if>
-                                                        </g:each>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </g:if>
-
-                                        <g:each in="${facets}" var="entry">
-                                            <g:if test="${entry.key == " listProperties"}">
-                                                <g:each in="${facets.get(" listProperties")}" var="value">
-                                                    <g:render
-                                                        template="facet"
-                                                        model="${[key:value.getKey(), values:value.getValue(), isProperty:true]}"
-                                                    />
-                                                </g:each>
-                                            </g:if>
-                                            <g:else>
-                                                <g:render
-                                                    template="facet"
-                                                    model="${[key:entry.key, values:entry.value, isProperty:false]}" />
-                                            </g:else>
-                                        </g:each>
-                                    </div>
+                            <g:each in="${facets}" var="entry">
+                                <g:if test="${entry.key == " listProperties"}">
+                                    <g:each in="${facets.get(" listProperties")}" var="value">
+                                        <g:render
+                                            template="facet"
+                                            model="${[key:value.getKey(), values:value.getValue(), isProperty:true]}"
+                                        />
+                                    </g:each>
                                 </g:if>
-                            </div>
-                        </div>
+                                <g:else>
+                                    <g:render
+                                        template="facet"
+                                        model="${[key:entry.key, values:entry.value, isProperty:false]}" />
+                                </g:else>
+                            </g:each>
+                        </g:if>
                     </div>
                 </div>
 
