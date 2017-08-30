@@ -259,10 +259,6 @@ img.smallSpeciesImage {
     display: block;
 }
 
-#grid-tab {
-    padding: .5rem;
-}
-
 .overrideHide {
    display: block !important;
 }
@@ -315,6 +311,10 @@ img.smallSpeciesImage {
 
 .list-items-header {
     font-size: 15px;
+    margin-bottom: 1em;
+}
+
+.list-items-controls {
     margin-bottom: 1em;
 }
 

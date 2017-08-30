@@ -332,20 +332,6 @@
                             <span class="fa fa-download"></span>
                             <g:message code="speciesListItem.list.download" />
                         </button>
-
-                        <g:if test="${userCanEditPermissions}">
-                            <button type="button" data-remote="${createLink(controller: 'editor', action: 'editPermissions', id: params.id)}" data-target="#modal" data-toggle="modal" class="erk-button erk-button--light">
-                                <span class="fa fa-user-o"></span>
-                                <g:message code="speciesListItem.list.editPerm" />
-                            </button>
-                        </g:if>
-
-                        <g:if test="${userCanEditData}">
-                            <a href="#" data-remote="${createLink(controller: 'editor', action: 'addRecordScreen', id: params.id)}" data-target="#addRecord" data-toggle="modal">
-                                <span class="fa fa-plus"></span>
-                                <g:message code="speciesListItem.list.add" />
-                            </a>
-                        </g:if>
                     </div>
                 </div>
             </header>
@@ -513,16 +499,7 @@
 
                     <div class="tab-content">
                         <div id="list-tab" class="tab-pane" role="tabpanel">
-                            <div class="float-right">
-                                <g:message code="general.pageItems" />:
-                                <select class="input-mini" onchange="reloadWithMax(this)">
-                                    <g:each in="${[10,25,50,100]}" var="max">
-                                        <option ${(params.max == max)?'selected="selected"' :'' }>
-                                            ${max}
-                                        </option>
-                                    </g:each>
-                                </select>
-                            </div>
+                            <g:render template="list-controls" />
 
                             <div class="speciesList table-responsive">
                                 <table class="table table-sm" id="speciesListTable">
@@ -690,6 +667,8 @@
                         </div>
 
                         <div id="grid-tab" class="tab-pane active" role="tabpanel">
+                            <g:render template="list-controls" />
+
                             <g:each var="result" in="${results}" status="i">
                                 <g:set var="recId" value="${result.id}" />
                                 <g:set var="bieTitle">
