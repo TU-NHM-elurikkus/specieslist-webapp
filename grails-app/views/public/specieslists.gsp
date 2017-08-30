@@ -20,6 +20,8 @@
         <title>
             <g:message code="general.speciesLists"/> | ${grailsApplication.config.skin.orgNameLong}
         </title>
+
+        <asset:stylesheet src="filters.css" />
     </head>
 
     <body>
@@ -62,19 +64,32 @@
                                             value="${params.q}"
                                             placeholder="${message(code: 'general.searchPlaceHolder')}"
                                         />
+
                                         <button class="erk-button erk-button--dark input-plus__addon" type="submit">
                                             <g:message code="general.search"/>
                                         </button>
                                     </form>
-
-                                    <g:if test="${params.q}">
-                                        <form>
-                                            <button class="erk-button erk-button--light" type="submit">
-                                                <g:message code="public.speciesLists.clearSearch"/>
-                                            </button>
-                                        </form>
-                                    </g:if>
                                 </div>
+
+                                <g:if test="${params.q}">
+                                    <div class="active-filters">
+                                        <span class="active-filters__title">
+                                            <g:message code="speciesListItem.list.filters" />
+                                        </span>
+
+                                        <span class="active-filters__filter">
+                                            <span class="active-filters__label">
+                                                <g:message code="public.speciesLists.query" />: ${params.q}
+                                            </span>
+
+                                            <span
+                                                class="fa fa-close active-filters__close-button"
+                                                onclick="resetFilters()"
+                                            >
+                                            </span>
+                                        </span>
+                                    </div>
+                                </g:if>
                             </div>
 
                             <div class="list-search-row__pagination-controls col-md-3 col-sm-12">
@@ -110,5 +125,11 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            function resetFilters() {
+                window.location.search = "";
+            }
+        </script>
     </body>
 </html>
