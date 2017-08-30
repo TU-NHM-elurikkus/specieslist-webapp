@@ -308,3 +308,11 @@ img.smallSpeciesImage {
 .item-search__filter-line {
     margin-top: 1em;
 }
+
+.item-search__count-line {
+    margin-bottom: 1em;
+}
+
+.item-search__count {
+    font-weight: 700;
+}

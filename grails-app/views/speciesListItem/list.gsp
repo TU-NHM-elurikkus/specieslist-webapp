@@ -375,6 +375,37 @@
                             </button>
                         </form>
 
+                        <div class="item-search__count-line">
+                            <g:message code="speciesListItem.list.taxonNumber" />:
+                            <span class="item-search__count">
+                                ${totalCount}
+                            </span>
+
+                            ,
+
+                            <g:message code="speciesListItem.list.distinctSpecies" />:
+                            <span class="item-search__count">
+                                ${distinctCount}
+                            </span>
+
+                            <g:if test="${hasUnrecognised && noMatchCount!=totalCount}">
+                                ,
+
+                                <g:link
+                                    action="list"
+                                    id="${params.id}"
+                                    title="${message(code: 'speciesListItem.list.viewUnrecognised')}"
+                                    params="${[fq:sl.buildFqList(fqs:fqs, fq:' guid:null'), max:params.max]}"
+                                >
+                                    <g:message code="speciesListItem.list.unknownTaxa" />
+
+                                    <span class="item-search__count">
+                                        ${noMatchCount}
+                                    </span>
+                                </g:link>
+                            </g:if>
+                        </div>
+
                         <div class="item-search__filter-line">
                             <div class="active-filters">
                                 <g:if test="${query || fqs}">
@@ -429,49 +460,6 @@
                 <div class="col-md-3" id="facets-column">
                     <div class="card card-body">
                         <div class="boxedZ attachedZ">
-                            <div class="meta">
-                                <ul class="erk-ulist">
-                                    <li class="erk-ulist--item">
-                                        <g:message code="speciesListItem.list.taxonNumber" />
-                                        <span class="count">
-                                            ${totalCount}
-                                        </span>
-                                    </li>
-
-                                    <li class="erk-ulist--item">
-                                        <g:message code="speciesListItem.list.distinctSpecies" />
-                                        <span class="count">
-                                            ${distinctCount}
-                                        </span>
-                                    </li>
-
-                                    <g:if test="${hasUnrecognised && noMatchCount!=totalCount}">
-                                        <li class="erk-ulist--item">
-                                            <g:link
-                                                action="list"
-                                                id="${params.id}"
-                                                title="${message(code: 'speciesListItem.list.viewUnrecognised')}"
-                                                params="${[fq:sl.buildFqList(fqs:fqs, fq:' guid:null'), max:params.max]}"
-                                            >
-                                                <g:message code="speciesListItem.list.unknownTaxa" />
-                                            </g:link>
-
-                                            <span class="count">
-                                                ${noMatchCount}
-                                            </span>
-                                        </li>
-                                    </g:if>
-
-                                    <%--
-                                    <li class="erk-ulist--item">
-                                        <g:link controller="speciesList" action="list" class="wrk-button" title="My Lists">
-                                            <g:message code="general.myLists" />
-                                        </g:link>
-                                    </li>
-                                    --%>
-                                </ul>
-                            </div>
-
                             <div>
                                 <g:if test="${facets.size()>0 || params.fq}">
                                     <h4>
