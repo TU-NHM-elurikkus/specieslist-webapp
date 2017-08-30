@@ -262,16 +262,7 @@
                 <%-- TITLE --%>
                 <div class="page-header__title">
                     <h1 class="page-header__title">
-                        <g:message code="speciesListItem.list.speciesList" />:
-                        <a href="${collectoryUrl}/lists/speciesListItem/list/${params.id}">
-                            ${speciesList?.listName}
-                        </a>
-
-                        <%--
-                        <a href="${collectoryUrl}/public/show/${params.id}" title="view Date Resource page">
-                            ${speciesList?.listName}
-                        </a>
-                        --%>
+                        ${speciesList?.listName}
                     </h1>
 
                     <%-- TODD: New text.
@@ -299,12 +290,14 @@
                         <g:message code="speciesListItem.list.viewOccurrence" />
                     </a>
 
+                    <%-- TODO: Uncomment when spatial portal is finished
                     <a href="${request.contextPath}/speciesList/spatialPortal/${params.id}${params.toQueryString()}&type=Search"
                         title="${message(code: 'speciesListItem.list.viewSpatialDecription')}"
                         class="page-header-links__link">
 
                         <g:message code="speciesListItem.list.viewSpatial" />
                     </a>
+                    --%>
                 </div>
             </header>
 
@@ -332,6 +325,37 @@
                                 <g:message code="general.search" />
                             </button>
                         </form>
+
+                        <div class="item-search__count-line">
+                            <g:message code="speciesListItem.list.taxonNumber" />:
+                            <span class="item-search__count">
+                                ${totalCount}
+                            </span>
+
+                            ,
+
+                            <g:message code="speciesListItem.list.distinctSpecies" />:
+                            <span class="item-search__count">
+                                ${distinctCount}
+                            </span>
+
+                            <g:if test="${hasUnrecognised && noMatchCount!=totalCount}">
+                                ,
+
+                                <g:link
+                                    action="list"
+                                    id="${params.id}"
+                                    title="${message(code: 'speciesListItem.list.viewUnrecognised')}"
+                                    params="${[fq:sl.buildFqList(fqs:fqs, fq:' guid:null'), max:params.max]}"
+                                >
+                                    <g:message code="speciesListItem.list.unknownTaxa" />
+
+                                    <span class="item-search__count">
+                                        ${noMatchCount}
+                                    </span>
+                                </g:link>
+                            </g:if>
+                        </div>
 
                         <div class="item-search__filter-line">
                             <div class="active-filters">
@@ -383,109 +407,33 @@
                 </div>
             </div>
 
+            <div class="list-items-header">
+                <span class="fa fa-info-circle"></span>
+                <g:message code="speciesListItem.list.refine" />
+            </div>
+
             <div class="row">
                 <div class="col-sm-5 col-md-3" id="facets-column">
-                    <div class="card card-body">
-                        <div class="boxedZ attachedZ">
-                            <div class="meta">
-                                <ul class="erk-ulist">
-                                    <li class="erk-ulist--item">
-                                        <g:message code="speciesListItem.list.taxonNumber" />
-                                        <span class="count">
-                                            ${totalCount}
-                                        </span>
-                                    </li>
+                    <div class="card card-body facets-panel">
+                        <g:if test="${facets.size()>0 || params.fq}">
+                            <g:set var="fqs" value="${params.list('fq')}" />
 
-                                    <li class="erk-ulist--item">
-                                        <g:message code="speciesListItem.list.distinctSpecies" />
-                                        <span class="count">
-                                            ${distinctCount}
-                                        </span>
-                                    </li>
-
-                                    <g:if test="${hasUnrecognised && noMatchCount!=totalCount}">
-                                        <li class="erk-ulist--item">
-                                            <g:link
-                                                action="list"
-                                                id="${params.id}"
-                                                title="${message(code: 'speciesListItem.list.viewUnrecognised')}"
-                                                params="${[fq:sl.buildFqList(fqs:fqs, fq:' guid:null'), max:params.max]}"
-                                            >
-                                                <g:message code="speciesListItem.list.unknownTaxa" />
-                                            </g:link>
-
-                                            <span class="count">
-                                                ${noMatchCount}
-                                            </span>
-                                        </li>
-                                    </g:if>
-
-                                    <%--
-                                    <li class="erk-ulist--item">
-                                        <g:link controller="speciesList" action="list" class="wrk-button" title="My Lists">
-                                            <g:message code="general.myLists" />
-                                        </g:link>
-                                    </li>
-                                    --%>
-                                </ul>
-                            </div>
-
-                            <div>
-                                <g:if test="${facets.size()>0 || params.fq}">
-                                    <h4>
-                                        <g:message code="speciesListItem.list.refine" />
-                                    </h4>
-
-                                    <div id="accordion">
-                                        <g:set var="fqs" value="${params.list('fq')}" />
-                                        <g:if test="${fqs.size()>0&& fqs.get(0).length()>0}">
-                                            <div id="currentFilter">
-                                                <div class="FieldName">
-                                                    <g:message code="speciesListItem.list.filters" />
-                                                </div>
-
-                                                <div id="currentFilters" class="subnavlist">
-                                                    <ul class="erk-ulist">
-                                                        <g:each in="${fqs}" var="fq">
-                                                            <g:if test="${fq.length() >0}">
-                                                                <li class="erk-ulist--item">
-                                                                    <g:link
-                                                                        action="list"
-                                                                        id="${params.id}"
-                                                                        params="${[fq:sl.excludedFqList(fqs:fqs, fq:fq), max:params.max]}"
-                                                                        class="removeLink"
-                                                                        title="Uncheck (remove filter)"
-                                                                    >
-                                                                        <span class="fa fa-check"></span>
-                                                                    </g:link>
-                                                                    ${fq.replaceFirst("kvp ","")}
-                                                                </li>
-                                                            </g:if>
-                                                        </g:each>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </g:if>
-
-                                        <g:each in="${facets}" var="entry">
-                                            <g:if test="${entry.key == " listProperties"}">
-                                                <g:each in="${facets.get(" listProperties")}" var="value">
-                                                    <g:render
-                                                        template="facet"
-                                                        model="${[key:value.getKey(), values:value.getValue(), isProperty:true]}"
-                                                    />
-                                                </g:each>
-                                            </g:if>
-                                            <g:else>
-                                                <g:render
-                                                    template="facet"
-                                                    model="${[key:entry.key, values:entry.value, isProperty:false]}" />
-                                            </g:else>
-                                        </g:each>
-                                    </div>
+                            <g:each in="${facets}" var="entry">
+                                <g:if test="${entry.key == " listProperties"}">
+                                    <g:each in="${facets.get(" listProperties")}" var="value">
+                                        <g:render
+                                            template="facet"
+                                            model="${[key:value.getKey(), values:value.getValue(), isProperty:true]}"
+                                        />
+                                    </g:each>
                                 </g:if>
-                            </div>
-                        </div>
+                                <g:else>
+                                    <g:render
+                                        template="facet"
+                                        model="${[key:entry.key, values:entry.value, isProperty:false]}" />
+                                </g:else>
+                            </g:each>
+                        </g:if>
                     </div>
                 </div>
 
@@ -493,69 +441,33 @@
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item">
                             <a
-                                class="nav-link active"
+                                class="nav-link"
                                 data-toggle="tab"
                                 href="#list-tab"
                                 role="tab"
-                                title="${message(code: 'speciesListItem.list.viewList')}"
                             >
-                                <span class="fa fa-list"></span>
                                 <g:message code="speciesListItem.list.list" />
                             </a>
                         </li>
 
                         <li class="nav-item">
                             <a
-                                class="nav-link"
+                                class="nav-link active"
                                 data-toggle="tab"
                                 href="#grid-tab"
                                 role="tab"
-                                title="${message(code: 'speciesListItem.list.viewThumb')}"
                             >
-                                <span class="fa fa-th"></span>
                                 <g:message code="speciesListItem.list.grid" />
                             </a>
                         </li>
                     </ul>
 
                     <div class="tab-content">
-                        <div class="search-controls">
-                            <button
-                                type="button"
-                                class="erk-button erk-button--light"
-                                data-toggle="modal"
-                                data-target="#list-info-modal"
-                            >
-                                <span class="fa fa-info-circle"></span>
-                                <g:message code="speciesListItem.list.listInfo" />
-                            </button>
+                        <g:render template="list-controls" />
 
-                            <button
-                                type="button"
-                                class="erk-button erk-button--light"
-                                title="${message(code: 'speciesListItem.list.viewDownload')}"
-                                data-toggle="modal"
-                                data-target="#download-dialog"
-                            >
-                                <span class="fa fa-download"></span>
-                                <g:message code="speciesListItem.list.download" />
-                            </button>
-
-                            <div class="float-right">
-                                <g:message code="general.pageItems" />:
-                                <select class="input-mini" onchange="reloadWithMax(this)">
-                                    <g:each in="${[10, 25, 50, 100]}" var="max">
-                                        <option ${(params.max == max)?'selected="selected"' :'' }>
-                                            ${max}
-                                        </option>
-                                    </g:each>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="tab-pane active" id="list-tab" role="tabpanel">
+                        <div class="tab-pane" id="list-tab" role="tabpanel">
                             <div class="speciesList table-responsive">
-                                <table class="table table-sm table-bordered table-striped" id="speciesListTable">
+                                <table class="table table-sm" id="speciesListTable">
                                     <thead>
                                         <tr>
                                             <th class="action">
@@ -673,7 +585,7 @@
 
                                                 <td class="matchedName">
                                                     <g:if test="${result.guid}">
-                                                        <a href="${bieUrl}/species/${result.guid}" title="${bieTitle}">
+                                                        <a href="${bieUrl}/species/${result.guid}">
                                                             ${result.matchedName}
                                                         </a>
                                                     </g:if>
@@ -684,7 +596,7 @@
 
                                                 <td id="img_${result.guid}">
                                                     <g:if test="${result.imageUrl}">
-                                                        <a href="${bieUrl}/species/${result.guid}" title="${bieTitle}">
+                                                        <a href="${bieUrl}/species/${result.guid}">
                                                             <img
                                                                 style="max-width: 400px;"
                                                                 src="${result.imageUrl}"
@@ -719,7 +631,7 @@
                             </div>
                         </div>
 
-                        <div class="tab-pane" id="grid-tab" role="tabpanel">
+                        <div id="grid-tab" class="tab-pane active" role="tabpanel">
                             <g:each var="result" in="${results}" status="i">
                                 <g:set var="recId" value="${result.id}" />
                                 <g:set var="bieTitle">
@@ -1496,10 +1408,31 @@
                 // make table header cells clickable
                 $("table .sortable").each(function(i) {
                     var href = $(this).find("a").attr("href");
+
                     $(this).click(function() {
                         window.location.href = href;
                     });
                 });
+
+                $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+                    var target = $(e.target).attr('href');
+
+                    if(window.history) {
+                        window.history.replaceState({}, '', target);
+                    } else {
+                        window.location.hash = target;
+                    }
+
+                    $('a.step').each(function(index, link) {
+                        var url = link.href.split('#');
+
+                        link.href = url[0] + target;
+                    });
+                });
+
+                if(window.location.hash) {
+                    $('a[href="' + window.location.hash + '"]').tab('show');
+                }
             });
         </script>
     </body>
