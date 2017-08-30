@@ -13,7 +13,7 @@
         <asset:javascript src="list.js" />
         <asset:stylesheet src="application.css" />
 
-        <!-- Head -->
+        <%-- Head --%>
         <g:layoutHead/>
     </head>
 

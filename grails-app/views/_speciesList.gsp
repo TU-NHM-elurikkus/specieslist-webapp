@@ -65,8 +65,8 @@
         </thead>
 
         <tbody>
-            <g:each in="${lists}" var="list" status="i">
-                <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
+            <g:each in="${lists}" var="list">
+                <tr>
                     <td>
                         <a href="${request.contextPath}/speciesListItem/list/${list.dataResourceUid}">
                             ${fieldValue(bean: list, field: "listName")}
@@ -95,7 +95,7 @@
                     <td>
                         <g:formatBoolean boolean="${list.isThreatened ?: false}" true="Yes" false="No"/>
                     </td>
-                    %{--<td>${fieldValue(bean: list, field: "firstName")} ${fieldValue(bean: list, field: "surname")}</td>--}%
+                    <%-- <td>${fieldValue(bean: list, field: "firstName")} ${fieldValue(bean: list, field: "surname")}</td> --%>
                     <td>
                         ${list.ownerFullName}
                     </td>
@@ -110,19 +110,31 @@
                         <td>
                             <g:set var="test" value="${[id: list.id]}"/>
 
-                            <button type="button" onclick="confirmAction('Are you sure that you would like to delete ${list.listName.encodeAsHTML()}', ${list.id}, 'delete');" class="erk-button erk-button--light">
+                            <button
+                                type="button"
+                                class="erk-button erk-button--light"
+                                onclick="confirmAction('Are you sure that you would like to delete ${list.listName.encodeAsHTML()}', ${list.id}, 'delete');"
+                            >
                                 <g:message code="default.delete"/>
                             </button>
                         </td>
 
                         <td>
-                            <button type="button" onclick="confirmAction('Are you sure that you would like to rematch ${list.listName.encodeAsHTML()}', ${list.id}, 'rematch');" class="erk-button erk-button--light">
+                            <button
+                                type="button"
+                                class="erk-button erk-button--light"
+                                onclick="confirmAction('Are you sure that you would like to rematch ${list.listName.encodeAsHTML()}', ${list.id}, 'rematch');"
+                            >
                                 <g:message code="default.rematch"/>
                             </button>
                         </td>
 
                         <td>
-                            <button type="button" onclick="window.location='${request.contextPath}/speciesList/upload/${list.dataResourceUid}';" class="erk-button erk-button--light">
+                            <button
+                                type="button"
+                                class="erk-button erk-button--light"
+                                onclick="window.location='${request.contextPath}/speciesList/upload/${list.dataResourceUid}';"
+                            >
                                 <g:message code="default.reload"/>
                             </button>
                         </td>
