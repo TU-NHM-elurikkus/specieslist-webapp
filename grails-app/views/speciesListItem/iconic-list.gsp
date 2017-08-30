@@ -261,10 +261,10 @@
                                 </g:each>
                             </ul>
                         </div>
-                        <!-- /span3 -->
+                        <%-- /span3 --%>
 
                         <div class="span9">
-                            <div id="gridView" class="">
+                            <div id="gridView">
                                 <g:each var="result" in="${results}" status="i">
                                     <g:set var="recId" value="${result.id}"/>
                                     <g:set var="bieSpecies" value="${bieItems?.get(result.guid)}"/>
@@ -274,45 +274,41 @@
                                             ${result.rawScientificName}
                                         </i>
                                     </g:set>
-                                    <div class="imgCon">
+                                    <div class="gallery-thumb">
                                         <a
-                                            class="thumbImage viewRecordButton"
+                                            class="cbLink"
                                             rel="thumbs"
-                                            title="click to view detailed page"
                                             href="${bieUrl}/species/${result.guid?:bieSpecies?.get(2)}"
                                             data-id="${recId}"
                                         >
                                             <img
+                                                class="gallery-thumb__img"
                                                 src="${bieSpecies?.get(0)?:g.createLink(uri:'/assets/infobox_info_icon.png')}"
-                                                style="opacity:0.5"
                                                 alt="thumbnail species image"
                                             />
                                         </a>
-
-                                        <g:if test="${true}">
-                                            <g:set var="displayName">
-                                                <g:if test="${bieSpecies?.get(1)}">
-                                                    ${bieSpecies?.get(1)}
-                                                </g:if>
-                                                <g:else>
-                                                    <i>
-                                                        <g:if test="${result.guid == null}">
-                                                            ${fieldValue(bean: result, field: "rawScientificName")}
-                                                        </g:if>
-                                                        <g:else>
-                                                            ${bieSpecies?.get(2)}
-                                                        </g:else>
-                                                    </i>
-                                                </g:else>
-                                            </g:set>
-                                            <div class="meta brief">
-                                                ${displayName}
-                                            </div>
-                                        </g:if>
+                                        <g:set var="displayName">
+                                            <g:if test="${bieSpecies?.get(1)}">
+                                                ${bieSpecies?.get(1)}
+                                            </g:if>
+                                            <g:else>
+                                                <i>
+                                                    <g:if test="${result.guid == null}">
+                                                        ${fieldValue(bean: result, field: "rawScientificName")}
+                                                    </g:if>
+                                                    <g:else>
+                                                        ${bieSpecies?.get(2)}
+                                                    </g:else>
+                                                </i>
+                                            </g:else>
+                                        </g:set>
+                                        <div class="gallery-thumb__footer">
+                                            ${displayName}
+                                        </div>
                                     </div>
                                 </g:each>
                             </div>
-                            <!-- /#iconView -->
+                            <%-- /#iconView --%>
 
                             <g:if test="${params.max<totalCount}">
                                 <div class="searchWidgets">
