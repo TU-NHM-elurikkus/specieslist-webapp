@@ -277,16 +277,7 @@
                 <%-- TITLE --%>
                 <div class="page-header__title">
                     <h1 class="page-header__title">
-                        <g:message code="speciesListItem.list.speciesList" />:
-                        <a href="${collectoryUrl}/lists/speciesListItem/list/${params.id}">
-                            ${speciesList?.listName}
-                        </a>
-
-                        <%--
-                        <a href="${collectoryUrl}/public/show/${params.id}" title="view Date Resource page">
-                            ${speciesList?.listName}
-                        </a>
-                        --%>
+                        ${speciesList?.listName}
                     </h1>
 
                     <%-- TODD: New text.
@@ -314,12 +305,14 @@
                         <g:message code="speciesListItem.list.viewOccurrence" />
                     </a>
 
+                    <%-- TODO: Uncomment when spatial portal is finished
                     <a href="${request.contextPath}/speciesList/spatialPortal/${params.id}${params.toQueryString()}&type=Search"
                         title="${message(code: 'speciesListItem.list.viewSpatialDecription')}"
                         class="page-header-links__link">
 
                         <g:message code="speciesListItem.list.viewSpatial" />
                     </a>
+                    --%>
 
                     <div class="action-button-block">
                         <button
@@ -542,33 +535,29 @@
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item">
                             <a
-                                class="nav-link active"
+                                class="nav-link"
                                 data-toggle="tab"
                                 href="#list-tab"
                                 role="tab"
-                                title="${message(code: 'speciesListItem.list.viewList')}"
                             >
-                                <span class="fa fa-list"></span>
                                 <g:message code="speciesListItem.list.list" />
                             </a>
                         </li>
 
                         <li class="nav-item">
                             <a
-                                class="nav-link"
+                                class="nav-link active"
                                 data-toggle="tab"
                                 href="#grid-tab"
                                 role="tab"
-                                title="${message(code: 'speciesListItem.list.viewThumb')}"
                             >
-                                <span class="fa fa-th"></span>
                                 <g:message code="speciesListItem.list.grid" />
                             </a>
                         </li>
                     </ul>
 
                     <div class="tab-content">
-                        <div class="tab-pane active" id="list-tab" role="tabpanel">
+                        <div id="list-tab" class="tab-pane" role="tabpanel">
                             <div class="float-right">
                                 <g:message code="general.pageItems" />:
                                 <select class="input-mini" onchange="reloadWithMax(this)">
@@ -581,7 +570,7 @@
                             </div>
 
                             <div class="speciesList table-responsive">
-                                <table class="table table-sm table-bordered table-striped" id="speciesListTable">
+                                <table class="table table-sm" id="speciesListTable">
                                     <thead>
                                         <tr>
                                             <th class="action">
@@ -699,7 +688,7 @@
 
                                                 <td class="matchedName">
                                                     <g:if test="${result.guid}">
-                                                        <a href="${bieUrl}/species/${result.guid}" title="${bieTitle}">
+                                                        <a href="${bieUrl}/species/${result.guid}">
                                                             ${result.matchedName}
                                                         </a>
                                                     </g:if>
@@ -710,7 +699,7 @@
 
                                                 <td id="img_${result.guid}">
                                                     <g:if test="${result.imageUrl}">
-                                                        <a href="${bieUrl}/species/${result.guid}" title="${bieTitle}">
+                                                        <a href="${bieUrl}/species/${result.guid}">
                                                             <img
                                                                 style="max-width: 400px;"
                                                                 src="${result.imageUrl}"
@@ -745,7 +734,7 @@
                             </div>
                         </div>
 
-                        <div class="tab-pane" id="grid-tab" role="tabpanel">
+                        <div id="grid-tab" class="tab-pane active" role="tabpanel">
                             <g:each var="result" in="${results}" status="i">
                                 <g:set var="recId" value="${result.id}" />
                                 <g:set var="bieTitle">
@@ -1559,10 +1548,31 @@
                 // make table header cells clickable
                 $("table .sortable").each(function(i) {
                     var href = $(this).find("a").attr("href");
+
                     $(this).click(function() {
                         window.location.href = href;
                     });
                 });
+
+                $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+                    var target = $(e.target).attr('href');
+
+                    if(window.history) {
+                        window.history.replaceState({}, '', target);
+                    } else {
+                        window.location.hash = target;
+                    }
+
+                    $('a.step').each(function(index, link) {
+                        var url = link.href.split('#');
+
+                        link.href = url[0] + target;
+                    });
+                });
+
+                if(window.location.hash) {
+                    $('a[href="' + window.location.hash + '"]').tab('show');
+                }
             });
         </script>
     </body>
