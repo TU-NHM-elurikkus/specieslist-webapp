@@ -64,13 +64,6 @@
             <g:if test="${lists && total > 0}">
                 <div class="row">
                     <div class="col">
-                        <%--
-                        <p>
-                            <g:message code="general.listDescription"/>
-                            <g:message code="general.deleteDescription"/>
-                        </p>
-                        --%>
-
                         <div class="float-right">
                             <g:render template="/pageSize"/>
                         </div>

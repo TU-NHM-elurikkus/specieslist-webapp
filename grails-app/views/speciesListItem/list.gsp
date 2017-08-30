@@ -1,18 +1,3 @@
-<%--
-  - Copyright (C) 2014 Atlas of Living Australia
-  - All Rights Reserved.
-  -
-  - The contents of this file are subject to the Mozilla Public
-  - License Version 1.1 (the "License"); you may not use this file
-  - except in compliance with the License. You may obtain a copy of
-  - the License at http://www.mozilla.org/MPL/
-  -
-  - Software distributed under the License is distributed on an "AS
-  - IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
-  - implied. See the License for the specific language governing
-  - rights and limitations under the License.
---%>
-
 <!doctype html>
 <g:set var="bieUrl" value="${grailsApplication.config.bie.baseURL}" />
 <g:set var="collectoryUrl" value="${grailsApplication.config.collectory.baseURL}" />
@@ -320,40 +305,6 @@
 
                         <g:message code="speciesListItem.list.viewSpatial" />
                     </a>
-
-                    <div class="action-button-block">
-                        <button
-                            type="button"
-                            class="erk-button erk-button--light"
-                            data-toggle="modal"
-                            data-target="#list-info-modal"
-                        >
-                            <span class="fa fa-info-circle"></span>
-                            <g:message code="speciesListItem.list.listInfo" />
-                        </button>
-
-                        <button type="button" class="erk-button erk-button--light"
-                            title="${message(code: 'speciesListItem.list.viewDownload')}" data-toggle="modal"
-                            data-target="#download-dialog">
-
-                            <span class="fa fa-download"></span>
-                            <g:message code="speciesListItem.list.download" />
-                        </button>
-
-                        <g:if test="${userCanEditPermissions}">
-                            <button type="button" data-remote="${createLink(controller: 'editor', action: 'editPermissions', id: params.id)}" data-target="#modal" data-toggle="modal" class="erk-button erk-button--light">
-                                <span class="fa fa-user-o"></span>
-                                <g:message code="speciesListItem.list.editPerm" />
-                            </button>
-                        </g:if>
-
-                        <g:if test="${userCanEditData}">
-                            <a href="#" data-remote="${createLink(controller: 'editor', action: 'addRecordScreen', id: params.id)}" data-target="#addRecord" data-toggle="modal">
-                                <span class="fa fa-plus"></span>
-                                <g:message code="speciesListItem.list.add" />
-                            </a>
-                        </g:if>
-                    </div>
                 </div>
             </header>
 
@@ -433,7 +384,7 @@
             </div>
 
             <div class="row">
-                <div class="col-md-3" id="facets-column">
+                <div class="col-sm-5 col-md-3" id="facets-column">
                     <div class="card card-body">
                         <div class="boxedZ attachedZ">
                             <div class="meta">
@@ -538,7 +489,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-9">
+                <div class="col-sm-7 col-md-9">
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item">
                             <a
@@ -568,18 +519,41 @@
                     </ul>
 
                     <div class="tab-content">
-                        <div class="tab-pane active" id="list-tab" role="tabpanel">
+                        <div class="search-controls">
+                            <button
+                                type="button"
+                                class="erk-button erk-button--light"
+                                data-toggle="modal"
+                                data-target="#list-info-modal"
+                            >
+                                <span class="fa fa-info-circle"></span>
+                                <g:message code="speciesListItem.list.listInfo" />
+                            </button>
+
+                            <button
+                                type="button"
+                                class="erk-button erk-button--light"
+                                title="${message(code: 'speciesListItem.list.viewDownload')}"
+                                data-toggle="modal"
+                                data-target="#download-dialog"
+                            >
+                                <span class="fa fa-download"></span>
+                                <g:message code="speciesListItem.list.download" />
+                            </button>
+
                             <div class="float-right">
                                 <g:message code="general.pageItems" />:
                                 <select class="input-mini" onchange="reloadWithMax(this)">
-                                    <g:each in="${[10,25,50,100]}" var="max">
+                                    <g:each in="${[10, 25, 50, 100]}" var="max">
                                         <option ${(params.max == max)?'selected="selected"' :'' }>
                                             ${max}
                                         </option>
                                     </g:each>
                                 </select>
                             </div>
+                        </div>
 
+                        <div class="tab-pane active" id="list-tab" role="tabpanel">
                             <div class="speciesList table-responsive">
                                 <table class="table table-sm table-bordered table-striped" id="speciesListTable">
                                     <thead>
@@ -636,7 +610,7 @@
                                                 </span>
                                             </g:set>
 
-                                            <tr class="${(i % 2) == 0 ? 'odd' : 'even'}" id="row_${recId}">
+                                            <tr id="row_${recId}">
                                                 <td class="action">
                                                     <center>
                                                         <a
@@ -755,84 +729,34 @@
                                     </span>
                                 </g:set>
 
-                                <div class="imgCon">
+                                <div class="gallery-thumb">
                                     <a
-                                        class="thumbImage viewRecordButton"
+                                        class="cbLink viewRecordButton"
                                         rel="thumbs"
-                                        title="click to view details"
                                         href="#viewRecord"
                                         data-id="${recId}"
                                     >
                                         <img
+                                            class="gallery-thumb__img"
                                             src="${result.imageUrl?:g.createLink(uri:'/assets/infobox_info_icon.png')}"
-                                            style="opacity:0.5"
-                                            alt="thumbnail species image"
+                                            alt=""
                                         />
                                     </a>
 
-                                    <g:if test="${true}">
-                                        <g:set var="displayName">
-                                            <span>
-                                                <g:if test="${result.guid == null}">
-                                                    ${fieldValue(bean: result, field: "rawScientificName")}
-                                                </g:if>
-                                                <g:else>
-                                                    ${result.matchedName}
-                                                </g:else>
-                                            </span>
-                                        </g:set>
-
-                                        <div class="meta brief">
-                                            ${displayName}
-                                        </div>
-
-                                        <div class="meta detail">
-                                            ${displayName}
-
-                                            <g:if test="${result.author}">
-                                                &nbsp;${result.author}
+                                    <g:set var="displayName">
+                                        <span>
+                                            <g:if test="${result.guid == null}">
+                                                ${fieldValue(bean: result, field: "rawScientificName")}
                                             </g:if>
+                                            <g:else>
+                                                ${result.matchedName}
+                                            </g:else>
+                                        </span>
+                                    </g:set>
 
-                                            <g:if test="${result.commonName}">
-                                                <br />
-                                                ${result.commonName}
-                                            </g:if>
-
-                                            <div class="float-right" style="display:inline-block; padding: 5px;">
-                                                <a
-                                                    href="#viewRecord"
-                                                    class="viewRecordButton"
-                                                    title="view record"
-                                                    data-id="${recId}"
-                                                >
-                                                    <span class="fa fa-info-circle"></span>
-                                                </a>
-                                                &nbsp;
-
-                                                <g:if test="${userCanEditData}">
-                                                    <a
-                                                        href="#"
-                                                        title="edit"
-                                                        data-remote="${createLink(controller: 'editor', action: 'editRecordScreen', id: result.id)}"
-                                                        data-target="#editRecord_${recId}"
-                                                        data-toggle="modal"
-                                                    >
-                                                        <span class="fa fa-pencil"></span>
-                                                    </a>
-                                                    &nbsp;
-
-                                                    <a
-                                                        href="#"
-                                                        title="delete"
-                                                        data-target="#deleteRecord_${recId}"
-                                                        data-toggle="modal"
-                                                    >
-                                                        <span class="fa fa-trash-o"></span>
-                                                    </a>&nbsp;
-                                                </g:if>
-                                            </div>
-                                        </div>
-                                    </g:if>
+                                    <div class="gallery-thumb__footer">
+                                        ${displayName}
+                                    </div>
                                 </div>
                             </g:each>
                         </div>
@@ -993,7 +917,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">
-                                &times;
+                                ×
                             </button>
                         </div>
 
@@ -1219,7 +1143,7 @@
                                                         <option
                                                             value="${type.name()}"
                                                             ${(speciesList.listType == type) ? 'selected="selected"' :'' }
-                                                            >
+                                                        >
                                                             ${type.displayValue}
                                                         </option>
                                                     </g:each>
@@ -1243,7 +1167,13 @@
                                                 ${message(code: 'general.url')}
                                             </label>
                                             <div class="controls">
-                                                <input type="url" name="url" id="url" class="input-xlarge" value="${speciesList.url}" />
+                                                <input
+                                                    type="url"
+                                                    name="url"
+                                                    id="url"
+                                                    class="input-xlarge"
+                                                    value="${speciesList.url}"
+                                                />
                                             </div>
                                         </div>
 
@@ -1458,10 +1388,17 @@
 
                                         <div class="control-group">
                                             <div class="controls">
-                                                <button type="submit" id="edit-meta-submit" class="erk-button erk-button--light">
+                                                <button
+                                                    type="submit"
+                                                    id="edit-meta-submit"
+                                                    class="erk-button erk-button--light"
+                                                >
                                                     <g:message code="speciesListItem.list.save" />
                                                 </button>
-                                                <button class="erk-button erk-button--light" onclick="toggleEditMeta(false);return false;">
+                                                <button
+                                                    class="erk-button erk-button--light"
+                                                    onclick="toggleEditMeta(false);return false;"
+                                                >
                                                     <g:message code="speciesListItem.list.cancel" />
                                                 </button>
                                             </div>
