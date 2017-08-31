@@ -24,6 +24,7 @@
                         <span class="fa fa-square-o"></span>
                         <span class="facet-item">
                             ${arr[2]?:arr[1]}
+
                             <span class="facetCount">
                                 (${arr[3]})
                             </span>
@@ -41,6 +42,7 @@
                         <span class="fa fa-square-o"></span>
                         <span class="facet-item">
                             ${arr[0]}
+
                             <span class="facetCount">
                                 (${arr[1]})
                             </span>
