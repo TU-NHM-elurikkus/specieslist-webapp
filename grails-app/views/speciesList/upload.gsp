@@ -1,22 +1,7 @@
-<%--
-  - Copyright (C) 2012 Atlas of Living Australia
-  - All Rights Reserved.
-  -
-  - The contents of this file are subject to the Mozilla Public
-  - License Version 1.1 (the "License"); you may not use this file
-  - except in compliance with the License. You may obtain a copy of
-  - the License at http://www.mozilla.org/MPL/
-  -
-  - Software distributed under the License is distributed on an "AS
-  - IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
-  - implied. See the License for the specific language governing
-  - rights and limitations under the License.
---%>
-
 <!doctype html>
 <html>
     <head>
-        <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
+        <meta name="layout" content="${grailsApplication.config.skin.layout}" />
 
         <script type="text/javascript">
             function init() {
@@ -256,7 +241,7 @@
                 })
             }
 
-            //setup the page
+            // setup the page
             $(document).ready(function() {
                 init();
                 $("#isSDS").change(function() {
@@ -266,9 +251,9 @@
         </script>
 
         <title>
-            <g:message code="general.uploadList"/>
+            <g:message code="general.uploadList" />
             |
-            <g:message code="general.speciesLists"/>
+            <g:message code="general.speciesLists" />
             | ${grailsApplication.config.skin.orgNameLong}
         </title>
     </head>
@@ -276,33 +261,33 @@
     <body class="upload">
         <div id="content" class="container">
             <header id="page-header" class="page-header">
-                %{-- TITLE --}%
+                <%-- TITLE --%>
                 <div class="page-header__title">
                     <g:if test="${list}">
                         <h1>
-                            <g:message code="speciesList.upload.resubmit"/>
+                            <g:message code="speciesList.upload.resubmit" />
                         </h1>
                     </g:if>
                     <g:else>
                         <h1>
-                            <g:message code="general.uploadList"/>
+                            <g:message code="general.uploadList" />
                         </h1>
                     </g:else>
                 </div>
 
-                %{-- LINKS --}%
+                <%-- LINKS --%>
                 <div class="page-header-links">
                     <a href="${request.contextPath}/public/speciesLists" class="page-header-links__link">
-                        <g:message code="general.speciesLists"/>
+                        <g:message code="general.speciesLists" />
                     </a>
 
                     <a title="My Lists" href="${request.contextPath}/speciesList/list" class="page-header-links__link">
-                        <g:message code="general.myLists"/>
+                        <g:message code="general.myLists" />
                     </a>
                 </div>
             </header>
 
-            %{-- OLD --}%
+            <%-- OLD --%>
             <div>
                 <div class="message alert alert-info" id="uploadmsg" style="clear:right;">
                     ${flash.message}
@@ -311,26 +296,26 @@
                 <div id="section" class="col-wide">
                     <g:if test="${resourceUid}">
                         <div class="message alert alert-info">
-                            <g:message code="speciesList.upload.instructions1"/>
+                            <g:message code="speciesList.upload.instructions1" />
                         </div>
                     </g:if>
 
                     <p>
-                        <g:message code="speciesList.upload.instructions2"/>
+                        <g:message code="speciesList.upload.instructions2" />
                     </p>
 
                     <div id="initialPaste">
                         <h3>
-                            <g:message code="speciesList.upload.csv"/>
+                            <g:message code="speciesList.upload.csv" />
                         </h3>
 
                         <p>
-                            <g:message code="speciesList.upload.warning"/>
+                            <g:message code="speciesList.upload.warning" />
                         </p>
 
                         <g:uploadForm name="csvUploadForm" id="csvUploadForm" action="parseData">
                             <div data-provides="fileupload">
-                                <input id="csvFileUpload" type="file" name="csvFile" class="file-selector"/>
+                                <input id="csvFileUpload" type="file" name="csvFile" class="file-selector" />
 
                                 <p>
                                     <button
@@ -338,7 +323,7 @@
                                         class="erk-button erk-button--light"
                                         onclick="javascript:this.form.reset();parseColumns();"
                                     >
-                                        <g:message code="general.remove"/>
+                                        <g:message code="general.remove" />
                                     </button>
 
                                     <button
@@ -348,18 +333,18 @@
                                         name="checkData"
                                         onclick="javascript:parseColumns();"
                                     >
-                                        <g:message code="speciesList.upload.check"/>
+                                        <g:message code="speciesList.upload.check" />
                                     </button>
                                 </p>
                             </div>
                         </g:uploadForm>
 
                         <h3>
-                            <g:message code="speciesList.upload.pasteList"/>
+                            <g:message code="speciesList.upload.pasteList" />
                         </h3>
 
                         <p>
-                            <g:message code="speciesList.upload.pasteDescription"/>
+                            <g:message code="speciesList.upload.pasteDescription" />
                         </p>
 
                         <g:textArea
@@ -384,17 +369,17 @@
 
                     <div id="recognisedData" tabindex="-1"></div>
 
-                    <!-- Moved the upload div to here so that the values can be remembered to support a reload of the species list-->
+                    <%-- Moved the upload div to here so that the values can be remembered to support a reload of the species list --%>
 
                     <div id="uploadDiv">
                         <h2>
-                            <g:message code="speciesList.upload.uploadList"/>
+                            <g:message code="speciesList.upload.uploadList" />
                         </h2>
 
                         <p>
-                            <g:message code="speciesList.upload.uploadListDescription1"/>
+                            <g:message code="speciesList.upload.uploadListDescription1" />
                             <br/>
-                            <g:message code="speciesList.upload.uploadListDescription2"/>
+                            <g:message code="speciesList.upload.uploadListDescription2" />
                         </p>
 
                         <div id="processSampleUpload" class="table-responsive">
@@ -403,26 +388,26 @@
                                     <tr>
                                         <td>
                                             <label for="listTitle">
-                                                <g:message code="speciesList.upload.listname"/>
+                                                <g:message code="speciesList.upload.listname" />
                                             </label>
                                         </td>
 
                                         <td>
-                                            <g:textField name="listTitle" style="width:99%" value="${list?.listName}"/>
+                                            <g:textField name="listTitle" style="width:99%" value="${list?.listName}" />
                                         </td>
                                     </tr>
 
                                     <tr>
                                         <td>
                                             <label for="listTypeId">
-                                                <g:message code="speciesList.upload.listtype"/>
+                                                <g:message code="speciesList.upload.listtype" />
                                             </label>
                                         </td>
                                         <td>
                                             <select name="listTypeId" id="listTypeId">
                                                 <option value="">
                                                     --
-                                                    <g:message code="speciesList.upload.selectType"/>
+                                                    <g:message code="speciesList.upload.selectType" />
                                                     --
                                                 </option>
                                                 <g:each in="${au.org.ala.specieslist.ListType.values()}" var="type">
@@ -438,24 +423,24 @@
                                         <tr>
                                             <td>
                                                 <label for="isBIE">
-                                                    <g:message code="general.isBIE"/>
+                                                    <g:message code="general.isBIE" />
                                                 </label>
                                             </td>
 
                                             <td>
-                                                <g:checkBox name="isBIE" id="isBIE" checked="${list?.isBIE}"/>
+                                                <g:checkBox name="isBIE" id="isBIE" checked="${list?.isBIE}" />
                                             </td>
                                         </tr>
 
                                         <tr>
                                             <td>
                                                 <label for="isSDS">
-                                                    <g:message code="general.isSDS"/>
+                                                    <g:message code="general.isSDS" />
                                                 </label>
                                             </td>
 
                                             <td>
-                                                <g:checkBox name="isSDS" id="isSDS" checked="${list?.isSDS}"/>
+                                                <g:checkBox name="isSDS" id="isSDS" checked="${list?.isSDS}" />
                                             </td>
                                         </tr>
                                     </g:if>
@@ -463,43 +448,43 @@
                                     <tr class="SDSOnly">
                                         <td>
                                             <label>
-                                                <g:message code="general.region"/>
+                                                <g:message code="general.region" />
                                             </label>
                                         </td>
 
                                         <td>
-                                            <g:textField name="sdsRegion" style="width:99%" value="${list?.region}"/>
+                                            <g:textField name="sdsRegion" style="width:99%" value="${list?.region}" />
                                         </td>
                                     </tr>
 
                                     <tr class="SDSOnly">
                                         <td>
                                             <label>
-                                                <g:message code="speciesList.upload.authority"/>
+                                                <g:message code="speciesList.upload.authority" />
                                             </label>
                                         </td>
 
                                         <td>
-                                            <g:textField name="authority" style="width:99%" value="${list?.authority}"/>
+                                            <g:textField name="authority" style="width:99%" value="${list?.authority}" />
                                         </td>
                                     </tr>
 
                                     <tr class="SDSOnly">
                                         <td>
                                             <label>
-                                                <g:message code="speciesList.upload.category"/>
+                                                <g:message code="speciesList.upload.category" />
                                             </label>
                                         </td>
 
                                         <td>
-                                            <g:textField name="category" style="width:99%" value="${list?.category}"/>
+                                            <g:textField name="category" style="width:99%" value="${list?.category}" />
                                         </td>
                                     </tr>
 
                                     <tr class="SDSOnly">
                                         <td>
                                             <label>
-                                                <g:message code="speciesList.upload.generalisation"/>
+                                                <g:message code="speciesList.upload.generalisation" />
                                             </label>
                                         </td>
 
@@ -515,7 +500,7 @@
                                     <tr class="SDSOnly">
                                         <td>
                                             <label>
-                                                <g:message code="general.sdsType"/>
+                                                <g:message code="general.sdsType" />
                                             </label>
                                         </td>
 
@@ -532,7 +517,7 @@
                                     <tr>
                                         <td>
                                             <label for="listDesc">
-                                                <g:message code="general.description"/>
+                                                <g:message code="general.description" />
                                             </label>
                                         </td>
 
@@ -546,7 +531,7 @@
                                     <tr>
                                         <td>
                                             <label for="listURL">
-                                                <g:message code="general.url"/>
+                                                <g:message code="general.url" />
                                             </label>
                                         </td>
 
@@ -560,7 +545,7 @@
                                     <tr>
                                         <td>
                                             <label for="listWkt">
-                                                <g:message code="speciesList.upload.listWkt"/>
+                                                <g:message code="speciesList.upload.listWkt" />
                                             </label>
                                         </td>
 
@@ -603,16 +588,16 @@
                         &nbsp;&nbsp;
 
                         <span>
-                            <g:message code="speciesList.upload.uploading"/>
+                            <g:message code="speciesList.upload.uploading" />
                         </span>
                     </h3>
 
                     <p>
-                        <g:message code="speciesList.upload.uploading.description"/>
+                        <g:message code="speciesList.upload.uploading.description" />
                     </p>
                 </div>
             </div>
         </div>
-        <!-- content div -->
+        <%-- content div --%>
     </body>
 </html>

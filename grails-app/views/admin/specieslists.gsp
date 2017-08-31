@@ -1,17 +1,10 @@
-<%--
-  User: Natasha Carter
-  Date: 14/03/13
-  Time: 10:18 AM
-  Provide access to all the editable information at a species list level
---%>
-
 <!doctype html>
 <html>
 
     <head>
-        <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
+        <meta name="layout" content="${grailsApplication.config.skin.layout}" />
         <title>
-            <g:message code="general.speciesLists"/> | ${grailsApplication.config.skin.orgNameLong}
+            <g:message code="general.speciesLists" /> | ${grailsApplication.config.skin.orgNameLong}
         </title>
     </head>
 
@@ -24,12 +17,12 @@
                         <div class="page-header-title">
 
                             <h1 class="page-header-title__title">
-                                <g:message code="general.speciesLists"/>
+                                <g:message code="general.speciesLists" />
                             </h1>
 
                             <div class="page-header-title__subtitle">
                                 <div>
-                                    <g:message code="admin.header.description"/>
+                                    <g:message code="admin.header.description" />
                                 </div>
                             </div>
 
@@ -42,12 +35,12 @@
                     <div class="col">
                         <div class="page-header-links">
                             <a href="${request.contextPath}/public/speciesLists" class="page-header-links__link">
-                                <g:message code="general.speciesLists"/>
+                                <g:message code="general.speciesLists" />
                             </a>
 
                             <%--
                             <a title="My Lists" href="${request.contextPath}/speciesList/list" class="page-header-links__link">
-                                <g:message code="general.myLists"/>
+                                <g:message code="general.myLists" />
                             </a>
                             --%>
 
@@ -57,7 +50,7 @@
                                 title="Add Species List"
                                 class="page-header-links__link"
                             >
-                                <g:message code="upload.heading"/>
+                                <g:message code="upload.heading" />
                             </g:link>
 
                             <a
@@ -65,7 +58,7 @@
                                 href="${request.contextPath}/speciesList/rematch"
                                 class="page-header-links__link"
                             >
-                                <g:message code="admin.rematchAll"/>
+                                <g:message code="admin.rematchAll" />
                             </a>
 
                             <g:if test="${lists && total>0}">
@@ -73,7 +66,7 @@
                                     href="${g.createLink(action: 'updateListsWithUserIds')}"
                                     class="page-header-links__link"
                                 >
-                                    <g:message code="admin.updateUserDetails"/>
+                                    <g:message code="admin.updateUserDetails" />
                                 </a>
                             </g:if>
                         </div>
@@ -92,13 +85,13 @@
                     <g:if test="${lists && total>0}">
                         <div class="row">
                             <div class="col-12">
-                                <g:render template="/speciesList"/>
+                                <g:render template="/speciesList" />
                             </div>
                         </div>
                     </g:if>
                     <g:else>
                         <p>
-                            <g:message code="general.noListsAvailable"/>
+                            <g:message code="general.noListsAvailable" />
                         </p>
                     </g:else>
                 </div>
