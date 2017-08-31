@@ -158,10 +158,6 @@
                 }
             }
 
-            .imgCon img {
-                height: 140px;
-            }
-
         </style>
 
         <g:javascript>
