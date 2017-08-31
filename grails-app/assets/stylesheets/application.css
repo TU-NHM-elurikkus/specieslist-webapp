@@ -165,6 +165,7 @@ img.smallSpeciesImage {
 #speciesListTable {
     margin-bottom: 0;
     border-style: hidden;
+    border-bottom: initial
 }
 
 #speciesListTable td.kvp  {
@@ -176,13 +177,13 @@ img.smallSpeciesImage {
 }
 
 #speciesListTable td.kvp div {
-    /*position: relative;*/
+    /* position: relative; */
     overflow-x: auto;
     white-space: pre-wrap;      /* CSS3 */
     white-space: -moz-pre-wrap; /* Firefox */
     white-space: -pre-wrap;     /* Opera <7 */
-    white-space: -o-pre-wrap;   /* Opera 7 */
-    /*word-wrap: break-word;      *//* IE */
+    white-space: -o-pre-wrap;     /* Opera 7 */
+    /* word-wrap: break-word;      *//* IE */
     max-height: 80px;
     padding: 8px;
 }
@@ -209,54 +210,6 @@ img.smallSpeciesImage {
 
 #listItemView .btn {
     font-weight: bold;
-}
-
-/* Grid view */
-.imgCon {
-    display: inline-block;
-    /* margin-right: 8px; */
-    text-align: center;
-    line-height: 1.3em;
-    background-color: #DDD;
-    color: #DDD;
-    font-size: 12px;
-    position: relative;
-    margin: .5rem;
-}
-
-.imgCon img {
-    height: 180px;
-}
-
-.imgCon .meta {
-    opacity: 0.8;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    overflow: hidden;
-    text-align: left;
-    padding: 4px 5px 2px 5px;
-}
-
-.imgCon .brief {
-    color: black;
-    background-color: white;
-}
-
-.imgCon .detail {
-    display: none;
-    color: white;
-    background-color: black;
-    opacity: 0.7;
-}
-
-.imgCon:hover .meta.brief {
-    display: none;
-}
-
-.imgCon:hover .meta.detail {
-    display: block;
 }
 
 .overrideHide {
