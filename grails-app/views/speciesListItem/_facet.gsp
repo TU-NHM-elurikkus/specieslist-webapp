@@ -15,30 +15,36 @@
 
             <g:if test="${isProperty}">
                 <li class="facet__value erk-ulist--item">
-                    <span class="fa fa-square-o"></span>
 
                     <g:link
                         id="${params.id}"
                         action="list"
                         params="${[fq:sl.buildFqList(fqs:fqs, fq:"kvp ${arr[0]}:${arr[1]}"), max:params.max, query: params.query]}"
                     >
-                        ${arr[2]?:arr[1]}
-
-                        (${arr[3]})
+                        <span class="fa fa-square-o"></span>
+                        <span class="facet-item">
+                            ${arr[2]?:arr[1]}
+                            <span class="facetCount">
+                                (${arr[3]})
+                            </span>
+                        </span>
                     </g:link>
                 </li>
             </g:if>
             <g:else>
                 <li class="facet__value erk-ulist--item">
-                    <span class="fa fa-square-o"></span>
 
                     <g:link
                         action="list" id="${params.id}"
                         params="${[fq:sl.buildFqList(fqs:fqs, fq:"${key}:${arr[0]}"), max:params.max, query: params.query]}"
                     >
-                        ${arr[0]}
-
-                        (${arr[1]})
+                        <span class="fa fa-square-o"></span>
+                        <span class="facet-item">
+                            ${arr[0]}
+                            <span class="facetCount">
+                                (${arr[1]})
+                            </span>
+                        </span>
                     </g:link>
                 </li>
             </g:else>
