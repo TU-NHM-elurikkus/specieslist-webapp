@@ -22,6 +22,7 @@
                     property="imageUrl"
                     params="${[fq: fqs, query: query]}"
                     titleKey="speciesListItem.list.image"
+                    class="imageCol"
                 />
 
                 <g:sortableColumn
@@ -58,10 +59,12 @@
                     <td class="action">
                         <center>
                             <a
-                                class="viewRecordButton"
-                                href="#viewRecord"
-                                title="view record"
+                                class="cbLink"
+                                rel="thumbs"
+                                href="${result.imageUrl?:g.createLink(uri:'/assets/infobox_info_icon.png')}"
                                 data-id="${recId}"
+                                data-toggle="lightbox"
+                                title="${message(code: 'gallery.thumb.title')}"
                             >
                                 <span class="fa fa-info-circle"></span>
                             </a>
@@ -126,16 +129,15 @@
                         </g:else>
                     </td>
 
-                    <td id="img_${result.guid}">
-                        <g:if test="${result.imageUrl}">
-                            <a href="${bieUrl}/species/${result.guid}">
-                                <img
-                                    style="max-width: 400px;"
-                                    src="${result.imageUrl}"
-                                    class="smallSpeciesImage"
-                                />
-                            </a>
-                        </g:if>
+                    <td id="img_${result.guid}" class="imageCol">
+                        <a href="${bieUrl}/species/${result.guid}">
+                            <img
+                                class="smallSpeciesImage"
+                                style="max-width: 400px;"
+                                src="${result.imageUrl?:g.createLink(uri:'/assets/infobox_info_icon.png')}"
+                                alt=""
+                            />
+                        </a>
                     </td>
 
                     <td>

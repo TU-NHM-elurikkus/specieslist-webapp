@@ -1,4 +1,5 @@
 /*
+*= require ekko-lightbox-5.2.0
 *= require elurikkus-common
 */
 
@@ -270,17 +271,21 @@ img.smallSpeciesImage {
     margin-bottom: 1em;
 }
 
-.facets-panel {
-    height: 100%;
+/* TODO: Move to commons */
+.ekko-lightbox .modal-footer {
+    display: block;
 }
 
+/* TODO: Move facet styling to commons */
 .facet {
 }
 
+/* TODO: Move facet styling to commons */
 .facet__header {
-    font-size: 14px;
+    font-size: 16px;
 }
 
+/* TODO: Move facet styling to commons */
 .facet__value {
     padding: 3px 0;
 }
