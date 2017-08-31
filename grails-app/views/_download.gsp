@@ -1,9 +1,3 @@
-<%--
-    Document   : downloadDiv
-    Created on : Feb 25, 2011, 4:20:32 PM
-    Author     : "Nick dos Remedios <Nick.dosRemedios@csiro.au>"
---%>
-
 <div
     class="modal fade"
     id="download-dialog"

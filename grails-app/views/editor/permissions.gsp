@@ -1,11 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: dos009
-  Date: 21/03/13
-  Time: 9:01 AM
-  To change this template use File | Settings | File Templates.
---%>
-
 <html>
 
     <head>

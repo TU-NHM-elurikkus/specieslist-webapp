@@ -1,4 +1,4 @@
-<!-- Template for displaying a list of species list with or without a delete button. -->
+<%-- Template for displaying a list of species list with or without a delete button. --%>
 <script type="text/javascript">
     $(document).ready(function() {
         // make table header cells clickable
