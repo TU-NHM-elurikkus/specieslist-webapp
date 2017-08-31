@@ -51,6 +51,7 @@
                                         />
 
                                         <button class="erk-button erk-button--dark input-plus__addon" type="submit">
+                                            <i class="fa fa-search"></i>
                                             <g:message code="general.search"/>
                                         </button>
                                     </form>
@@ -67,11 +68,11 @@
                                                 <g:message code="public.speciesLists.query" />: ${params.q}
                                             </span>
 
-                                            <span
+                                            <i
                                                 class="fa fa-close active-filters__close-button"
                                                 onclick="resetFilters()"
                                             >
-                                            </span>
+                                            </i>
                                         </span>
                                     </div>
                                 </g:if>
