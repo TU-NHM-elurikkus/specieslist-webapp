@@ -235,7 +235,7 @@
                                             <li class="${active}">
                                                 <a href="?fq=kvp ${arr[0]}:${arr[1]}">
                                                     ${arr[1]} (${arr[3]})
-                                                    <i class="fa fa-chevron-right"></i>
+                                                    <span class="fa fa-chevron-right"></span>
                                                 </a>
                                             </li>
                                         </g:each>

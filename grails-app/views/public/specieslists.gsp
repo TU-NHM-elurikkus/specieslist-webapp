@@ -51,6 +51,7 @@
                                         />
 
                                         <button class="erk-button erk-button--dark input-plus__addon" type="submit">
+                                            <span class="fa fa-search"></span>
                                             <g:message code="general.search"/>
                                         </button>
                                     </form>

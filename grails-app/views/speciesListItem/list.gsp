@@ -260,6 +260,7 @@
                 <%-- LINKS --%>
                 <div class="page-header-links">
                     <a href="${request.contextPath}/public/speciesLists" class="page-header-links__link">
+                        <span class="fa fa-arrow-left"></span>
                         <g:message code="general.speciesLists" />
                     </a>
 
@@ -304,6 +305,7 @@
                                 class="input-plus__addon erk-button erk-button--dark"
                                 onclick="searchByQuery()"
                             >
+                                <span class="fa fa-search"></span>
                                 <g:message code="general.search" />
                             </button>
                         </form>
