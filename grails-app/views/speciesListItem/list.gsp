@@ -311,17 +311,15 @@
                         <div class="item-search__count-line">
                             <g:message code="speciesListItem.list.taxonNumber" />:
                             <span class="item-search__count">
-                                ${totalCount}
+                                ${totalCount},
                             </span>
-
-                            ,
 
                             <g:message code="speciesListItem.list.distinctSpecies" />:
                             <span class="item-search__count">
                                 ${distinctCount}
                             </span>
 
-                            <g:if test="${hasUnrecognised && noMatchCount!=totalCount}">
+                            <g:if test="${hasUnrecognised && noMatchCount != totalCount}">
                                 ,
 
                                 <g:link
