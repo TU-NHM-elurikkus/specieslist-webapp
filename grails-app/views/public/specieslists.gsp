@@ -91,7 +91,7 @@
                     <g:elseif test="${params.q}">
                         <form class="list-search-form">
                             <p>
-                                <g:messages code="public.speciesLists.noListsFound"/>
+                                <g:message code="public.speciesLists.noListsFound"/>
                                 <strong>
                                     ${params.q}
                                 </strong>

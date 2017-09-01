@@ -4,13 +4,13 @@
 
 <div id="${facetId}" class="facet">
     <h4 class="facet__header">
-        ${key}
+        ${key.capitalize()}
     </h4>
 
     <ul class="erk-ulist">
         <g:set var="i" value="${0}" />
 
-        <g:while test="${i < 4 && i < values.size()}">
+        <g:while test="${i < 5 && i < values.size()}">
             <g:set var="arr" value="${values.get(i)}" />
 
             <g:if test="${isProperty}">

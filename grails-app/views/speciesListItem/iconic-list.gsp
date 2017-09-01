@@ -214,7 +214,8 @@
                         <b><g:message code="general.alert"/>:</b>
                         ${flash.message}
                     </div>
-                    <div></g:if>
+                    <div>
+            </g:if>
 
                     <h3>
                         <g:message code="speciesListItem.iconic.australiaBrowse"/>

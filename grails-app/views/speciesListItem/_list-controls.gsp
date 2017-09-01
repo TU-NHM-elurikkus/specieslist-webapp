@@ -22,7 +22,7 @@
     <div class="float-right">
         <g:message code="general.pageItems" />:
         <select class="input-mini" onchange="reloadWithMax(this)">
-            <g:each in="${[10,25,50,100]}" var="max">
+            <g:each in="${[10, 25, 50, 100]}" var="max">
                 <option ${(params.max == max)?'selected="selected"' :'' }>
                     ${max}
                 </option>
