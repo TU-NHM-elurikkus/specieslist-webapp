@@ -87,7 +87,6 @@
                                 type="button"
                                 class="actionButton erk-button erk-button--light"
                                 id="downloadSubmitButton"
-                                onclick="return downloadOccurrences()"
                             >
                                 <g:message code="download.all"/>
                             </button>
@@ -141,7 +140,6 @@
                         $("#downloadSpeciesListSubmitButton").unbind("click").bind("click", function(e) {
                             e.preventDefault();
                             if(validateForm()) {
-                                //alert("${request.contextPath}/speciesListItem/downloadList/${params.id}${params.toQueryString()}&file="+$("#filename").val())
                                 window.location.href = "${request.contextPath}/speciesListItem/downloadList/${params.id}${params.toQueryString()}&file=" + $("#filename").val()
                                 notifyDownloadStarted()
                             }
@@ -153,7 +151,6 @@
 
                             if(validateForm()) {
                                 var downloadUrl = "${request.contextPath}/speciesList/fieldGuide/${params.id}${params.toQueryString()}"
-                                //alert(downloadUrl)
                                 window.open(downloadUrl);
                                 notifyDownloadStarted()
                             }
@@ -167,7 +164,10 @@
                             downloadUrlPrefix += searchParams;
                         } else {
                             // EYA page is JS driven
-                            downloadUrlPrefix += "?q=*:*&lat=" + $('#latitude').val() + "&lon=" + $('#longitude').val() + "&radius=" + $('#radius').val();
+                            downloadUrlPrefix += '?q=*:*' +
+                                '&lat=' + $('#latitude').val() +
+                                '&lon=' + $('#longitude').val() +
+                                '&radius=' + $('#radius').val();
                         }
 
                         return downloadUrlPrefix;
@@ -182,15 +182,13 @@
                     }
 
                     function validateForm() {
-                        var isValid = false;
+                        var isValid = true;
                         var reasonId = $("#reasonTypeId option:selected").val();
 
-                        if(reasonId) {
-                            isValid = true;
-                        } else {
+                        if(!reasonId) {
+                            isValid = false;
                             $("#reasonTypeId").focus();
                             $("label[for='reasonTypeId']").css("color", "red");
-                            alert("Please select a \"download reason\" from the drop-down list");
                         }
 
                         return isValid;

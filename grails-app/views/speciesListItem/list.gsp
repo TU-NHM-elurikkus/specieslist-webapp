@@ -135,43 +135,6 @@
                 $("#show-meta-dl").slideToggle(!showHide);
             }
 
-            function downloadOccurrences(o) {
-                if(validateForm()) {
-                    this.cancel();
-                    downloadURL = "${request.contextPath}/speciesList/occurrences/${params.id}${params.toQueryString()}&type=Download&email=" + $("#email").val() + "&reasonTypeId=" + $("#reasonTypeId").val() + "&file=" + $("#filename").val();
-                    window.location = downloadURL //"${request.contextPath}/speciesList/occurrences/${params.id}?type=Download&email=$('#email').val()&reasonTypeId=$(#reasonTypeId).val()&file=$('#filename').val()"
-                }
-            }
-
-            function downloadFieldGuide(o) {
-                if(validateForm()) {
-                    this.cancel();
-                    //alert(${params.toQueryString()})
-                    window.location = "${request.contextPath}/speciesList/fieldGuide/${params.id}${params.toQueryString()}"
-                }
-
-            }
-
-            function downloadList(o) {
-                if(validateForm()) {
-                    this.cancel();
-                    window.location = "${request.contextPath}/speciesListItem/downloadList/${params.id}${params.toQueryString()}&file=" + $("#filename").val()
-                }
-            }
-
-            function validateForm() {
-                var isValid = true;
-                var reasonId = $("#reasonTypeId option:selected").val();
-
-                if(!reasonId) {
-                    $("#reasonTypeId").focus();
-                    $("label[for='reasonTypeId']").css("color", "red");
-                    isValid = false;
-                }
-
-                return isValid;
-            }
-
             function reloadWithMax(el) {
                 var max = $(el).find(":selected").val();
                 var params = {
@@ -423,7 +386,7 @@
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item">
                             <a
-                                class="nav-link"
+                                class="nav-link active"
                                 data-toggle="tab"
                                 href="#list-tab"
                                 role="tab"
@@ -434,7 +397,7 @@
 
                         <li class="nav-item">
                             <a
-                                class="nav-link active"
+                                class="nav-link"
                                 data-toggle="tab"
                                 href="#grid-tab"
                                 role="tab"
@@ -447,11 +410,11 @@
                     <div class="tab-content">
                         <g:render template="list-controls" />
 
-                        <div class="tab-pane" id="list-tab" role="tabpanel">
+                        <div id="list-tab" class="tab-pane active" role="tabpanel">
                             <g:render template="list-tab" />
                         </div>
 
-                        <div id="grid-tab" class="tab-pane active" role="tabpanel">
+                        <div id="grid-tab" class="tab-pane" role="tabpanel">
                             <g:render template="grid-tab" />
                         </div>
 
