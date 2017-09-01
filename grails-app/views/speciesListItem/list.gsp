@@ -281,13 +281,13 @@
                 <%-- LINKS --%>
                 <div class="page-header-links">
                     <a href="${request.contextPath}/public/speciesLists" class="page-header-links__link">
-                        <i class="fa fa-arrow-left"></i>
+                        <span class="fa fa-arrow-left"></span>
                         <g:message code="general.speciesLists" />
                     </a>
 
                     <a href="${request.contextPath}/speciesList/occurrences/${params.id}${params.toQueryString()}&type=Search"
                         title="${message(code: 'speciesListItem.list.viewUpTo', args: [maxDownload])}" class="page-header-links__link">
-                        <i class="fa fa-list"></i>
+                        <span class="fa fa-list"></span>
                         <g:message code="speciesListItem.list.viewOccurrence" />
                     </a>
 
@@ -323,7 +323,7 @@
                                 class="input-plus__addon erk-button erk-button--dark"
                                 onclick="searchByQuery()"
                             >
-                                <i class="fa fa-search"></i>
+                                <span class="fa fa-search"></span>
                                 <g:message code="general.search" />
                             </button>
                         </form>
@@ -372,11 +372,11 @@
                                                 <g:message code="general.scientificName" />: ${query}
                                             </span>
 
-                                            <i
+                                            <span
                                                 class="fa fa-close active-filters__close-button"
                                                 onclick="clearQuery()"
                                             >
-                                            </i>
+                                            </span>
                                         </span>
                                     </g:if>
 
@@ -386,11 +386,11 @@
                                                 ${fq}
                                             </span>
 
-                                            <i
+                                            <span
                                                 class="fa fa-close active-filters__close-button"
                                                 onclick="removeFq('${fq}')"
                                             >
-                                            </i>
+                                            </span>
                                         </span>
                                     </g:each>
 
@@ -410,7 +410,7 @@
             </div>
 
             <div class="list-items-header">
-                <i class="fa fa-info-circle"></i>
+                <span class="fa fa-info-circle"></span>
                 <g:message code="speciesListItem.list.refine" />
             </div>
 
@@ -641,7 +641,7 @@
                         <div class="modal-body">
                             <g:if test="${userCanEditPermissions}">
                                 <a href="#" class="erk-button erk-button--light" id="edit-meta-button">
-                                    <i class="fa fa-pencil"></i>
+                                    <span class="fa fa-pencil"></span>
                                     <g:message code="speciesListItem.list.edit" />
                                 </a>
                             </g:if>

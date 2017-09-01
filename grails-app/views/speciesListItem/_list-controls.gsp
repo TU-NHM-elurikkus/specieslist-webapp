@@ -6,7 +6,7 @@
             data-toggle="modal"
             data-target="#list-info-modal"
         >
-            <i class="fa fa-info-circle"></i>
+            <span class="fa fa-info-circle"></span>
             <g:message code="speciesListItem.list.listInfo" />
         </button>
 
@@ -14,7 +14,7 @@
             title="${message(code: 'speciesListItem.list.viewDownload')}" data-toggle="modal"
             data-target="#download-dialog">
 
-            <i class="fa fa-download"></i>
+            <span class="fa fa-download"></span>
             <g:message code="speciesListItem.list.download" />
         </button>
     </div>

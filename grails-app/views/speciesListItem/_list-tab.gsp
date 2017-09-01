@@ -63,7 +63,7 @@
                                 title="view record"
                                 data-id="${recId}"
                             >
-                                <i class="fa fa-info-circle"></i>
+                                <span class="fa fa-info-circle"></span>
                             </a>
 
                             <g:if test="${userCanEditData}">
@@ -74,7 +74,7 @@
                                     data-target="#editRecord_${recId}"
                                     data-toggle="modal"
                                 >
-                                    <i class="fa fa-pencil"></i>
+                                    <span class="fa fa-pencil"></span>
                                 </a>
 
                                 <a
@@ -83,7 +83,7 @@
                                     data-target="#deleteRecord_${recId}"
                                     data-toggle="modal"
                                 >
-                                    <i class="fa fa-trash-o"></i>
+                                    <span class="fa fa-trash-o"></span>
                                 </a>
                             </g:if>
                         </center>

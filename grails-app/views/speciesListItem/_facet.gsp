@@ -21,7 +21,7 @@
                         action="list"
                         params="${[fq:sl.buildFqList(fqs:fqs, fq:"kvp ${arr[0]}:${arr[1]}"), max:params.max, query: params.query]}"
                     >
-                        <i class="fa fa-square-o"></i>
+                        <span class="fa fa-square-o"></span>
                         <span class="facet-item">
                             ${arr[2]?:arr[1]}
 
@@ -39,7 +39,7 @@
                         action="list" id="${params.id}"
                         params="${[fq:sl.buildFqList(fqs:fqs, fq:"${key}:${arr[0]}"), max:params.max, query: params.query]}"
                     >
-                        <i class="fa fa-square-o"></i>
+                        <span class="fa fa-square-o"></span>
                         <span class="facet-item">
                             ${arr[0]}
 
