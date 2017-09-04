@@ -9,16 +9,15 @@
 
     <div class="gallery-thumb">
         <a
-            class="cbLink"
             rel="thumbs"
-            href="${result.imageUrl?:g.createLink(uri:'/assets/infobox_info_icon.png')}"
+            href="${result.imageUrl?:assetPath(src: 'fa-image.svg')}"
             data-id="${recId}"
             data-toggle="lightbox"
             title="${message(code: 'gallery.thumb.title')}"
         >
             <img
                 class="gallery-thumb__img"
-                src="${result.imageUrl?:g.createLink(uri:'/assets/infobox_info_icon.png')}"
+                src="${result.imageUrl?:assetPath(src: 'fa-image.svg')}"
                 alt=""
             />
         </a>

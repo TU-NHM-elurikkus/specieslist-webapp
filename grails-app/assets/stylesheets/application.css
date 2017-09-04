@@ -276,6 +276,11 @@ img.smallSpeciesImage {
     display: block;
 }
 
+.ekko-lightbox .modal-content {
+    min-width: 520px;
+    text-align: center;
+}
+
 /* TODO: Move facet styling to commons */
 .facet {
 }

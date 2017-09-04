@@ -2,10 +2,6 @@
     <table class="table table-sm" id="speciesListTable">
         <thead>
             <tr>
-                <th class="action">
-                    <g:message code="general.action" />
-                </th>
-
                 <g:sortableColumn
                     property="rawScientificName"
                     params="${[fq: fqs, query: query]}"
@@ -22,7 +18,6 @@
                     property="imageUrl"
                     params="${[fq: fqs, query: query]}"
                     titleKey="speciesListItem.list.image"
-                    class="imageCol"
                 />
 
                 <g:sortableColumn
@@ -56,42 +51,6 @@
                 </g:set>
 
                 <tr id="row_${recId}">
-                    <td class="action">
-                        <center>
-                            <a
-                                class="cbLink"
-                                rel="thumbs"
-                                href="${result.imageUrl?:g.createLink(uri:'/assets/infobox_info_icon.png')}"
-                                data-id="${recId}"
-                                data-toggle="lightbox"
-                                title="${message(code: 'gallery.thumb.title')}"
-                            >
-                                <span class="fa fa-info-circle"></span>
-                            </a>
-
-                            <g:if test="${userCanEditData}">
-                                <a
-                                    href="#"
-                                    title="edit"
-                                    data-remote="${createLink(controller: 'editor', action: 'editRecordScreen', id: result.id)}"
-                                    data-target="#editRecord_${recId}"
-                                    data-toggle="modal"
-                                >
-                                    <span class="fa fa-pencil"></span>
-                                </a>
-
-                                <a
-                                    href="#"
-                                    title="delete"
-                                    data-target="#deleteRecord_${recId}"
-                                    data-toggle="modal"
-                                >
-                                    <span class="fa fa-trash-o"></span>
-                                </a>
-                            </g:if>
-                        </center>
-                    </td>
-
                     <td class="rawScientificName">
                         ${fieldValue(bean: result, field: "rawScientificName")}
 
@@ -121,7 +80,7 @@
                     <td class="matchedName">
                         <g:if test="${result.guid}">
                             <a href="${bieUrl}/species/${result.guid}">
-                                ${result.matchedName}
+                                <span class="fa fa-tag"></span> ${result.matchedName}
                             </a>
                         </g:if>
                         <g:else>
@@ -129,12 +88,18 @@
                         </g:else>
                     </td>
 
-                    <td id="img_${result.guid}" class="imageCol">
-                        <a href="${bieUrl}/species/${result.guid}">
+                    <td id="img_${result.guid}">
+                        <a
+                            rel="thumbs"
+                            href="${result.imageUrl?:assetPath(src: 'fa-image.svg')}"
+                            data-id="${result.id}"
+                            data-toggle="lightbox"
+                            title="${message(code: 'gallery.thumb.title')}"
+                        >
                             <img
                                 class="smallSpeciesImage"
                                 style="max-width: 400px;"
-                                src="${result.imageUrl?:g.createLink(uri:'/assets/infobox_info_icon.png')}"
+                                src="${result.imageUrl?:assetPath(src: 'fa-image.svg')}"
                                 alt=""
                             />
                         </a>
