@@ -91,15 +91,14 @@
                     <td id="img_${result.guid}">
                         <a
                             rel="thumbs"
-                            href="${result.imageUrl?:assetPath(src: 'fa-image.svg')}"
+                            href="${result.imageUrl ?: assetPath(src: 'fa-image.svg')}"
                             data-id="${result.id}"
                             data-toggle="lightbox"
                             title="${message(code: 'gallery.thumb.title')}"
                         >
                             <img
                                 class="smallSpeciesImage"
-                                style="max-width: 400px;"
-                                src="${result.imageUrl?:assetPath(src: 'fa-image.svg')}"
+                                src="${result.imageUrl ?: assetPath(src: 'fa-image.svg')}"
                                 alt=""
                             />
                         </a>
@@ -115,7 +114,7 @@
 
                     <g:each in="${keys}" var="key">
                         <g:set var="kvp" value="${result.kvpValues.find {it.key == key}}" />
-                        <g:set var="val" value="${kvp?.vocabValue?:kvp?.value}" />
+                        <g:set var="val" value="${kvp?.vocabValue ?: kvp?.value}" />
 
                         <td class="kvp ${val?.length() > 35 ? 'scrollWidth':''}">
                             <div>
