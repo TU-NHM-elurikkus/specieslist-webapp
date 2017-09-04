@@ -155,12 +155,11 @@ img#spinner {
 
 img.smallSpeciesImage {
     max-height: 50px;
-    max-width: 100px;
+    max-width: 400px;
 }
 
 #viewRecord img.smallSpeciesImage {
     max-height: none;
-    max-width: none;
 }
 
 #speciesListTable {
@@ -274,6 +273,15 @@ img.smallSpeciesImage {
 /* TODO: Move to commons */
 .ekko-lightbox .modal-footer {
     display: block;
+}
+
+.ekko-lightbox .modal-content {
+    min-width: 520px;
+    text-align: center;
+}
+
+.ekko-lightbox img {
+    max-height: 614px;
 }
 
 /* TODO: Move facet styling to commons */
