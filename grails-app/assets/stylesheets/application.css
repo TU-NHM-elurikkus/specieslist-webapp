@@ -276,12 +276,7 @@ img.smallSpeciesImage {
 }
 
 .ekko-lightbox .modal-content {
-    min-width: 520px;
     text-align: center;
-}
-
-.ekko-lightbox img {
-    max-height: 614px;
 }
 
 /* TODO: Move facet styling to commons */
