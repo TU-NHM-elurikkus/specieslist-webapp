@@ -97,9 +97,8 @@
                             title="${message(code: 'gallery.thumb.title')}"
                         >
                             <img
-                                class="smallSpeciesImage"
+                                class="img-fluid smallSpeciesImage"
                                 src="${result.imageUrl ?: assetPath(src: 'fa-image.svg')}"
-                                alt=""
                             />
                         </a>
                     </td>
