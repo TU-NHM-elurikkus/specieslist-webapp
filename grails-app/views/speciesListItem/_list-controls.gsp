@@ -3,19 +3,21 @@
         <button
             type="button"
             class="erk-button erk-button--light"
+            title="${message(code: 'speciesListItem.list.viewDownload')}"
+            data-toggle="modal"
+            data-target="#download-dialog"
+        >
+            <span class="fa fa-download"></span>
+            <g:message code="speciesListItem.list.download" />
+        </button>
+
+        <button
+            type="button"
+            class="erk-button erk-button--light"
             data-toggle="modal"
             data-target="#list-info-modal"
         >
-            <span class="fa fa-info-circle"></span>
             <g:message code="speciesListItem.list.listInfo" />
-        </button>
-
-        <button type="button" class="erk-button erk-button--light"
-            title="${message(code: 'speciesListItem.list.viewDownload')}" data-toggle="modal"
-            data-target="#download-dialog">
-
-            <span class="fa fa-download"></span>
-            <g:message code="speciesListItem.list.download" />
         </button>
     </div>
 
