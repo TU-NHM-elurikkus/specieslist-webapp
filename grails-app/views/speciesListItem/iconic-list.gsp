@@ -214,7 +214,8 @@
                         <b><g:message code="general.alert"/>:</b>
                         ${flash.message}
                     </div>
-                    <div></g:if>
+                    <div>
+            </g:if>
 
                     <h3>
                         <g:message code="speciesListItem.iconic.australiaBrowse"/>
@@ -234,7 +235,7 @@
                                             <li class="${active}">
                                                 <a href="?fq=kvp ${arr[0]}:${arr[1]}">
                                                     ${arr[1]} (${arr[3]})
-                                                    <i class="fa fa-chevron-right"></i>
+                                                    <span class="fa fa-chevron-right"></span>
                                                 </a>
                                             </li>
                                         </g:each>
@@ -257,14 +258,13 @@
                                     </g:set>
                                     <div class="gallery-thumb">
                                         <a
-                                            class="cbLink"
                                             rel="thumbs"
                                             href="${bieUrl}/species/${result.guid?:bieSpecies?.get(2)}"
                                             data-id="${recId}"
                                         >
                                             <img
                                                 class="gallery-thumb__img"
-                                                src="${bieSpecies?.get(0)?:g.createLink(uri:'/assets/infobox_info_icon.png')}"
+                                                src="${bieSpecies?.get(0)?:assetPath(src: 'fa-image.svg')}"
                                                 alt="thumbnail species image"
                                             />
                                         </a>

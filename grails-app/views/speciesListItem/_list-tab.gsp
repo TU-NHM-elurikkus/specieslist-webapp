@@ -2,10 +2,6 @@
     <table class="table table-sm" id="speciesListTable">
         <thead>
             <tr>
-                <th class="action">
-                    <g:message code="general.action" />
-                </th>
-
                 <g:sortableColumn
                     property="rawScientificName"
                     params="${[fq: fqs, query: query]}"
@@ -55,40 +51,6 @@
                 </g:set>
 
                 <tr id="row_${recId}">
-                    <td class="action">
-                        <center>
-                            <a
-                                class="viewRecordButton"
-                                href="#viewRecord"
-                                title="view record"
-                                data-id="${recId}"
-                            >
-                                <span class="fa fa-info-circle"></span>
-                            </a>
-
-                            <g:if test="${userCanEditData}">
-                                <a
-                                    href="#"
-                                    title="edit"
-                                    data-remote="${createLink(controller: 'editor', action: 'editRecordScreen', id: result.id)}"
-                                    data-target="#editRecord_${recId}"
-                                    data-toggle="modal"
-                                >
-                                    <span class="fa fa-pencil"></span>
-                                </a>
-
-                                <a
-                                    href="#"
-                                    title="delete"
-                                    data-target="#deleteRecord_${recId}"
-                                    data-toggle="modal"
-                                >
-                                    <span class="fa fa-trash-o"></span>
-                                </a>
-                            </g:if>
-                        </center>
-                    </td>
-
                     <td class="rawScientificName">
                         ${fieldValue(bean: result, field: "rawScientificName")}
 
@@ -118,7 +80,7 @@
                     <td class="matchedName">
                         <g:if test="${result.guid}">
                             <a href="${bieUrl}/species/${result.guid}">
-                                ${result.matchedName}
+                                <span class="fa fa-tag"></span> ${result.matchedName}
                             </a>
                         </g:if>
                         <g:else>
@@ -127,15 +89,18 @@
                     </td>
 
                     <td id="img_${result.guid}">
-                        <g:if test="${result.imageUrl}">
-                            <a href="${bieUrl}/species/${result.guid}">
-                                <img
-                                    style="max-width: 400px;"
-                                    src="${result.imageUrl}"
-                                    class="smallSpeciesImage"
-                                />
-                            </a>
-                        </g:if>
+                        <a
+                            rel="thumbs"
+                            href="${result.imageUrl ?: assetPath(src: 'fa-image.svg')}"
+                            data-id="${result.id}"
+                            data-toggle="lightbox"
+                            title="${message(code: 'gallery.thumb.title')}"
+                        >
+                            <img
+                                class="img-fluid smallSpeciesImage"
+                                src="${result.imageUrl ?: assetPath(src: 'fa-image.svg')}"
+                            />
+                        </a>
                     </td>
 
                     <td>
@@ -148,7 +113,7 @@
 
                     <g:each in="${keys}" var="key">
                         <g:set var="kvp" value="${result.kvpValues.find {it.key == key}}" />
-                        <g:set var="val" value="${kvp?.vocabValue?:kvp?.value}" />
+                        <g:set var="val" value="${kvp?.vocabValue ?: kvp?.value}" />
 
                         <td class="kvp ${val?.length() > 35 ? 'scrollWidth':''}">
                             <div>

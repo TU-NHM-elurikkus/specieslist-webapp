@@ -9,19 +9,20 @@
 
     <div class="gallery-thumb">
         <a
-            class="cbLink viewRecordButton"
             rel="thumbs"
-            href="#viewRecord"
+            href="${result.imageUrl?:assetPath(src: 'fa-image.svg')}"
             data-id="${recId}"
+            data-toggle="lightbox"
+            title="${message(code: 'gallery.thumb.title')}"
         >
             <img
                 class="gallery-thumb__img"
-                src="${result.imageUrl?:g.createLink(uri:'/assets/infobox_info_icon.png')}"
+                src="${result.imageUrl?:assetPath(src: 'fa-image.svg')}"
                 alt=""
             />
         </a>
 
-        <g:set var="displayName">
+        <div class="gallery-thumb__footer">
             <span>
                 <g:if test="${result.guid == null}">
                     ${fieldValue(bean: result, field: "rawScientificName")}
@@ -30,10 +31,6 @@
                     ${result.matchedName}
                 </g:else>
             </span>
-        </g:set>
-
-        <div class="gallery-thumb__footer">
-            ${displayName}
         </div>
     </div>
 </g:each>

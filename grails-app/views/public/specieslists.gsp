@@ -51,6 +51,7 @@
                                         />
 
                                         <button class="erk-button erk-button--dark input-plus__addon" type="submit">
+                                            <span class="fa fa-search"></span>
                                             <g:message code="general.search"/>
                                         </button>
                                     </form>
@@ -89,18 +90,16 @@
                         </div>
                     </g:if>
                     <g:elseif test="${params.q}">
-                        <form class="list-search-form">
-                            <p>
-                                <g:messages code="public.speciesLists.noListsFound"/>
-                                <strong>
-                                    ${params.q}
-                                </strong>
-                            </p>
+                        <p>
+                            <g:message code="public.speciesLists.noListsFound"/>
+                            <strong>
+                                ${params.q}
+                            </strong>
+                        </p>
 
-                            <button class="erk-button erk-button--light" type="submit">
-                                <g:message code="public.speciesLists.clearSearch"/>
-                            </button>
-                        </form>
+                        <a href="${request.contextPath}/public/speciesLists">
+                            <span class="fa fa-arrow-left"></span>
+                            <g:message code="public.speciesLists.backToSearch" />
                     </g:elseif>
                     <g:else>
                         <p>
