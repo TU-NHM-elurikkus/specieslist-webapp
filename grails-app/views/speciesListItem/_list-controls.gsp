@@ -6,7 +6,6 @@
             data-toggle="modal"
             data-target="#list-info-modal"
         >
-            <span class="fa fa-info-circle"></span>
             <g:message code="speciesListItem.list.listInfo" />
         </button>
 

@@ -57,7 +57,7 @@
                                 </div>
 
                                 <g:if test="${params.q}">
-                                    <div class="active-filters">
+                                    <div class="active-filters vertical-block">
                                         <span class="active-filters__title">
                                             <g:message code="speciesListItem.list.filters" />
                                         </span>

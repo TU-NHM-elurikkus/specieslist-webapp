@@ -37,8 +37,8 @@
     }
 </script>
 
-<div id="speciesList" class="speciesList table-responsive">
-    <table class="table table-sm table-bordered table-striped">
+<div id="speciesList" class="speciesList table-responsive vertical-block">
+    <table class="table table-sm table-borderless">
         <thead>
             <tr>
                 <g:sortableColumn property="listName" params="${[q:params.q]}" titleKey="general.listName"/>

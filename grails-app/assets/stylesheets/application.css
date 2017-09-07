@@ -22,7 +22,9 @@ p span.count {
 }
 
 #speciesList {
-    padding-top: 1rem;
+    border: 1px solid #e9ecef;
+    border-radius: 3px;
+    padding: 1em;
 }
 
 #currentFilters {
@@ -283,4 +285,8 @@ img.smallSpeciesImage {
 
 .facet__value {
     padding: 3px 0;
+}
+
+.table-borderless {
+    border-style: hidden;
 }
