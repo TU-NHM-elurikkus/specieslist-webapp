@@ -16,7 +16,16 @@ $(document).ready(function() {
         toggleEditMeta(!$('#edit-meta-div').is(':visible'));
     });
 
-}); // end document ready
+    // make table header cells clickable
+    $('table .sortable').each(function(i) {
+        var href = $(this).find('a').attr('href');
+
+        $(this).click(function() {
+            window.location.href = href;
+        });
+    });
+
+});
 
 function toggleEditMeta(showHide) {
     $('#edit-meta-div').slideToggle(showHide);
