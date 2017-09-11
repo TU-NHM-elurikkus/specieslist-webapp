@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
-        <title>Species lists Webservices| ${grailsApplication.config.skin.orgNameLong}</title>
+        <title>Species lists Webservices</title>
         <style type="text/css">
             code {
                 color: #df4a21;

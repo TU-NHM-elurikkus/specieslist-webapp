@@ -4,7 +4,7 @@
     <head>
         <meta name="layout" content="${grailsApplication.config.skin.layout}" />
         <title>
-            <g:message code="general.speciesLists" /> | ${grailsApplication.config.skin.orgNameLong}
+            <g:message code="general.speciesLists" />
         </title>
     </head>
 
