@@ -254,7 +254,6 @@
             <g:message code="general.uploadList" />
             |
             <g:message code="general.speciesLists" />
-            | ${grailsApplication.config.skin.orgNameLong}
         </title>
     </head>
 
