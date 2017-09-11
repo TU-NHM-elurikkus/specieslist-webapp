@@ -77,10 +77,6 @@
                                     </div>
                                 </g:if>
                             </div>
-
-                            <div class="list-search-row__pagination-controls col-md-3 col-sm-12">
-                                <g:render template="/pageSize"/>
-                            </div>
                         </div>
 
                         <div class="row">
