@@ -27,6 +27,12 @@
 </script>
 
 <div id="speciesList" class="speciesList table-responsive vertical-block">
+    <div class="list-items-controls clearfix">
+        <div class="float-right">
+            <g:render template="/pageSize"/>
+        </div>
+    </div>
+
     <table class="table table-sm table-borderless">
         <thead>
             <tr>
