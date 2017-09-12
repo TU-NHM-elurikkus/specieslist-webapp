@@ -238,17 +238,7 @@ img.smallSpeciesImage {
     padding-right: 0.5em;
 }
 
-/* Override container padding */
-#content.container-fluid {
-    padding: 0;
-}
-
 .item-search {
-    margin-bottom: 1em;
-}
-
-.item-search__filter-line {
-    margin-top: 1em;
 }
 
 .item-search__count-line {
@@ -257,11 +247,6 @@ img.smallSpeciesImage {
 
 .item-search__count {
     font-weight: 700;
-}
-
-.list-items-header {
-    font-size: 15px;
-    margin-bottom: 1em;
 }
 
 .list-items-controls {

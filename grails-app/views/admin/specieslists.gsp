@@ -9,7 +9,7 @@
     </head>
 
     <body class="">
-        <div id="content" class="container-fluid">
+        <div id="content">
             <header id="page-header">
                 <%-- TITLE --%>
                 <div class="row">
