@@ -184,7 +184,7 @@
         </g:javascript>
     </head>
     <body class="yui-skin-sam nav-species">
-        <div id="content" class="container-fluid">
+        <div id="content">
 
             <div class="inner row-fluid">
                 <div class="span12">

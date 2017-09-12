@@ -44,7 +44,7 @@
             <g:render template="/download" />
         </div>
 
-        <div id="content" class="container-fluid">
+        <div id="content">
             <header id="page-header" class="page-header">
                 <%-- TITLE --%>
                 <div class="page-header__title">
@@ -103,108 +103,104 @@
                 </div>
             </g:if>
 
-            <div class="row">
-                <div class="col">
-                    <div class="item-search">
-                        <form class="input-plus">
-                            <input type="text" id="queryInput" name="query" class="input-plus__field">
-                            <button
-                                type="sumbit"
-                                class="input-plus__addon erk-button erk-button--dark"
-                                onclick="searchByQuery()"
-                            >
-                                <span class="fa fa-search"></span>
-                                <g:message code="general.search" />
-                            </button>
-                        </form>
+            <section class="search-section">
+                <form class="input-plus">
+                    <input type="text" id="queryInput" name="query" class="input-plus__field">
+                    <button
+                        type="sumbit"
+                        class="input-plus__addon erk-button erk-button--dark"
+                        onclick="searchByQuery()"
+                    >
+                        <span class="fa fa-search"></span>
+                        <g:message code="general.search" />
+                    </button>
+                </form>
 
-                        <div class="item-search__count-line">
-                            <g:message code="speciesListItem.list.taxonNumber" />:
+                <div class="item-search__count-line">
+                    <g:message code="speciesListItem.list.taxonNumber" />:
+                    <span class="item-search__count">
+                        ${totalCount},
+                    </span>
+
+                    <g:message code="speciesListItem.list.distinctSpecies" />:
+                    <span class="item-search__count">
+                        ${distinctCount}
+                    </span>
+
+                    <g:if test="${hasUnrecognised && noMatchCount != totalCount}">
+                        ,
+
+                        <g:link
+                            action="list"
+                            id="${params.id}"
+                            title="${message(code: 'speciesListItem.list.viewUnrecognised')}"
+                            params="${[fq:sl.buildFqList(fqs:fqs, fq:' guid:null'), max:params.max]}"
+                        >
+                            <g:message code="speciesListItem.list.unknownTaxa" />
+
                             <span class="item-search__count">
-                                ${totalCount},
+                                ${noMatchCount}
+                            </span>
+                        </g:link>
+                    </g:if>
+                </div>
+
+                <g:if test="${query || fqs}">
+                    <div class="item-search__filter-line vertical-block">
+                        <div class="active-filters">
+                            <span class="active-filters__title">
+                                <g:message code="speciesListItem.list.filters" />
                             </span>
 
-                            <g:message code="speciesListItem.list.distinctSpecies" />:
-                            <span class="item-search__count">
-                                ${distinctCount}
-                            </span>
-
-                            <g:if test="${hasUnrecognised && noMatchCount != totalCount}">
-                                ,
-
-                                <g:link
-                                    action="list"
-                                    id="${params.id}"
-                                    title="${message(code: 'speciesListItem.list.viewUnrecognised')}"
-                                    params="${[fq:sl.buildFqList(fqs:fqs, fq:' guid:null'), max:params.max]}"
-                                >
-                                    <g:message code="speciesListItem.list.unknownTaxa" />
-
-                                    <span class="item-search__count">
-                                        ${noMatchCount}
+                            <g:if test="${query}">
+                                <span class="active-filters__filter">
+                                    <span class="active-filters__label">
+                                        <g:message code="general.scientificName" />: ${query}
                                     </span>
-                                </g:link>
+
+                                    <span
+                                        class="fa fa-close active-filters__close-button"
+                                        onclick="clearQuery()"
+                                    >
+                                    </span>
+                                </span>
+                            </g:if>
+
+                            <g:each in="${fqs}" var="fq">
+                                <span class="active-filters__filter">
+                                    <span class="active-filters__label">
+                                        ${fq}
+                                    </span>
+
+                                    <span
+                                        class="fa fa-close active-filters__close-button"
+                                        onclick="removeFq('${fq}')"
+                                    >
+                                    </span>
+                                </span>
+                            </g:each>
+
+                            <g:if test="${query && fqs}">
+                                <span
+                                    class="active-filters__clear-all-button"
+                                    onclick="clearAll()"
+                                >
+                                    <g:message code="public.speciesLists.clearSearch" />
+                                </span>
                             </g:if>
                         </div>
-
-                        <div class="item-search__filter-line">
-                            <div class="active-filters">
-                                <g:if test="${query || fqs}">
-                                    <span class="active-filters__title">
-                                        <g:message code="speciesListItem.list.filters" />
-                                    </span>
-
-                                    <g:if test="${query}">
-                                        <span class="active-filters__filter">
-                                            <span class="active-filters__label">
-                                                <g:message code="general.scientificName" />: ${query}
-                                            </span>
-
-                                            <span
-                                                class="fa fa-close active-filters__close-button"
-                                                onclick="clearQuery()"
-                                            >
-                                            </span>
-                                        </span>
-                                    </g:if>
-
-                                    <g:each in="${fqs}" var="fq">
-                                        <span class="active-filters__filter">
-                                            <span class="active-filters__label">
-                                                ${fq}
-                                            </span>
-
-                                            <span
-                                                class="fa fa-close active-filters__close-button"
-                                                onclick="removeFq('${fq}')"
-                                            >
-                                            </span>
-                                        </span>
-                                    </g:each>
-
-                                    <g:if test="${query && fqs}">
-                                        <span
-                                            class="active-filters__clear-all-button"
-                                            onclick="clearAll()"
-                                        >
-                                            <g:message code="public.speciesLists.clearSearch" />
-                                        </span>
-                                    </g:if>
-                                </g:if>
-                            </div>
-                        </div>
                     </div>
-                </div>
-            </div>
+                </g:if>
+            </section>
 
-            <div class="list-items-header">
+            <div class="list-items-header vertical-block">
                 <span class="fa fa-info-circle"></span>
                 <g:message code="speciesListItem.list.refine" />
             </div>
 
             <div class="row">
                 <div class="col-sm-5 col-md-3" id="facets-column">
-                    <div class="card card-body facets-panel">
+                    <div class="card card-body detached-card">
                         <g:if test="${facets.size()>0 || params.fq}">
                             <g:set var="fqs" value="${params.list('fq')}" />
 

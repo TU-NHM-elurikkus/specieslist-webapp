@@ -8,7 +8,7 @@
     </head>
 
     <body>
-        <div id="content" class="container-fluid">
+        <div id="content">
             <header id="page-header" class="page-header">
                 <%-- TITLE --%>
                 <div class="page-header__title">

@@ -10,7 +10,7 @@
     </head>
 
     <body>
-        <div id="content" class="container-fluid">
+        <div id="content">
             <header id="page-header" class="page-header">
                 <h1 class="page-header__title">
                     <g:message code="general.speciesLists"/>
@@ -37,53 +37,45 @@
                     </g:if>
 
                     <g:if test="${lists && total>0}">
-                        <div class="row list-search-row">
-                            <div class="col-md-9 col-sm-12">
-                                <div class="list-search-row__search">
-                                    <form class="input-plus list-search-row__search-form">
-                                        <input
-                                            id="appendedInputButton"
-                                            class="input-plus__field"
-                                            name="q"
-                                            type="text"
-                                            value="${params.q}"
-                                            placeholder="${message(code: 'general.searchPlaceHolder')}"
-                                        />
+                        <section class="search-section">
+                            <form class="input-plus">
+                                <input
+                                    id="appendedInputButton"
+                                    class="input-plus__field"
+                                    name="q"
+                                    type="text"
+                                    value="${params.q}"
+                                    placeholder="${message(code: 'general.searchPlaceHolder')}"
+                                />
 
-                                        <button class="erk-button erk-button--dark input-plus__addon" type="submit">
-                                            <span class="fa fa-search"></span>
-                                            <g:message code="general.search"/>
-                                        </button>
-                                    </form>
-                                </div>
+                                <button class="erk-button erk-button--dark input-plus__addon" type="submit">
+                                    <span class="fa fa-search"></span>
+                                    <g:message code="general.search"/>
+                                </button>
+                            </form>
 
-                                <g:if test="${params.q}">
-                                    <div class="active-filters vertical-block">
-                                        <span class="active-filters__title">
-                                            <g:message code="speciesListItem.list.filters" />
+                            <g:if test="${params.q}">
+                                <p class="active-filters">
+                                    <span class="active-filters__title">
+                                        <g:message code="speciesListItem.list.filters" />
+                                    </span>
+
+                                    <span class="active-filters__filter">
+                                        <span class="active-filters__label">
+                                            <g:message code="public.speciesLists.query" />: ${params.q}
                                         </span>
 
-                                        <span class="active-filters__filter">
-                                            <span class="active-filters__label">
-                                                <g:message code="public.speciesLists.query" />: ${params.q}
-                                            </span>
-
-                                            <span
-                                                class="fa fa-close active-filters__close-button"
-                                                onclick="resetFilters()"
-                                            >
-                                            </span>
+                                        <span
+                                            class="fa fa-close active-filters__close-button"
+                                            onclick="resetFilters()"
+                                        >
                                         </span>
-                                    </div>
-                                </g:if>
-                            </div>
-                        </div>
+                                    </span>
+                                </p>
+                            </g:if>
+                        </section>
 
-                        <div class="row">
-                            <div class="col">
-                                <g:render template="/speciesList"/>
-                            </div>
-                        </div>
+                        <g:render template="/speciesList"/>
                     </g:if>
                     <g:elseif test="${params.q}">
                         <p>
