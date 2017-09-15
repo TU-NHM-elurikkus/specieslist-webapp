@@ -64,7 +64,8 @@
                 <tr>
                     <td>
                         <a href="${request.contextPath}/speciesListItem/list/${list.dataResourceUid}">
-                            <span class="fa fa-check-circle"></span> ${fieldValue(bean: list, field: "listName")}
+                            <span class="fa fa-check-circle"></span>
+                            ${list.getLocalizedName(locale)}
                         </a>
                     </td>
 

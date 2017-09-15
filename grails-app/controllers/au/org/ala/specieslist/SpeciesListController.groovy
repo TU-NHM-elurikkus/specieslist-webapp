@@ -261,7 +261,10 @@ class SpeciesListController {
             params.remove('userId')
             log.debug("lists:" + lists)
 
-            render(view: "list", model: [lists:lists, total:lists.totalCount])
+            render(view: "list", model: [
+                lists: lists,
+                total: lists.totalCount
+            ])
         } catch(Exception e) {
             log.error "Error requesting species Lists: " ,e
             response.status = 404
