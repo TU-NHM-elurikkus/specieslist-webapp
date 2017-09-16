@@ -36,7 +36,7 @@
                         </div>
                     </g:if>
 
-                    <g:if test="${lists && total>0}">
+                    <g:if test="${lists && total > 0}">
                         <section class="search-section">
                             <form class="input-plus">
                                 <input

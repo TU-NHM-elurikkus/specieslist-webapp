@@ -31,7 +31,7 @@ class SpeciesList {
 
     static transients = [ "fullName" ]
 
-    static hasMany = [items: SpeciesListItem, editors: String]
+    static hasMany = [items: SpeciesListItem, editors: String, names: ListName]
 
     static constraints = {
         url(nullable:true)
@@ -71,5 +71,18 @@ class SpeciesList {
     def String getFullName(){
         def user = authService.getUserForUserId(username)
         user?.displayName
+    }
+
+    def String getLocalizedName(locale) {
+        for(name in names) {
+            if(name.locale == locale) {
+                return name.name
+            }
+        }
+
+        // Could possibly go with "default to this", but it would really
+        // complicate sorting by name. Unless the translated name is expressable
+        // as derived property in SQL. TODO: think about it
+        return ""
     }
 }

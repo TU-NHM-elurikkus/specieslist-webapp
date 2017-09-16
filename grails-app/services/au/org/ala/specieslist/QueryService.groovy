@@ -21,6 +21,37 @@ class QueryService {
         it.getParameterTypes().length < 3
     }.collectEntries{ [it.name, it] }
 
+    def getLists(params, locale) {
+        def lnQuery = ListName.where {
+            locale == locale
+        }
+
+        if(params.q) {
+            lnQuery = lnQuery.where {
+                name ==~ "%${params.q}%"
+            }
+        }
+
+        if(params.sort == "listName") {
+            params.sort = "name"
+
+            return lnQuery.list(params).collect({ ln -> ln.slist })
+        } else {
+            def listQuery = SpeciesList.where {
+            }
+
+            if(params.q) {
+                def matchingNameIDs = lnQuery.list().collect({ ln -> ln.slist.id })
+
+                listQuery = listQuery.where {
+                    id in matchingNameIDs
+                }
+            }
+
+            return listQuery.list(params)
+        }
+    }
+
     /**
      * retrieves the lists that obey the supplied filters
      *

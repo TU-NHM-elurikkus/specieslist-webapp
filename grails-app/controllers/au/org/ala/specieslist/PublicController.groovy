@@ -2,6 +2,7 @@ package au.org.ala.specieslist
 
 import grails.converters.*
 import grails.web.JSONBuilder
+import org.springframework.context.i18n.LocaleContextHolder;
 
 class PublicController {
 
@@ -30,25 +31,23 @@ class PublicController {
             redirect(action:'sdsLists')
             return
         }
+
         params.max = Math.min(params.max ? params.int('max') : 25, 100)
         params.sort = params.sort ?: "listName"
 
         log.info "params = " + params
 
+        def locale = LocaleContextHolder.getLocale().getLanguage()
+
         try{
-            def lists, count
+            def lists = queryService.getLists(params, locale)
+            def count = lists.size()
 
-            if (params.q) {
-                lists = queryService.getFilterListResult(params)
-                count = lists.totalCount
-            } else {
-                // the public listing should not include any private lists
-                lists = SpeciesList.findAllByIsPrivateIsNullOrIsPrivate(false, params)
-                count = SpeciesList.countByIsPrivateIsNullOrIsPrivate(false)
-            }
-
-            log.info "lists = ${lists.size()} || count = ${count}"
-            render (view:'specieslists', model:[lists:lists, total:count])
+            render (view:'specieslists', model:[
+                lists: lists,
+                total: count,
+                locale: locale
+            ])
         }
         catch(Exception e) {
             log.error "Error requesting species Lists: " ,e
