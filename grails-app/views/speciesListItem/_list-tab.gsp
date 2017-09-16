@@ -3,15 +3,15 @@
         <thead>
             <tr>
                 <g:sortableColumn
-                    property="rawScientificName"
-                    params="${[fq: fqs, query: query]}"
-                    titleKey="general.suppliedName"
-                />
-
-                <g:sortableColumn
                     property="matchedName"
                     params="${[fq: fqs, query: query]}"
                     titleKey="general.scientificName"
+                />
+
+                <g:sortableColumn
+                    property="rawScientificName"
+                    params="${[fq: fqs, query: query]}"
+                    titleKey="general.suppliedName"
                 />
 
                 <g:sortableColumn
@@ -51,6 +51,17 @@
                 </g:set>
 
                 <tr id="row_${recId}">
+                    <td class="matchedName">
+                        <g:if test="${result.guid}">
+                            <a href="${bieUrl}/species/${result.guid}">
+                                <span class="fa fa-tag"></span> ${result.matchedName}
+                            </a>
+                        </g:if>
+                        <g:else>
+                            ${result.matchedName}
+                        </g:else>
+                    </td>
+
                     <td class="rawScientificName">
                         ${fieldValue(bean: result, field: "rawScientificName")}
 
@@ -75,17 +86,6 @@
                                 <g:message code="speciesListItem.list.occurrences" />
                             </a>
                         </g:if>
-                    </td>
-
-                    <td class="matchedName">
-                        <g:if test="${result.guid}">
-                            <a href="${bieUrl}/species/${result.guid}">
-                                <span class="fa fa-tag"></span> ${result.matchedName}
-                            </a>
-                        </g:if>
-                        <g:else>
-                            ${result.matchedName}
-                        </g:else>
                     </td>
 
                     <td id="img_${result.guid}">
