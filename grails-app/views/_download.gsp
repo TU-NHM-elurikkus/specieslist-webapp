@@ -17,10 +17,10 @@
                 </h3>
             </div>
 
-            <div class="modal-body">
+            <div id="downloadForm" class="modal-body">
                 <p>
                     <g:message code="download.terms1"/>
-                    <a href="http://www.ala.org.au/about/terms-of-use/#TOUusingcontent">
+                    <a href="https://plutof.ut.ee/#/privacy-policy" target="_blank">
                         <g:message code="download.terms2"/>
                     </a>
                     <g:message code="download.terms3"/>
@@ -31,8 +31,8 @@
                 </p>
 
                 <form>
-                    <div class="form-group row">
-                        <label for="email" class="col-sm-4 col-md-3 col-lg-2 col-form-label">
+                    <div class="form-group">
+                        <label for="email">
                             <g:message code="general.email"/>
                         </label>
 
@@ -41,13 +41,12 @@
                             name="email"
                             id="email"
                             value="${request.remoteUser}"
-                            size="30"
-                            class="col-sm-8 col-md-6 col-lg-4"
+                            class="form-control"
                         />
                     </div>
 
-                    <div class="form-group row">
-                        <label for="filename" class="col-sm-4 col-md-3 col-lg-2 col-form-label">
+                    <div class="form-group">
+                        <label for="filename">
                             <g:message code="download.file"/>
                         </label>
 
@@ -55,18 +54,17 @@
                             type="text"
                             name="filename"
                             id="filename"
-                            value="${speciesList?.listName?.replaceAll(~/\s+/, " _")?:" data"}"
-                            size="30"
-                            class="col-sm-8 col-md-6 col-lg-4"
+                            value="${speciesList?.listName?.replaceAll(~/\s+/, '_')?:" data"}"
+                            class="form-control"
                         />
                     </div>
 
-                    <div class="form-group row">
-                        <label for="reasonTypeId" class="col-sm-4 col-md-3 col-lg-2 col-form-label">
+                    <div class="form-group">
+                        <label for="reasonTypeId">
                             <g:message code="download.reason"/>
                         </label>
 
-                        <select name="reasonTypeId" id="reasonTypeId" class="col-sm-8 col-md-6 col-lg-4">
+                        <select name="reasonTypeId" id="reasonTypeId" class="form-control erk-radio-input">
                             <option value="">
                                 --
                                 <g:message code="download.select"/>
@@ -81,78 +79,59 @@
                         </select>
                     </div>
 
-                    <div class="form-group row">
-                        <div class="col">
-                            <button
-                                type="button"
-                                class="actionButton erk-button erk-button--light"
-                                id="downloadSubmitButton"
-                            >
-                                <g:message code="download.all"/>
-                            </button>
+                    <div id="download-types" class="form-group">
+                        <label class="control-label" for="downloadOption">
+                            <g:message code="download.form.downloadType.label" /> *
+                        </label>
 
-                            <g:if test="${grailsApplication.config.fieldGuide.baseURL}">
-                                <button
-                                    type="button"
-                                    class="actionButton erk-button erk-button--light"
-                                    id="downloadFieldGuideSubmitButton"
+                        <div>
+                            <label class="erk-radio-label">
+                                <input
+                                    type="radio"
+                                    class="erk-radio-input"
+                                    name="download-types"
+                                    value=0
+                                    checked
                                 >
-                                    <g:message code="download.fieldGuide"/>
-                                </button>
-                            </g:if>
-
-                            <button
-                                type="button"
-                                class="actionButton erk-button erk-button--light"
-                                id="downloadSpeciesListSubmitButton"
-                            >
-                                <g:message code="download.list"/>
-                            </button>
+                                &nbsp;<g:message code="download.all"/>
+                            </label>
+                        </div>
+                        <div>
+                            <label class="erk-radio-label">
+                                <input
+                                    type="radio"
+                                    class="erk-radio-input"
+                                    name="download-types"
+                                    value=1
+                                >
+                                &nbsp;<g:message code="download.list"/>
+                            </label>
                         </div>
                     </div>
                 </form>
 
-                <g:if test="${grailsApplication.config.fieldGuide.baseURL}">
-                    <p>
-                        <strong>
-                            <g:message code="download.note"/>
-                        </strong>:
-                        <g:message code="download.noteDescription"/>
-                    </p>
-                </g:if>
-
-                <div id="statusMsg" style="text-align: center; font-weight: bold; "></div>
-
                 <script type="text/javascript">
                     $(document).ready(function() {
-                        // catch download submit button Note the unbind().bind() syntax - due to Jquery ready being inside <body> tag.
-
-                        $("#downloadSubmitButton").unbind("click").bind("click", function(e) {
+                        // catch download submit button. Note Nick's unbind().bind() syntax - due to Jquery ready being inside <body> tag.
+                        $("#downloadStart").unbind("click").bind("click",function(e) {
                             e.preventDefault();
+                            var downloadOption = $("input:radio[name=download-types]:checked").val();
 
                             if(validateForm()) {
-                                downloadURL = "${request.contextPath}/speciesList/occurrences/${params.id}${params.toQueryString()}&type=Download&email=" + $("#email").val() + "&reasonTypeId=" + $("#reasonTypeId").val() + "&file=" + $("#filename").val();
-                                window.location.href = downloadURL;
-                                notifyDownloadStarted()
-                            }
-                        });
-
-                        $("#downloadSpeciesListSubmitButton").unbind("click").bind("click", function(e) {
-                            e.preventDefault();
-                            if(validateForm()) {
-                                window.location.href = "${request.contextPath}/speciesListItem/downloadList/${params.id}${params.toQueryString()}&file=" + $("#filename").val()
-                                notifyDownloadStarted()
-                            }
-                        });
-
-                        // catch checklist download submit button
-                        $("#downloadFieldGuideSubmitButton").unbind("click").bind("click", function(e) {
-                            e.preventDefault();
-
-                            if(validateForm()) {
-                                var downloadUrl = "${request.contextPath}/speciesList/fieldGuide/${params.id}${params.toQueryString()}"
-                                window.open(downloadUrl);
-                                notifyDownloadStarted()
+                                if(downloadOption == "1") {
+                                    window.location.href =
+                                        '${request.contextPath}/speciesListItem/downloadList/${params.id}${params.toQueryString()}' +
+                                        '&file=' + $("#filename").val();
+                                    notifyDownloadStarted();
+                                } else {
+                                    window.location.href =
+                                        '${request.contextPath}/speciesList/occurrences/${params.id}${params.toQueryString()}' +
+                                        '&type=Download' +
+                                        '&email=' + $('#email').val() +
+                                        '&reasonTypeId=' + $('#reasonTypeId').val() +
+                                        '&file=' + $('#filename').val();
+                                    notifyDownloadStarted();
+                                }
                             }
                         });
                     });
@@ -174,11 +153,9 @@
                     }
 
                     function notifyDownloadStarted() {
-                        $("#statusMsg").html("Download has commenced");
                         window.setTimeout(function() {
-                            $("#statusMsg").html("");
                             $('#download-dialog').modal('hide')
-                        }, 2000);
+                        }, 500);
                     }
 
                     function validateForm() {
@@ -189,6 +166,8 @@
                             isValid = false;
                             $("#reasonTypeId").focus();
                             $("label[for='reasonTypeId']").css("color", "red");
+                        } else {
+                            $("label[for='reasonTypeId']").css("color", "inherit");
                         }
 
                         return isValid;
@@ -198,7 +177,12 @@
 
             <div class="modal-footer">
                 <button class="erk-button erk-button--light" data-dismiss="modal" aria-hidden="true">
-                    <g:message code="general.close"/>
+                    <g:message code="general.btn.close"/>
+                </button>
+
+                <button id="downloadStart" class="erk-button erk-button--light tooltips">
+                    <span class="fa fa-download"></span>
+                    <g:message code="general.btn.download.label" />
                 </button>
             </div>
         </div>
