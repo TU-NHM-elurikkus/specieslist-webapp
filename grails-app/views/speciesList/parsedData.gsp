@@ -95,7 +95,7 @@
 
                     <div class="pull-right">
                         <button class="erk-button erk-button--light" onclick="javascript:hideVocab();">
-                            <g:message code="general.close"/>
+                            <g:message code="general.btn.close"/>
                         </button>
                     </div>
 
@@ -136,7 +136,7 @@
 
                     <div class="pull-right">
                         <button class="erk-button erk-button--light" onclick="javascript:hideVocab();">
-                            <g:message code="general.close"/>
+                            <g:message code="general.btn.close"/>
                         </button>
                     </div>
                 </div>

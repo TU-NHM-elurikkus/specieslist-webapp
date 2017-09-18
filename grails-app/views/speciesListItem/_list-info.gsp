@@ -9,13 +9,6 @@
 
 <dl class="row" id="show-meta-dl">
     <dt class="col-sm-6 col-md-6">
-        ${message(code: 'general.listName')}
-    </dt>
-    <dd class="col-sm-6 col-md-6">
-        ${speciesList.listName?:'&nbsp;'}
-    </dd>
-
-    <dt class="col-sm-6 col-md-6">
         ${message(code: 'general.owner')}
     </dt>
     <dd class="col-sm-6 col-md-6">

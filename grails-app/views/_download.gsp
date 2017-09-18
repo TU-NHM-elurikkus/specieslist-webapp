@@ -8,12 +8,8 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                    ×
-                </button>
-
                 <h3 id="download-dialog-title">
-                    <g:message code="download.downloads"/>
+                    <g:message code="general.btn.download.title"/>
                 </h3>
             </div>
 
