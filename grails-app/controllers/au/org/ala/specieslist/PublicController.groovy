@@ -20,12 +20,12 @@ class PublicController {
 
             redirect(action: 'speciesLists')
         }
-        catch(Exception e){
+        catch(Exception e) {
             render(view: '../error', model: [message: "Unable to retrieve species lists. Please let us know if this error persists. <br>Error:<br>" + e.getMessage()])
         }
     }
 
-    def speciesLists(){
+    def speciesLists() {
         if (params.isSDS) {
             // work around for SDS sub-list
             redirect(action:'sdsLists')
@@ -34,6 +34,10 @@ class PublicController {
 
         params.max = Math.min(params.max ? params.int('max') : 25, 100)
         params.sort = params.sort ?: "listName"
+
+        if (params.sort == "name") {
+            params.sort = "listName"
+        }
 
         log.info "params = " + params
 

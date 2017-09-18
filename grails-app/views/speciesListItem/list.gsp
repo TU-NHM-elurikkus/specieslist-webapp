@@ -29,7 +29,7 @@
                     max: max,
                     sort: "${params.sort}",
                     order: "${params.order}",
-                    offset: "${params.offset?:0}"
+                    offset: "${params.offset ?: 0}"
                 };
                 var paramStr = jQuery.param(params, true);
 
