@@ -21,7 +21,7 @@
                     ${fieldValue(bean: result, field: "rawScientificName")}
                 </g:if>
                 <g:else>
-                    ${result.matchedName}
+                    ${result.matchedName}; ${result.commonName}
                 </g:else>
             </span>
         </div>
