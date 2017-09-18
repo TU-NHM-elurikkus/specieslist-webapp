@@ -1,5 +1,4 @@
 //= require jquery
-//= require amplify
 //= require facets
 //= require getQueryParam
 //= require jquery-ui
