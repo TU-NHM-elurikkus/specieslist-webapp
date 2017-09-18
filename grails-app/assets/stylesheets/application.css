@@ -3,50 +3,10 @@
 *= require elurikkus-common
 */
 
-p span.count {
-    float: right;
-}
-
-.tableList thead th {
-    vertical-align: top;
-}
-
-.tableList {
-    white-space: nowrap;
-    max-width: none;
-    width: auto;
-    margin:0;
-}
-
-#public-specieslist .tableList {
-    width: 100%;
-}
-
 #speciesList {
     border: 1px solid #e9ecef;
     border-radius: 3px;
     padding: 1em;
-}
-
-#currentFilters {
-    margin-bottom: 15px;
-}
-
-#currentFilters > ul {
-    list-style: none;
-    margin-left: 10px;
-    padding-left:15px;
-}
-
-#currentFilters > ul > li {
-    margin: 0px;
-    padding: 0px;
-    text-indent: -1.3em;
-    margin-left: 0;
-}
-
-#currentFilters .tooltip {
-    text-indent: 0;
 }
 
 .showHide {
@@ -54,7 +14,7 @@ p span.count {
     font-size: 13px;
 }
 
-table#editRecordTable {
+#editRecordTable {
     background-color: white;
 }
 
@@ -67,31 +27,17 @@ td.dataValue > input[type="text"] {
     min-height: 28px;
 }
 
-.speciesList .sortable, .tableList .sortable {
+.speciesList .sortable, .sortable {
     background: url('sort_both.png') no-repeat center right;
     padding-right: 18px;
 }
 
-.speciesList .sorted.asc, .tableList .sorted.asc {
+.speciesList .sorted.asc, .sorted.asc {
     background: url('sort_asc.png') no-repeat center right;
 }
 
-.speciesList .sorted.desc, .tableList .sorted.desc {
+.speciesList .sorted.desc, .sorted.desc {
     background: url('sort_desc.png') no-repeat center right;
-}
-
-#list-meta-data {
-    margin-bottom: 15px;
-    padding: 0;
-    color: #000;
-    background-color: #f9f9f9;/*#EBF9FF;  #EBF8FF; */
-    border: 1px solid #dddddd; /*#C2EBFF;*/
-    padding-right: 10px;
-}
-
-#list-meta-data dl {
-    /*clear: both;*/
-    margin: 10px 0;
 }
 
 #edit-meta-button {
@@ -143,7 +89,7 @@ dl#show-meta-dl dt {
     margin-top: -1px;
 }
 
-img#spinner {
+#spinner {
     display: none;
     float: left;
 }
@@ -169,48 +115,23 @@ img.smallSpeciesImage {
     border-style: hidden;
 }
 
-#speciesListTable td.kvp  {
+#speciesListTable td.kvp {
     padding: 0;
 }
 
-#speciesListTable td.kvp.scrollWidth  {
+#speciesListTable td.kvp.scrollWidth {
     min-width: 300px;
 }
 
 #speciesListTable td.kvp div {
     /* position: relative; */
     overflow-x: auto;
-    white-space: pre-wrap;        /* CSS3 */
-    white-space: -moz-pre-wrap;   /* Firefox */
-    white-space: -pre-wrap;       /* Opera <7 */
-    white-space: -o-pre-wrap;     /* Opera 7 */
-    /* word-wrap: break-word;        /* IE */
+    white-space: pre-wrap;  /* CSS3 */
+    white-space: -moz-pre-wrap;  /* Firefox */
+    white-space: -pre-wrap;  /* Opera <7 */
+    white-space: -o-pre-wrap;  /* Opera 7 */
     max-height: 80px;
     padding: 8px;
-}
-
-.list-search-row {
-}
-
-.list-search-row__search {
-    display: flex;
-}
-
-.list-search-row__search-form {
-    flex: 1;
-    margin-right: 1rem;
-}
-
-#listItemView {
-    /*float: right;*/
-}
-
-#listItemView .btn {
-    font-weight: bold;
-}
-
-.overrideHide {
-   display: block !important;
 }
 
 .borderless td, .borderless th {

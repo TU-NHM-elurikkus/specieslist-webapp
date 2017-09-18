@@ -79,6 +79,7 @@ $(document).on('click', '[data-toggle="lightbox"]', function(event) {
     event.preventDefault();
     $(this).ekkoLightbox({
         onContentLoaded: function(elem) {
+            // Add footer to gallery modal view on load
             var data_id = this._$element[0].dataset.id;
             var footer = $('.modal-footer');
             footer.html(getFooter(data_id));
