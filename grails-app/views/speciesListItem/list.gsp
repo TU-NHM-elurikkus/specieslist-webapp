@@ -4,7 +4,7 @@
 <g:set var="maxDownload" value="${grailsApplication.config.downloadLimit}" />
 <g:set var="userCanEditPermissions" value="${
     (speciesList.username == request.getUserPrincipal()?.attributes?.email || request.isUserInRole('ROLE_ADMIN'))
-}"/>
+}" />
 <g:set
     var="userCanEditData"
     value="${(
@@ -13,6 +13,7 @@
         request.getUserPrincipal()?.attributes?.userid in speciesList.editors
     )}"
 />
+
 <html>
     <head>
         <meta name="layout" content="${grailsApplication.config.skin.layout}" />
@@ -31,7 +32,7 @@
                     order: "${params.order}",
                     offset: "${params.offset ?: 0}"
                 };
-                var paramStr = jQuery.param(params, true);
+                var paramStr = $.param(params, true);
 
                 window.location.href = window.location.pathname + '?' + paramStr;
             }
