@@ -2,7 +2,6 @@
 //= require facets
 //= require getQueryParam
 //= require jquery-ui
-//= require jquery.doubleScroll
 //= require ekko-lightbox-5.2.0
 //= require common
 
@@ -24,6 +23,10 @@ $(document).ready(function() {
         });
     });
 
+    $('.modal-content').on('load', function(event) {
+        console.log("I*M HERERER");
+        event.preventDefault();
+    });
 });
 
 function toggleEditMeta(showHide) {
@@ -33,7 +36,7 @@ function toggleEditMeta(showHide) {
 
 function getFooter(recordId) {
     // read header values from the table
-    var headerRow = $('table#speciesListTable > thead th').not('.action');
+    var headerRow = $('#speciesListTable > thead th').not('.action');
     var headers = [];
     var footerContent = '';
 
@@ -74,6 +77,12 @@ function getFooter(recordId) {
 
 $(document).on('click', '[data-toggle="lightbox"]', function(event) {
     event.preventDefault();
-    $(this).ekkoLightbox();
-    $(this).attr('data-footer', getFooter($(this).attr('data-id')));
+    $(this).ekkoLightbox({
+        onContentLoaded: function(elem) {
+            var data_id = this._$element[0].dataset.id;
+            var footer = $('.modal-footer');
+            footer.html(getFooter(data_id));
+            footer.show();
+        }
+    });
 });

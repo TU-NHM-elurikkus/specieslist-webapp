@@ -1,24 +1,17 @@
 <g:each var="result" in="${results}">
     <g:set var="recId" value="${result.id}" />
-    <g:set var="bieTitle">
-        <g:message code="general.speciesPage" />
-        <span>
-            ${result.rawScientificName}
-        </span>
-    </g:set>
-
     <div class="gallery-thumb">
         <a
             rel="thumbs"
-            href="${result.imageUrl?:assetPath(src: 'fa-image.svg')}"
+            href="${result.imageUrl ?: assetPath(src: 'fa-image.svg')}"
+            title="${message(code: 'gallery.thumb.title')}"
             data-id="${recId}"
             data-toggle="lightbox"
-            title="${message(code: 'gallery.thumb.title')}"
+            data-gallery="grid-gallery"
         >
             <img
                 class="gallery-thumb__img"
-                src="${result.imageUrl?:assetPath(src: 'fa-image.svg')}"
-                alt=""
+                src="${result.imageUrl ?: assetPath(src: 'fa-image.svg')}"
             />
         </a>
 

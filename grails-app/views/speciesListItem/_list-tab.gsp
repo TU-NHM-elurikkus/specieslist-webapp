@@ -43,13 +43,6 @@
         <tbody>
             <g:each var="result" in="${results}" status="i">
                 <g:set var="recId" value="${result.id}" />
-                <g:set var="bieTitle">
-                    <g:message code="general.speciesPage" />
-                    <span>
-                        ${result.rawScientificName}
-                    </span>
-                </g:set>
-
                 <tr id="row_${recId}">
                     <td class="matchedName">
                         <g:if test="${result.guid}">
@@ -115,7 +108,7 @@
                         <g:set var="kvp" value="${result.kvpValues.find {it.key == key}}" />
                         <g:set var="val" value="${kvp?.vocabValue ?: kvp?.value}" />
 
-                        <td class="kvp ${val?.length() > 35 ? 'scrollWidth':''}">
+                        <td class="kvp ${val?.length() > 35 ? 'scrollWidth' : ''}">
                             <div>
                                 ${val}
                             </div>
