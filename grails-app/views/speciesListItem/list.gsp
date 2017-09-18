@@ -48,8 +48,9 @@
             <header id="page-header" class="page-header">
                 <%-- TITLE --%>
                 <div class="page-header__title">
+                    <g:set var="locale" value="${org.springframework.web.servlet.support.RequestContextUtils.getLocale(request).toString()}" />
                     <h1 class="page-header__title">
-                        ${speciesList?.listName}
+                        ${speciesList.getLocalizedName(locale)}
                     </h1>
 
                     <%-- TODD: New text.
