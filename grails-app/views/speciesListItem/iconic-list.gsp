@@ -1,5 +1,5 @@
 <!doctype html>
-<g:set var="bieUrl" value="${grailsApplication.config.bie.baseURL?:'http://bie.ala.org.au'}"/>
+<g:set var="bieUrl" value="${grailsApplication.config.bie.baseURL ?: 'http://bie.ala.org.au'}"/>
 <g:set var="collectoryUrl" value="${grailsApplication.config.collectory.baseURL}"/>
 <g:set var="maxDownload" value="${grailsApplication.config.downloadLimit}"/>
 
@@ -175,8 +175,8 @@
                     max: max,
                     sort: "${params.sort}",
                     order: "${params.order}",
-                    offset: "${params.offset?:0}",
-                    fq: "${params.fq?:'kvp group:Birds'}"
+                    offset: "${params.offset ?: 0}",
+                    fq: "${params.fq ?: 'kvp group:Birds'}"
                 }
                 var paramStr = jQuery.param(params);
                 window.location.href =  '?' + paramStr;
@@ -250,21 +250,15 @@
                                 <g:each var="result" in="${results}" status="i">
                                     <g:set var="recId" value="${result.id}"/>
                                     <g:set var="bieSpecies" value="${bieItems?.get(result.guid)}"/>
-                                    <g:set var="bieTitle">
-                                        <g:message code="general.speciesPage"/>
-                                        <i>
-                                            ${result.rawScientificName}
-                                        </i>
-                                    </g:set>
                                     <div class="gallery-thumb">
                                         <a
                                             rel="thumbs"
-                                            href="${bieUrl}/species/${result.guid?:bieSpecies?.get(2)}"
+                                            href="${bieUrl}/species/${result.guid ?: bieSpecies?.get(2)}"
                                             data-id="${recId}"
                                         >
                                             <img
                                                 class="gallery-thumb__img"
-                                                src="${bieSpecies?.get(0)?:assetPath(src: 'fa-image.svg')}"
+                                                src="${bieSpecies?.get(0) ?: assetPath(src: 'fa-image.svg')}"
                                                 alt="thumbnail species image"
                                             />
                                         </a>
@@ -296,7 +290,7 @@
                                     <g:message code="message"/>
                                     <select id="maxItems" class="input-mini" onchange="reloadWithMax(this)">
                                         <g:each in="${[10,25,50,100]}" var="max">
-                                            <option ${(params.max == max)?'selected="selected"' :'' }>
+                                            <option ${(params.max == max) ? 'selected="selected"' : '' }>
                                                 ${max}
                                             </option>
                                         </g:each>
