@@ -3,8 +3,9 @@
 <g:set var="facetId" value="${sl.facetAsId(key:key, prefix:"facet")}" />
 
 <div id="${facetId}" class="facet">
+    <g:set var="taxonRank" value="${message(code: 'taxonomy.rank.' + key).capitalize()}" />
     <h4 class="facet__header">
-        ${key.capitalize()}
+        ${taxonRank}
     </h4>
 
     <ul class="erk-ulist">
@@ -92,7 +93,7 @@
                         <thead>
                             <tr>
                                 <th class="indexCol" width="80%">
-                                    ${key}
+                                    ${taxonRank}
                                 </th>
                                 <th style="border-right-style: none;text-align: right;">
                                     <g:message code="speciesListItem.facet.count" />
