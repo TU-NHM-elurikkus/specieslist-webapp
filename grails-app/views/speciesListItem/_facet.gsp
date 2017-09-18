@@ -82,10 +82,6 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                        ×
-                    </button>
-
                     <h3 class="multipleFacetsLabel">
                         <g:message code="speciesListItem.facet.refine" />
                     </h3>
@@ -151,7 +147,7 @@
                         aria-hidden="true"
                         style="float:right;"
                     >
-                        <g:message code="general.close" />
+                        <g:message code="general.btn.close" />
                     </button>
                 </div>
             </div>

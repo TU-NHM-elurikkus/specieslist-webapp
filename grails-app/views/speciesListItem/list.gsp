@@ -361,9 +361,9 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">
-                                ×
-                            </button>
+                            <h3>
+                                ${speciesList.listName?:'&nbsp;'}
+                            </h3>
                         </div>
 
                         <div class="modal-body">
@@ -376,7 +376,7 @@
                                 class="erk-button erk-button--light"
                                 data-dismiss="modal"
                             >
-                                <g:message code="general.close" />
+                                <g:message code="general.btn.close" />
                             </button>
                         </div>
                     </div>
