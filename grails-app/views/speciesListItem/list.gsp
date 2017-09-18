@@ -362,7 +362,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h3>
-                                ${speciesList.listName?:'&nbsp;'}
+                                ${speciesList.listName?:message(code: 'general.listName')}
                             </h3>
                         </div>
 
