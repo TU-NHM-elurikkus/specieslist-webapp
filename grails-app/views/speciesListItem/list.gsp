@@ -474,7 +474,7 @@
                         window.location.hash = target;
                     }
 
-                    $('a.step').each(function(index, link) {
+                    $('a.step, a.nextLink, a.prevLink').each(function(index, link) {
                         var url = link.href.split('#');
 
                         link.href = url[0] + target;
