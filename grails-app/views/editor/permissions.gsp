@@ -48,7 +48,7 @@
                         <g:message code="editor.permissions.name"/>
                     </th>
                     <th>
-                        <g:message code="general.email"/>
+                        <g:message code="download.form.email.label"/>
                     </th>
                     <th>
                         <g:message code="editor.permissions.role"/>
