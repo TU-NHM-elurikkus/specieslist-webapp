@@ -31,7 +31,7 @@
                 <form>
                     <div class="form-group">
                         <label class="col control-label" for="email">
-                            <g:message code="download.form.email.label"/>
+                            <g:message code="download.form.email.label"/> *
                         </label>
 
                         <div class="col">
@@ -63,7 +63,7 @@
 
                     <div class="form-group">
                         <label class="col control-label" for="reasonTypeId">
-                            <g:message code="download.form.reason.label" />
+                            <g:message code="download.form.reason.label" /> *
                         </label>
 
                         <div class="col">
