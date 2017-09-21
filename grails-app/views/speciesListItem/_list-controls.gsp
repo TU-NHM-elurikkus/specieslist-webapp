@@ -8,7 +8,7 @@
             data-target="#download-dialog"
         >
             <span class="fa fa-download"></span>
-            <g:message code="speciesListItem.list.download" />
+            <g:message code="general.btn.download.label" />
         </button>
     </div>
 
@@ -27,7 +27,7 @@
 <div class="inline-controls inline-controls--right float-right">
     <div class="inline-controls__group">
         <label for="per-page">
-            <g:message code="general.pageItems" />
+            <g:message code="general.list.pageSize.label" />
         </label>
 
         <select id="per-page" class="input-mini" onchange="reloadWithMax(this)">
