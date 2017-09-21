@@ -293,8 +293,8 @@
                                             total="${totalCount}"
                                             action="list"
                                             omitLast="true"
-                                            next="${message(code: 'default.paginate.next')}"
-                                            prev="${message(code: 'default.paginate.prev')}"
+                                            next="${message(code: 'general.paginate.next')}"
+                                            prev="${message(code: 'general.paginate.prev')}"
                                             id="${params.id}"
                                             params="${[query: params.query]}"
                                         />
