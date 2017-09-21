@@ -74,15 +74,6 @@
                         <g:message code="general.speciesLists" />
                     </a>
 
-                    <a
-                        href="${request.contextPath}/speciesList/occurrences/${params.id}${params.toQueryString()}&type=Search"
-                        title="${message(code: 'speciesListItem.list.viewUpTo', args: [maxDownload])}"
-                        class="page-header-links__link"
-                    >
-                        <span class="fa fa-list"></span>
-                        <g:message code="speciesListItem.list.viewOccurrence" />
-                    </a>
-
                     <%-- TODO: Uncomment when spatial portal is finished
                     <a href="${request.contextPath}/speciesList/spatialPortal/${params.id}${params.toQueryString()}&type=Search"
                         title="${message(code: 'speciesListItem.list.viewSpatialDecription')}"
@@ -195,13 +186,21 @@
                 </g:if>
             </section>
 
-            <div class="list-items-header vertical-block">
-                <span class="fa fa-info-circle"></span>
-                <g:message code="speciesListItem.list.refine" />
-            </div>
-
             <div class="row">
-                <div class="col-sm-5 col-md-3" id="facets-column">
+                <%-- Refine info --%>
+                <div class="col-sm-4 col-md-5 col-lg-3">
+                    <div class="row">
+                        <div class="col">
+                            <p>
+                                <span class="fa fa-info-circle"></span>
+                                <g:message code="speciesListItem.list.refine" />
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <%-- Refine filters --%>
+                <div class="col-sm-4 col-md-5 col-lg-3 order-sm-2" id="facets-column">
                     <div class="card card-body detached-card">
                         <g:if test="${facets.size()>0 || params.fq}">
                             <g:set var="fqs" value="${params.list('fq')}" />
@@ -225,7 +224,28 @@
                     </div>
                 </div>
 
-                <div class="col-sm-7 col-md-9">
+                <%-- Buttons --%>
+                <div class="col-sm-8 col-md-7 col-lg-9">
+                    <div class="row">
+                        <div class="col">
+                            <div class="inline-controls inline-controls--right">
+                                <div class="inline-controls__group">
+                                    <a
+                                        class="erk-button erk-button-link erk-button--dark"
+                                        href="${request.contextPath}/speciesList/occurrences/${params.id}${params.toQueryString()}&type=Search"
+                                        title="${message(code: 'speciesListItem.list.viewUpTo', args: [maxDownload])}"
+                                    >
+                                        <span class="fa fa-list"></span>
+                                        <g:message code="speciesListItem.list.viewOccurrence" />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <%-- Taxa list, grid --%>
+                <div class="col-sm-8 col-md-7 col-lg-9 order-sm-2">
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item">
                             <a
@@ -251,7 +271,11 @@
                     </ul>
 
                     <div class="tab-content">
-                        <g:render template="list-controls" />
+                        <div class="row">
+                            <div class="col">
+                                <g:render template="list-controls" />
+                            </div>
+                        </div>
 
                         <div id="list-tab" class="tab-pane active" role="tabpanel">
                             <g:render template="list-tab" />
@@ -269,8 +293,8 @@
                                             total="${totalCount}"
                                             action="list"
                                             omitLast="true"
-                                            next="${message(code: 'default.paginate.next')}"
-                                            prev="${message(code: 'default.paginate.prev')}"
+                                            next="${message(code: 'general.paginate.next')}"
+                                            prev="${message(code: 'general.paginate.prev')}"
                                             id="${params.id}"
                                             params="${[query: params.query]}"
                                         />

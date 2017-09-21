@@ -170,10 +170,6 @@ img.smallSpeciesImage {
     font-weight: 700;
 }
 
-.list-items-controls {
-    margin-bottom: 1em;
-}
-
 /* TODO: Move to commons */
 .ekko-lightbox .modal-footer {
     display: block;

@@ -1,5 +1,5 @@
-<div class="list-items-controls clearfix">
-    <div class="float-left">
+<div class="inline-controls float-left">
+    <div class="inline-controls__group">
         <button
             type="button"
             class="erk-button erk-button--light"
@@ -8,9 +8,11 @@
             data-target="#download-dialog"
         >
             <span class="fa fa-download"></span>
-            <g:message code="speciesListItem.list.download" />
+            <g:message code="general.btn.download.label" />
         </button>
+    </div>
 
+    <div class="inline-controls__group">
         <button
             type="button"
             class="erk-button erk-button--light"
@@ -20,10 +22,15 @@
             <g:message code="speciesListItem.list.listInfo" />
         </button>
     </div>
+</div>
 
-    <div class="float-right">
-        <g:message code="general.pageItems" />:
-        <select class="input-mini" onchange="reloadWithMax(this)">
+<div class="inline-controls inline-controls--right float-right">
+    <div class="inline-controls__group">
+        <label for="per-page">
+            <g:message code="general.list.pageSize.label" />
+        </label>
+
+        <select id="per-page" class="input-mini" onchange="reloadWithMax(this)">
             <g:each in="${[10, 25, 50, 100]}" var="max">
                 <option ${(params.max == max)?'selected="selected"' :'' }>
                     ${max}
