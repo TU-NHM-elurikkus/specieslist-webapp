@@ -61,16 +61,19 @@ function getFooter(recordId) {
         }
     });
 
-    footerContent += '<div class="row"><div class="col-sm-10">';
+    footerContent += '<div>';
 
     $.each(headers, function(i, el) {
         footerContent +=
+            '<div>' +
             '<b>' +
-                el +
-            ':</b>&nbsp;' + values[i] +
-            '<br />';
+            el +
+            ':</b>&nbsp;' +
+            values[i] +
+            '</div>';
     });
-    footerContent += '</div></div>';
+
+    footerContent += '</div>';
 
     return footerContent;
 }
@@ -81,7 +84,8 @@ $(document).on('click', '[data-toggle="lightbox"]', function(event) {
         onContentLoaded: function(elem) {
             // Add footer to gallery modal view on load
             var data_id = this._$element[0].dataset.id;
-            var footer = $('.modal-footer');
+            var footer = $('.ekko-lightbox .modal-footer');
+
             footer.html(getFooter(data_id));
             footer.show();
         }
