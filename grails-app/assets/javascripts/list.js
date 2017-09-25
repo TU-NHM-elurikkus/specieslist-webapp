@@ -6,9 +6,6 @@
 //= require common
 
 $(document).ready(function() {
-    // Add scroll bar to top and bottom of table $('.fwtable').doubleScroll(); Tooltip for link title
-    $('#content a').not('.thumbImage').tooltip({ placement: 'bottom', html: true, delay: 200, container: 'body' });
-
     $('#edit-meta-button').click(function(el) {
         el.preventDefault();
         toggleEditMeta(!$('#edit-meta-div').is(':visible'));
@@ -24,7 +21,6 @@ $(document).ready(function() {
     });
 
     $('.modal-content').on('load', function(event) {
-        console.log("I*M HERERER");
         event.preventDefault();
     });
 });
