@@ -170,15 +170,6 @@ img.smallSpeciesImage {
     font-weight: 700;
 }
 
-/* TODO: Move to commons */
-.ekko-lightbox .modal-footer {
-    display: block;
-}
-
-.ekko-lightbox .modal-content {
-    text-align: center;
-}
-
 /* TODO: Move facet styling to commons */
 .facet {
 }
