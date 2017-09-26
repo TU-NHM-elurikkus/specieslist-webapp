@@ -49,7 +49,10 @@
             <header id="page-header" class="page-header">
                 <%-- TITLE --%>
                 <div class="page-header__title">
-                    <g:set var="locale" value="${org.springframework.web.servlet.support.RequestContextUtils.getLocale(request).toString()}" />
+                    <g:set
+                        var="locale"
+                        value="${org.springframework.web.servlet.support.RequestContextUtils.getLocale(request).toString()}"
+                    />
                     <h1 class="page-header__title">
                         ${speciesList.getLocalizedName(locale)}
                     </h1>
@@ -98,7 +101,13 @@
 
             <section class="search-section">
                 <form class="input-plus">
-                    <input type="text" id="queryInput" name="query" class="input-plus__field">
+                    <input
+                        type="text"
+                        id="queryInput"
+                        name="query"
+                        class="input-plus__field"
+                        placeholder="${message(code: 'speciesListItem.list.btn.search.placeholder')}"
+                    >
                     <button
                         type="sumbit"
                         class="input-plus__addon erk-button erk-button--dark"
@@ -178,7 +187,7 @@
                                     class="active-filters__clear-all-button"
                                     onclick="clearAll()"
                                 >
-                                    <g:message code="public.speciesLists.clearSearch" />
+                                    <g:message code="general.btn.clearAll.label" />
                                 </span>
                             </g:if>
                         </div>
