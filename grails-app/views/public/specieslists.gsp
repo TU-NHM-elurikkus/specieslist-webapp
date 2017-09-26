@@ -45,7 +45,7 @@
                                     name="q"
                                     type="text"
                                     value="${params.q}"
-                                    placeholder="${message(code: 'general.searchPlaceHolder')}"
+                                    placeholder="${message(code: 'public.speciesLists.btn.search.placeholder')}"
                                 />
 
                                 <button class="erk-button erk-button--dark input-plus__addon" type="submit">
