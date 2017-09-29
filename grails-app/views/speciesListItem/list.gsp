@@ -260,7 +260,7 @@
                             <a
                                 class="nav-link active"
                                 data-toggle="tab"
-                                href="#list-tab"
+                                href="#tab-list"
                                 role="tab"
                             >
                                 <g:message code="speciesListItem.list.list" />
@@ -271,7 +271,7 @@
                             <a
                                 class="nav-link"
                                 data-toggle="tab"
-                                href="#grid-tab"
+                                href="#tab-grid"
                                 role="tab"
                             >
                                 <g:message code="speciesListItem.list.grid" />
@@ -286,11 +286,11 @@
                             </div>
                         </div>
 
-                        <div id="list-tab" class="tab-pane active" role="tabpanel">
+                        <div id="tab-list" class="tab-pane active" role="tabpanel">
                             <g:render template="list-tab" />
                         </div>
 
-                        <div id="grid-tab" class="tab-pane" role="tabpanel">
+                        <div id="tab-grid" class="tab-pane" role="tabpanel">
                             <g:render template="grid-tab" />
                         </div>
 
@@ -488,37 +488,6 @@
             function clearAll() {
                 reloadWithParams([]);
             }
-
-            $(document).ready(function() {
-                // make table header cells clickable
-                $("table .sortable").each(function(i) {
-                    var href = $(this).find("a").attr("href");
-
-                    $(this).click(function() {
-                        window.location.href = href;
-                    });
-                });
-
-                $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
-                    var target = $(e.target).attr('href');
-
-                    if(window.history) {
-                        window.history.replaceState({}, '', target);
-                    } else {
-                        window.location.hash = target;
-                    }
-
-                    $('a.step, a.nextLink, a.prevLink').each(function(index, link) {
-                        var url = link.href.split('#');
-
-                        link.href = url[0] + target;
-                    });
-                });
-
-                if(window.location.hash) {
-                    $('a[href="' + window.location.hash + '"]').tab('show');
-                }
-            });
         </script>
     </body>
 </html>

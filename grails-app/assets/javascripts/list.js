@@ -23,6 +23,28 @@ $(document).ready(function() {
     $('.modal-content').on('load', function(event) {
         event.preventDefault();
     });
+
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+        var target = $(e.target).attr('href').replace('tab-', '');
+
+        if(window.history) {
+            window.history.replaceState({}, '', target);
+        } else {
+            window.location.hash = target;
+        }
+    });
+
+    if(window.location.hash) {
+        var anchor = window.location.hash.replace('#', '#tab-');
+
+        $('a[href="' + anchor + '"]').tab('show');
+    }
+
+    $('a.step, a.nextLink, a.prevLink').each(function(index, link) {
+        var url = link.href.split('#');
+
+        link.href = url[0] + target;
+    });
 });
 
 function toggleEditMeta(showHide) {
