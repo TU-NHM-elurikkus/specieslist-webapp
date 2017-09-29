@@ -32,6 +32,12 @@ $(document).ready(function() {
         } else {
             window.location.hash = target;
         }
+
+        $('a.step, a.nextLink, a.prevLink').each(function(index, link) {
+            var url = link.href.split('#');
+
+            link.href = url[0] + target;
+        });
     });
 
     if(window.location.hash) {
@@ -39,12 +45,6 @@ $(document).ready(function() {
 
         $('a[href="' + anchor + '"]').tab('show');
     }
-
-    $('a.step, a.nextLink, a.prevLink').each(function(index, link) {
-        var url = link.href.split('#');
-
-        link.href = url[0] + target;
-    });
 });
 
 function toggleEditMeta(showHide) {
