@@ -40,6 +40,10 @@
     </head>
 
     <body>
+        <g:set
+            var="locale"
+            value="${org.springframework.web.servlet.support.RequestContextUtils.getLocale(request).toString()}"
+        />
         <%-- Download dialog modal --%>
         <div class="inline-block">
             <g:render template="/download" />
@@ -49,10 +53,6 @@
             <header id="page-header" class="page-header">
                 <%-- TITLE --%>
                 <div class="page-header__title">
-                    <g:set
-                        var="locale"
-                        value="${org.springframework.web.servlet.support.RequestContextUtils.getLocale(request).toString()}"
-                    />
                     <h1 class="page-header__title">
                         ${speciesList.getLocalizedName(locale)}
                     </h1>
@@ -310,7 +310,14 @@
                                     </g:if>
 
                                     <g:else>
-                                        <g:paginate total="${totalCount}" action="list" id="${params.id}" />
+                                        <g:paginate
+                                            total="${totalCount}"
+                                            action="list"
+                                            omitLast="true"
+                                            next="${message(code: 'general.paginate.next')}"
+                                            prev="${message(code: 'general.paginate.prev')}"
+                                            id="${params.id}"
+                                        />
                                     </g:else>
                                 </div>
                             </div>
@@ -397,7 +404,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h3>
-                                ${speciesList.listName?:message(code: 'general.listName')}
+                                ${speciesList.getLocalizedName(locale)}
                             </h3>
                         </div>
 

@@ -55,7 +55,7 @@
                                 id="filename"
                                 type="text"
                                 name="filename"
-                                value="${speciesList?.listName?.replaceAll(~/\s+/, '_')?: message(code: 'download.form.fileName.value')}"
+                                value="${speciesList.getLocalizedName(locale)?.replaceAll(~/\s+/, '_')?: message(code: 'download.form.fileName.value')}"
                                 class="form-control"
                             />
                         </div>
