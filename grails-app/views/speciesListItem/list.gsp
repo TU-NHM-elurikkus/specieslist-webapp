@@ -34,7 +34,7 @@
                 };
                 var paramStr = $.param(params, true);
 
-                window.location.href = window.location.pathname + '?' + paramStr;
+                window.location.href = window.location.pathname + '?' + paramStr + window.location.hash;
             }
         </script>
     </head>
