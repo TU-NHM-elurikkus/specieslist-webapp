@@ -184,13 +184,8 @@ class SpeciesListItemController {
                     def users = SpeciesList.executeQuery("select distinct sl.username from SpeciesList sl")
 
                     def guids = speciesListItems.collect { it.guid }
-                    log.debug("guids " + guids)
 
                     def downloadReasons = loggerService.getReasons()
-                    log.debug("Retrieved Logger Reasons")
-
-                    log.debug("Checking speciesList: " + speciesList)
-                    log.debug("Checking editors: " + speciesList.editors)
 
                     render(view: 'list', model: [
                         speciesList: speciesList,
