@@ -64,7 +64,7 @@
                 <tr>
                     <td>
                         <a href="${request.contextPath}/speciesListItem/list/${list.dataResourceUid}">
-                            <span class="fa fa-check-circle"></span>
+                            <span class="fa fa-tags"></span>
                             ${list.getLocalizedName(locale)}
                         </a>
                     </td>
