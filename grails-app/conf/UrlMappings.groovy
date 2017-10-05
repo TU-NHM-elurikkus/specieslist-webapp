@@ -1,7 +1,7 @@
 class UrlMappings {
 
 	static mappings = {
-        "/$controller/$action?/$id?(.$format)?"{
+        "/$controller/$action?/$id?(.$format)?" {
             constraints {
                 // apply constraints here
             }
@@ -9,16 +9,16 @@ class UrlMappings {
 
         "/iconic-species" controller: "speciesListItem", action: "iconicSpecies"
         //ws to support CRUD operations on lists
-        "/ws/speciesList/${druid}?" (controller: 'webService'){
-            action = [GET:'getListDetails',POST:'saveList']
+        "/ws/speciesList/${druid}?" (controller: 'webService') {
+            action = [GET: 'getListDetails', POST: 'saveList']
         }
 
-        "/ws/speciesListPost/${druid}?" (controller: 'webService'){
-            action = [POST:'saveList']
+        "/ws/speciesListPost/${druid}?" (controller: 'webService') {
+            action = [POST: 'saveList']
         }
 
-        "/ws/speciesListItems/${druid}?" (controller: 'webService'){
-            action = [GET:'getListItemDetails']
+        "/ws/speciesListItems/${druid}?" (controller: 'webService') {
+            action = [GET: 'getListItemDetails']
         }
 
         //"/ws/speciesListItems" (controller: "webService", action: "getListItemDetails")
@@ -32,24 +32,22 @@ class UrlMappings {
 
         "/ws/speciesList/unpublished" (controller: 'webService', action: 'getBieUpdates')
 
-        "/ws/speciesList/$druid/taxa" (controller: 'webService', action:  'getTaxaOnList')
+        "/ws/speciesList/$druid/taxa" (controller: 'webService', action: 'getTaxaOnList')
 
-        "/ws/speciesList/publish/$druid?" (controller: 'webService', action:  'markAsPublished')
+        "/ws/speciesList/publish/$druid?" (controller: 'webService', action: 'markAsPublished')
 
-        "/ws/speciesListItems/distinct/$field?" (controller: 'webService' , action: 'getDistinctValues')
+        "/ws/speciesListItems/distinct/$field?" (controller: 'webService', action: 'getDistinctValues')
 
         "/ws"(view:'/webService/ws')
 
-        "/ws/checkEmailExists" (controller: 'webService' , action: 'checkEmailExists')
+        "/ws/checkEmailExists" (controller: 'webService', action: 'checkEmailExists')
 
-        "/ws/speciesListItemKvp/$druid" (controller: 'webService'){
+        "/ws/speciesListItemKvp/$druid" (controller: 'webService') {
             action = [GET: 'getSpeciesListItemKvp']
         }
 
-//        "/"(view:"/index")
-
 		"/" (controller: 'public', action: 'index')
-		"500" (view:'/error')
-		"401" (view:'/notAuthorised')
+		"500" (view: '/error')
+		"401" (view: '/notAuthorised')
 	}
 }

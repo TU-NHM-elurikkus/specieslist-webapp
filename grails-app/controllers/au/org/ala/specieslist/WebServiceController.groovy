@@ -14,6 +14,7 @@
  */
 package au.org.ala.specieslist
 
+import org.springframework.web.servlet.support.RequestContextUtils
 import au.com.bytecode.opencsv.CSVWriter
 import grails.converters.*
 import grails.web.JSONBuilder
@@ -28,7 +29,7 @@ class WebServiceController {
     def authService
     def localAuthService
     def queryService
-    def beforeInterceptor = [action:this.&prevalidate,only:['getListDetails','saveList']]
+    def beforeInterceptor = [action: this.&prevalidate, only: ['getListDetails', 'saveList']]
 
     private def prevalidate(){
         //ensure that the supplied druid is valid
@@ -36,7 +37,7 @@ class WebServiceController {
         if(params.druid){
             def list = SpeciesList.findByDataResourceUid(params.druid)
             if (list){
-                params.splist=list
+                params.splist = list
             }
             else{
                 notFound "Unable to locate species list ${params.druid}"
@@ -51,25 +52,25 @@ class WebServiceController {
     def getDistinctValues(){
         def field = params.field
 
-        def props = [fetch:[ mylist: 'join']]
-        log.debug("Distinct values " + field +" "+ params)
-        def results = queryService.getFilterListItemResult(props, params,null,null,field )
+        def props = [fetch: [mylist: 'join']]
+        log.debug("Distinct values " + field + " " + params)
+        def results = queryService.getFilterListItemResult(props, params, null, null, field )
         helperService.asJson(results, response)
     }
 
     def getTaxaOnList(){
         def druid = params.druid
-        def results = SpeciesListItem.executeQuery("select guid from SpeciesListItem where dataResourceUid=?",[druid])
+        def results = SpeciesListItem.executeQuery("select guid from SpeciesListItem where dataResourceUid=?", [druid])
         render results as JSON
     }
 
-    def getListItemsForSpecies(){
+    def getListItemsForSpecies() {
         def guid = params.guid
         def lists = params.dr?.split(",")
         def isBIE = params.boolean('isBIE')
-        def props = [fetch:[kvpValues: 'join', mylist: 'join']]
+        def props = [fetch: [kvpValues: 'join', mylist: 'join']]
 
-        def results = queryService.getFilterListItemResult(props, params, guid, lists,null)
+        def results = queryService.getFilterListItemResult(props, params, guid, lists, null)
 
         //def results = lists ? SpeciesListItem.findAllByGuidAndDataResourceUidInList(guid, lists,props) : SpeciesListItem.findAllByGuid(guid,props)
         //def result2 =results.collect {[id: it.id, dataResourceUid: it.dataResourceUid, guid: it.guid, kvpValues: it.kvpValue.collect{ id:it.}]}
@@ -84,21 +85,23 @@ class WebServiceController {
             filteredRecords = filteredRecords.findAll{ it.mylist.isBIE }
         }
 
+        def locale = RequestContextUtils.getLocale(request).toString()
+
         def listOfRecordMaps = filteredRecords.collect{ li -> // don't output private lists
             [
-                dataResourceUid:li.dataResourceUid,
+                dataResourceUid: li.dataResourceUid,
                 guid: li.guid,
                 list: [
                         username: li.mylist.username,
-                        listName: li.mylist.listName,
-                        sds: li.mylist.isSDS?:false,
-                        isBIE: li.mylist.isBIE?:false
+                        listName: li.mylist.getLocalizedName(locale),
+                        sds: li.mylist.isSDS ?: false,
+                        isBIE: li.mylist.isBIE ?: false
                 ],
                 kvpValues: li.kvpValues.collect{ kvp ->
                     [
-                        key:kvp.key,
-                        value:kvp.value,
-                        vocabValue:kvp.vocabValue
+                        key: kvp.key,
+                        value: kvp.value,
+                        vocabValue: kvp.vocabValue
                     ]
                 }
             ]
@@ -109,10 +112,10 @@ class WebServiceController {
     /**
      *   Returns either a JSON list of species lists or a specific species list
      *
-     *   @param druid - the data resource uid for the list to return  (optional)
+     *   @param druid - the data resource uid for the list to return (optional)
      *   @param splist - optional instance (added by the beforeInterceptor)
      */
-    def getListDetails ={
+    def getListDetails = {
         log.debug("params" + params)
         if(params.splist) {
             def sl = params.splist
@@ -126,10 +129,10 @@ class WebServiceController {
                 dateCreated = sl.dateCreated
                 username =  sl.username
                 fullName = sl.getFullName()
-                itemCount=sl.itemsCount//SpeciesListItem.countByList(sl)
-                isAuthoritative=sl.isAuthoritative?:false
-                isInvasive=sl.isInvasive?:false
-                isThreatened=sl.isThreatened?:false
+                itemCount = sl.itemsCount//SpeciesListItem.countByList(sl)
+                isAuthoritative = sl.isAuthoritative ?: false
+                isInvasive = sl.isInvasive ?: false
+                isThreatened = sl.isThreatened ?: false
             }
             log.debug(" The retvalue: " + retValue)
             render retValue
@@ -142,7 +145,7 @@ class WebServiceController {
             if(!params.user)
                 params.sort = params.sort ?: "listName"
             if(params.sort == "count") params.sort = "itemsCount"
-            params.order= params.order?:"asc"
+            params.order = params.order ?: "asc"
 
             //AC 20141218: Previous behaviour was ignoring custom filter code in queryService.getFilterListResult when params.user
             //parameter was present and params.sort was absent. Moved special case sorting when params.user is present
@@ -150,23 +153,23 @@ class WebServiceController {
 
             def allLists = queryService.getFilterListResult(params)
             def listCounts = allLists.totalCount
-            def retValue =[listCount:listCounts, sort:  params.sort, order: params.order, max: params.max, offset:  params.offset,
-                    lists:allLists.collect{[dataResourceUid: it.dataResourceUid,
+            def retValue =[listCount: listCounts, sort: params.sort, order: params.order, max: params.max, offset: params.offset,
+                    lists: allLists.collect{[dataResourceUid: it.dataResourceUid,
                                             listName: it.listName,
-                                            listType:it?.listType?.toString(),
-                                            dateCreated:it.dateCreated,
-                                            lastUpdated:it.lastUpdated,
-                                            username:it.username,
-                                            fullName:it.getFullName(),
-                                            itemCount:it.itemsCount,
-                                            region:it.region,
-                                            category:it.category,
-                                            generalisation:it.generalisation,
-                                            authority:it.authority,
-                                            sdsType:it.sdsType,
-                                            isAuthoritative: it.isAuthoritative?:false,
-                                            isInvasive: it.isInvasive?:false,
-                                            isThreatened: it.isThreatened?:false]}]
+                                            listType: it?.listType?.toString(),
+                                            dateCreated: it.dateCreated,
+                                            lastUpdated: it.lastUpdated,
+                                            username: it.username,
+                                            fullName: it.getFullName(),
+                                            itemCount: it.itemsCount,
+                                            region: it.region,
+                                            category: it.category,
+                                            generalisation: it.generalisation,
+                                            authority: it.authority,
+                                            sdsType: it.sdsType,
+                                            isAuthoritative: it.isAuthoritative ?: false,
+                                            isInvasive: it.isInvasive ?: false,
+                                            isThreatened: it.isThreatened ?: false]}]
 
             render retValue as JSON
         }
@@ -175,7 +178,7 @@ class WebServiceController {
     /**
      * Returns a summary list of items that form part of the supplied species list.
      */
-    def getListItemDetails ={
+    def getListItemDetails = {
         if(params.druid) {
             params.sort = params.sort ?: "itemOrder" // default to order the items were imported in
             def list
@@ -218,14 +221,14 @@ class WebServiceController {
                                         kvpValues: it.kvpValues.collect({[key: it.key, value: it.value]})]})
             }
             else {
-                newList= list.collect{[id:it.id,name:it.rawScientificName, commonName: it.commonName, scientificName: it.matchedName, lsid: it.guid]}
+                newList = list.collect{[id: it.id,name: it.rawScientificName, commonName: it.commonName, scientificName: it.matchedName, lsid: it.guid]}
             }
             render newList as JSON
         } else {
             //no data resource uid was supplied.
-            def props = [fetch:[ kvpValues: 'join']]
-            def list = queryService.getFilterListItemResult(props, params, null, null,null)
-            render list.collect{[guid:it.guid, name: it.matchedName?:it.rawScientificName, family: it.family, dataResourceUid: it.dataResourceUid, kvpValues: it.kvpValues?.collect{i -> [key: i.key, value:i.vocabValue?:i.value]}]}  as JSON
+            def props = [fetch: [kvpValues: 'join']]
+            def list = queryService.getFilterListItemResult(props, params, null, null, null)
+            render list.collect{[guid: it.guid, name: it.matchedName ?: it.rawScientificName, family: it.family, dataResourceUid: it.dataResourceUid, kvpValues: it.kvpValues?.collect{i -> [key: i.key, value: i.vocabValue ?: i.value]}]} as JSON
         }
     }
 
@@ -259,11 +262,11 @@ class WebServiceController {
 
     /**
      * Saves the details of the species list when no druid is provided in the JSON body
-     * a new list is inserted.  Inserting a new list will fail if there are no items to be
+     * a new list is inserted. Inserting a new list will fail if there are no items to be
      * included on the list.
      *
      * Two JSON structures are supported:
-     * - v1 (unstructured list items): {"listName": "list1",  "listType": "TEST", "listItems": "item1,item2,item3"}
+     * - v1 (unstructured list items): {"listName": "list1", "listType": "TEST", "listItems": "item1,item2,item3"}
      * - v2 (structured list items with KVP): { "listName": "list1", "listType": "TEST", "listItems": [ { "itemName":
      * "item1", "kvpValues": [ { "key": "key1", "value": "value1" }, { "key": "key2", "value": "value2" } ] } ] }
      */
@@ -322,16 +325,16 @@ class WebServiceController {
     def created = { uid, guids ->
         response.addHeader 'druid', uid
         response.status = 201
-        def outputMap = [status:200, message:'added species list', druid: uid, data: guids]
+        def outputMap = [status: 200, message: 'added species list', druid: uid, data: guids]
         render outputMap as JSON
     }
 
     def badRequest = {text ->
-        render(status:400, text: text)
+        render(status: 400, text: text)
     }
 
     def notFound = { text ->
-        render(status:404, text: text)
+        render(status: 404, text: text)
     }
 
     def markAsPublished(){
@@ -346,14 +349,14 @@ class WebServiceController {
 
     def getBieUpdates(){
         //retrieve all the unpublished list items in batches of 100
-        def max =100
-        def offset=0
+        def max = 100
+        def offset = 0
         def hasMore = true
         def out = response.outputStream
         //use a criteria so that paging can be supported.
         def criteria = SpeciesListItem.createCriteria()
         while(hasMore){
-            def results = criteria.list([sort:"guid",max: max, offset:offset,fetch:[kvpValues: 'join']]) {
+            def results = criteria.list([sort:"guid", max: max, offset:offset, fetch:[kvpValues: 'join']]) {
                 isNull("isPublished")
                 //order("guid")
             }
@@ -377,7 +380,7 @@ class WebServiceController {
     }
     def toCsv(value){
         if(!value) return ""
-        return '"'+value.replaceAll('"','~"')+'"'
+        return '"'+value.replaceAll('"', '~"')+'"'
     }
 
     /**
@@ -392,7 +395,7 @@ class WebServiceController {
         if (email) {
             render authService.getUserForEmailAddress(email) as JSON
         } else {
-            render status:400, text: 'Required param not provided: email'
+            render status: 400, text: 'Required param not provided: email'
         }
     }
 
@@ -486,7 +489,7 @@ class WebServiceController {
                     csv.writeNext(line as String[])
                 }
 
-                render(contentType: 'text/csv', text:out.toString())
+                render(contentType: 'text/csv', text: out.toString())
             }
         }
     }
