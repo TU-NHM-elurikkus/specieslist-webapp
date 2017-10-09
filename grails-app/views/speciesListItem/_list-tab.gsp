@@ -8,13 +8,13 @@
                     titleKey="general.scientificName"
                 />
 
-                <!--
+                <%--
                 <g:sortableColumn
                     property="rawScientificName"
                     params="${[fq: fqs, query: query]}"
                     titleKey="general.suppliedName"
                 />
-                -->
+                --%>
 
                 <g:sortableColumn
                     property="imageUrl"
@@ -57,7 +57,7 @@
                         </g:else>
                     </td>
 
-                    <!--
+                    <%--
                     <td class="rawScientificName">
                         ${fieldValue(bean: result, field: "rawScientificName")}
 
@@ -83,7 +83,7 @@
                             </a>
                         </g:if>
                     </td>
-                    -->
+                    --%>
 
                     <td id="img_${result.guid}">
                         <a
