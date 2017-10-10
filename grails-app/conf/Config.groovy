@@ -7,6 +7,8 @@ grails.project.groupId = "au.org.ala"
 //def appName = grails.util.Metadata.current.'app.name'
 def ENV_NAME = "${appName.toUpperCase()}_CONFIG"
 default_config = "/data/${appName}/config/${appName}-config.properties"
+commons_config = "/data/commons/config/commons-config.properties"
+
 if(!grails.config.locations || !(grails.config.locations instanceof List)) {
     grails.config.locations = []
 }
@@ -17,12 +19,16 @@ if(System.getenv(ENV_NAME) && new File(System.getenv(ENV_NAME)).exists()) {
 } else if(System.getProperty(ENV_NAME) && new File(System.getProperty(ENV_NAME)).exists()) {
     println "[${appName}] Including configuration file specified on command line: " + System.getProperty(ENV_NAME);
     grails.config.locations.add "file:" + System.getProperty(ENV_NAME)
-} else if(new File(default_config).exists()) {
-    println "[${appName}] Including default configuration file: " + default_config;
-    grails.config.locations.add "file:" + default_config
-} else {
-    println "[${appName}] No external configuration file defined."
 }
+
+if (!new File(default_config).exists()) {
+    throw ApplicationException("Config doesn't exist: " + default_config)
+} else if(!new File(commons_config).exists()) {
+    throw ApplicationException("Config doesn't exist: " + commons_config)
+}
+
+grails.config.locations.add "file:" + default_config
+grails.config.locations.add "file:" + commons_config
 
 println "[${appName}] (*) grails.config.locations = ${grails.config.locations}"
 
