@@ -5,6 +5,8 @@
 //= require ekko-lightbox-5.2.0
 //= require common
 
+var MODAL_FOOTER_FIELDS = ['result-matched-name', 'result-author', 'result-common-name'];
+
 $(document).ready(function() {
     $('#edit-meta-button').click(function(el) {
         el.preventDefault();
@@ -55,40 +57,34 @@ function toggleEditMeta(showHide) {
 function getFooter(recordId) {
     // read header values from the table
     var headerRow = $('#speciesListTable > thead th').not('.action');
-    var headers = [];
     var footerContent = '';
-
-    headerRow.splice(2, 1); // Don't include Image column into modal
-
-    $(headerRow).each(function(i, el) {
-        headers.push($(this).text());
-    });
 
     // read species row values from the table
     var valueTds = $('tr#row_' + recordId + ' > td').not('.action');
     var values = [];
 
     $(valueTds).each(function(i, el) {
-        if(i !== 2) {
-            // Don't include Image values
-            var val = $(this).html();
-            if(typeof val === 'string') {
-                val = val.trim();
-            }
-            values.push(val);
+        var val = $(this).html();
+
+        if(typeof val === 'string') {
+            val = val.trim();
         }
+
+        values.push(val);
     });
 
     footerContent += '<div>';
 
-    $.each(headers, function(i, el) {
-        footerContent +=
-            '<div>' +
-            '<b>' +
-            el +
-            ':</b>&nbsp;' +
-            values[i] +
-            '</div>';
+    $(headerRow).each(function(i, el) {
+        if($.inArray(el.id, MODAL_FOOTER_FIELDS) > -1) {
+            footerContent +=
+                '<div>' +
+                '<b>' +
+                $(this).text() +
+                ':</b>&nbsp;' +
+                values[i] +
+                '</div>';
+        }
     });
 
     footerContent += '</div>';
@@ -98,6 +94,7 @@ function getFooter(recordId) {
 
 $(document).on('click', '[data-toggle="lightbox"]', function(event) {
     event.preventDefault();
+
     $(this).ekkoLightbox({
         onContentLoaded: function(elem) {
             // Add footer to gallery modal view on load

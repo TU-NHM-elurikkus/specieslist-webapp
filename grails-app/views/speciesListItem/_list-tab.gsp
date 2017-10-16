@@ -6,32 +6,37 @@
                     property="matchedName"
                     params="${[fq: fqs, query: query]}"
                     titleKey="general.scientificName"
+                    id="result-matched-name"
                 />
 
                 <%--
-                <g:sortableColumn
-                    property="rawScientificName"
-                    params="${[fq: fqs, query: query]}"
-                    titleKey="general.suppliedName"
-                />
+                    <g:sortableColumn
+                        property="rawScientificName"
+                        params="${[fq: fqs, query: query]}"
+                        titleKey="general.suppliedName"
+                        id="result-supplied-name"
+                    />
                 --%>
 
                 <g:sortableColumn
                     property="imageUrl"
                     params="${[fq: fqs, query: query]}"
                     titleKey="speciesListItem.list.image"
+                    id="result-image"
                 />
 
                 <g:sortableColumn
                     property="author"
                     params="${[fq: fqs, query: query]}"
                     titleKey="speciesListItem.list.author"
+                    id="result-author"
                 />
 
                 <g:sortableColumn
                     property="commonName"
                     params="${[fq: fqs, query: query]}"
                     titleKey="speciesListItem.list.commonName"
+                    id="result-common-name"
                 />
 
                 <g:each in="${keys}" var="key">
@@ -58,31 +63,31 @@
                     </td>
 
                     <%--
-                    <td class="rawScientificName">
-                        ${fieldValue(bean: result, field: "rawScientificName")}
+                        <td class="rawScientificName">
+                            ${fieldValue(bean: result, field: "rawScientificName")}
 
-                        <g:if test="${result.guid == null}">
-                            <br />
-                            <strong>
-                                <g:message code="speciesListItem.list.unmatched" />
-                            </strong>
-                            -
-                            <g:message code="speciesListItem.list.try" />
-                            <a
-                                href="http://google.com/search?q=${fieldValue(bean: result, field: 'rawScientificName').trim()}"
-                                target="google"
-                            >
-                                <g:message code="speciesListItem.list.google" />
-                            </a>
-                            <g:message code="speciesListItem.list.or" />
-                            <a
-                                href="${grailsApplication.config.biocache.baseURL}/occurrences/search?q=${fieldValue(bean: result, field: 'rawScientificName').trim()}"
-                                target="biocache"
-                            >
-                                <g:message code="speciesListItem.list.occurrences" />
-                            </a>
-                        </g:if>
-                    </td>
+                            <g:if test="${result.guid == null}">
+                                <br />
+                                <strong>
+                                    <g:message code="speciesListItem.list.unmatched" />
+                                </strong>
+                                -
+                                <g:message code="speciesListItem.list.try" />
+                                <a
+                                    href="http://google.com/search?q=${fieldValue(bean: result, field: 'rawScientificName').trim()}"
+                                    target="google"
+                                >
+                                    <g:message code="speciesListItem.list.google" />
+                                </a>
+                                <g:message code="speciesListItem.list.or" />
+                                <a
+                                    href="${grailsApplication.config.biocache.baseURL}/occurrences/search?q=${fieldValue(bean: result, field: 'rawScientificName').trim()}"
+                                    target="biocache"
+                                >
+                                    <g:message code="speciesListItem.list.occurrences" />
+                                </a>
+                            </g:if>
+                        </td>
                     --%>
 
                     <td id="img_${result.guid}">
