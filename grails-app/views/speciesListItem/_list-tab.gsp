@@ -100,7 +100,11 @@
                         >
                             <img
                                 class="img-fluid smallSpeciesImage"
-                                src="${result.imageUrl ?: assetPath(src: 'fa-image.svg')}"
+                                src="${sl.getImageUrl(
+                                    imgUrl: result.imageUrl,
+                                    suffix: '__thumb',
+                                    defImgUrl: assetPath(src: 'fa-image.svg')
+                                )}"
                             />
                         </a>
                     </td>

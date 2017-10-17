@@ -33,6 +33,27 @@ class SpeciesListTagLib {
     }
 
     /**
+     * Returns an image link of desired size.
+     *
+     * @attr imgUrl REQUIRED original image URL
+     * @attr suffix REQUIRED file name suffix
+     * @attr defImgUrl REQUIRED default image URL
+     */
+    def getImageUrl = { attrs, body ->
+        def imgUrl = attrs.imgUrl
+        def fileExtension = imgUrl.substring(imgUrl.lastIndexOf('.') + 1)
+        def fileName = imgUrl.take(imgUrl.lastIndexOf('.'))
+        def fileSuffix = attrs.suffix
+        def defImgUrl = attrs.defImgUrl
+
+        if(imgUrl) {
+            out << [fileName, fileSuffix, '.', fileExtension].join()
+        } else {
+            out << assetPath(src: defImgUrl)
+        }
+    }
+
+    /**
      * Generates a list of filter query strings without that identified by the fq parameter
      *
      * @attr fqs REQUIRED
