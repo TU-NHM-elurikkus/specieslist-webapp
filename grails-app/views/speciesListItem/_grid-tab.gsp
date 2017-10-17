@@ -11,7 +11,11 @@
         >
             <img
                 class="gallery-thumb__img"
-                src="${result.imageUrl ?: assetPath(src: 'fa-image.svg')}"
+                src="${sl.getImageUrl(
+                    imgUrl: result.imageUrl,
+                    suffix: '__small',
+                    defImgUrl: assetPath(src: 'fa-image.svg')
+                )}"
             />
         </a>
 
