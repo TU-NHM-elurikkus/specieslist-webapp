@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<%@ page import="grails.util.Environment" %>
+
 <html lang="en">
     <head>
         <meta charset="utf-8" />
@@ -10,6 +12,13 @@
         <title>
             <g:layoutTitle />
         </title>
+
+        <script>
+            var GRAILS_APP = {
+                environment: "${Environment.current.name}",
+                rollbarApiKey: ${grailsApplication.config.rollbar.postApiKey}
+            };
+        </script>
 
         <asset:javascript src="list.js" />
         <asset:stylesheet src="application.css" />

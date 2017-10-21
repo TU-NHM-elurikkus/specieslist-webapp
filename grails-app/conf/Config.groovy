@@ -29,8 +29,9 @@ println "[${appName}] (*) grails.config.locations = ${grails.config.locations}"
 
 bie.nameIndexLocation = "/data/lucene/namematching"
 registryApiKey = "xxxxxxxxxxxxxxxxxx"
-
 bieApiKey = "xxxxxx"
+
+rollbar.postApiKey = "xxx"  // This should be set in the external config file
 
 /*** Config specific for species list ***/
 updateUserDetailsOnStartup = false
