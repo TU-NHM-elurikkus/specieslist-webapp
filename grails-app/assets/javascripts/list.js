@@ -79,10 +79,10 @@ function getFooter(recordId) {
         if($.inArray(el.id, MODAL_FOOTER_FIELDS) > -1) {
             footerContent +=
                 '<div>' +
-                '<b>' +
-                $(this).text() +
-                ':</b>&nbsp;' +
-                values[i] +
+                    '<b>' +
+                        $(this).text() +
+                    ':</b>&nbsp;' +
+                    values[i] +
                 '</div>';
         }
     });
