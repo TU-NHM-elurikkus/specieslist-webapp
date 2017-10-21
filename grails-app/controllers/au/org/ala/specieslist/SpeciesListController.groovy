@@ -520,4 +520,3 @@ class SpeciesListController {
         request instanceof MultipartHttpServletRequest
     }
 }
-
