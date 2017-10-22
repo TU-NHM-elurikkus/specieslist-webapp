@@ -23,8 +23,6 @@
         <asset:javascript src="list.js" />
         <asset:stylesheet src="application.css" />
 
-        <ga:trackPageview />
-
         <g:layoutHead />
     </head>
 
