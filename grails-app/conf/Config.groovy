@@ -13,15 +13,13 @@ grails.config.locations = [
     "file:${commons_config}"
 ]
 
-if(new File(env_config).exists()) {
-    println "[${appName}] Including environment specific configuration file: ${env_config}"
-} else {
+if(!new File(env_config).exists()) {
     println "ERROR - [${appName}] Couldn't find environment specific configuration file: ${env_config}"
 }
-
 if(!new File(default_config).exists()) {
     println "ERROR - [${appName}] No external configuration file defined. ${default_config}"
-} else if(!new File(commons_config).exists()) {
+}
+if(!new File(commons_config).exists()) {
     println "ERROR - [${appName}] No external commons configuration file defined. ${commons_config}"
 }
 

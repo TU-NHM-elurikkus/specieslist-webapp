@@ -1,7 +1,8 @@
 <!doctype html>
 <html>
     <head>
-        <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
+        <meta name="layout" content="generic" />
+
         <title>
             <g:message code="general.speciesLists"/>
         </title>
