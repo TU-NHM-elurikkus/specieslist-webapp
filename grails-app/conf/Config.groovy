@@ -9,8 +9,8 @@ env_config = "conf/${Environment.current.name}/Config.groovy"
 
 grails.config.locations = [
     "file:${env_config}",
-    "file:${default_config}",
-    "file:${commons_config}"
+    "file:${commons_config}",
+    "file:${default_config}"
 ]
 
 if(!new File(env_config).exists()) {

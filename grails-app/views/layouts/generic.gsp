@@ -16,7 +16,7 @@
         <script>
             var GRAILS_APP = {
                 environment: "${Environment.current.name}",
-                rollbarApiKey: ${grailsApplication.config.rollbar.postApiKey}
+                rollbarApiKey: "${grailsApplication.config.rollbar.postApiKey}"
             };
         </script>
 
