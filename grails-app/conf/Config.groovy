@@ -87,44 +87,46 @@ auth.userDetailsUrl='http://auth.ala.org.au/userdetails/userDetails/'
 auth.userNamesForIdPath='getUserList'
 auth.userNamesForNumericIdPath='getUserListWithIds'
 
-// set per-environment serverURL stem for creating absolute links
-environments {
-    development {
-    }
-    production {}
+
+def logging_dir = System.getProperty("catalina.base") ? System.getProperty("catalina.base") + "/logs"  : "/var/log/tomcat7"
+if(!new File(logging_dir).exists()) {
+    logging_dir = "/tmp"
 }
 
-logging_dir = (System.getProperty('catalina.base') ? System.getProperty('catalina.base') + '/logs'  : '/var/log/tomcat6')
-if(!new File(logging_dir).exists()){
-    logging_dir = '/tmp'
-}
-
-
-// log4j configuration
 log4j = {
-    // Example of changing the log pattern for the default console
-    // appender:
+
+    def logPattern = pattern(conversionPattern: "%d %-5p [%c{1}] %m%n")
+
     appenders {
         environments {
             production {
-                rollingFile name: "tomcatLog", maxFileSize: 102400000, file: logging_dir + "/specieslist.log", threshold: org.apache.log4j.Level.ERROR, layout: pattern(conversionPattern: "%d %-5p [%c{1}] %m%n")
-                'null' name: "stacktrace"
-            }
-            development {
-                console name: "stdout", layout: pattern(conversionPattern: "%d %-5p [%c{1}]  %m%n"), threshold: org.apache.log4j.Level.DEBUG
+                rollingFile(
+                    name: "tomcatLog",
+                    maxFileSize: "10MB",
+                    file: "${logging_dir}/specieslist.log",
+                    threshold: org.apache.log4j.Level.WARN,
+                    layout: logPattern)
             }
             test {
-                rollingFile name: "tomcatLog", maxFileSize: 102400000, file: "/tmp/specieslist-test.log", threshold: org.apache.log4j.Level.DEBUG, layout: pattern(conversionPattern: "%d %-5p [%c{1}]  %m%n")
-                'null' name: "stacktrace"
+                rollingFile(
+                    name: "tomcatLog",
+                    maxFileSize: "10MB",
+                    file: "${logging_dir}/specieslist.log",
+                    threshold: org.apache.log4j.Level.WARN,
+                    layout: logPattern)
+            }
+            development {
+                console(
+                    name: "stdout",
+                    layout: logPattern,
+                    threshold: org.apache.log4j.Level.DEBUG)
             }
         }
     }
 
     root {
-        // change the root logger to my tomcatLog file
-        error 'tomcatLog'
-        warn 'tomcatLog'
-        additivity = true
+        error "tomcatLog"
+        warn "tomcatLog"
     }
 
     error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
