@@ -3,12 +3,6 @@ package au.org.ala.specieslist
 class SpeciesListTagLib {
     static namespace = 'sl'
     static returnObjectForTags = ['buildFqList', 'excludedFqList']
-    def authService
-
-    def getFullNameForUserId = { attrs, body ->
-        def displayName = authService.getUserForUserId(attrs.userId)?.displayName
-        out << "${displayName?:attrs.userId}"
-    }
 
     /**
      * Generates a list of filter query strings including that identified by the fq parameter, if supplied.

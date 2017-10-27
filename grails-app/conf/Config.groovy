@@ -16,7 +16,7 @@ grails.config.locations = [
 ]
 
 def prop = new Properties()
-def rollbarServerKey
+def rollbarServerKey = ""
 
 // Load rollbar key from commons config file.
 try {
@@ -50,7 +50,6 @@ rollbar.postApiKey = "xxx"  // This should be set in the external config file
 
 /*** Config specific for species list ***/
 updateUserDetailsOnStartup = false
-iconicSpecies.uid = "dr781"
 
 skin.layout = "generic"
 
@@ -98,11 +97,6 @@ grails.exceptionresolver.params.exclude = ['password']
 
 // enable query caching by default
 grails.hibernate.cache.queries = true
-
-//localAuthService properties
-auth.userDetailsUrl='http://auth.ala.org.au/userdetails/userDetails/'
-auth.userNamesForIdPath='getUserList'
-auth.userNamesForNumericIdPath='getUserListWithIds'
 
 
 def logging_dir = System.getProperty("catalina.base") ? System.getProperty("catalina.base") + "/logs"  : "/var/log/tomcat7"

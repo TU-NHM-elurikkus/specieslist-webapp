@@ -42,8 +42,6 @@ class HelperService {
 
     def grailsApplication
 
-    def localAuthService, authService, userDetailsService
-
     BieService bieService
 
     def cbIdxSearcher = null

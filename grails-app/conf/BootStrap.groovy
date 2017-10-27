@@ -3,7 +3,7 @@ import org.apache.commons.lang.WordUtils
 
 class BootStrap {
 
-    def authService, userDetailsService, grailsApplication
+    def userDetailsService, grailsApplication
 
     def init = { servletContext ->
         Object.metaClass.trimLength = {Integer stringLength ->
@@ -28,14 +28,7 @@ class BootStrap {
             WordUtils.wrap(inputString, stringLength, "<br/>\n", true)
         }
 
-        if (grailsApplication.config.updateUserDetailsOnStartup) {
-            userDetailsService.updateSpeciesListUserDetails()
-            userDetailsService.updateEditorsList()
-        }
-
     }
     def destroy = {
     }
 }
-
-
