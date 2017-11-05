@@ -7,14 +7,9 @@ class UrlMappings {
             }
         }
 
-        "/iconic-species" controller: "speciesListItem", action: "iconicSpecies"
         //ws to support CRUD operations on lists
         "/ws/speciesList/${druid}?" (controller: 'webService') {
-            action = [GET: 'getListDetails', POST: 'saveList']
-        }
-
-        "/ws/speciesListPost/${druid}?" (controller: 'webService') {
-            action = [POST: 'saveList']
+            action = [GET: 'getListDetails']
         }
 
         "/ws/speciesListItems/${druid}?" (controller: 'webService') {
@@ -28,7 +23,7 @@ class UrlMappings {
         "/ws/speciesList/filter" (controller: "webService", action: [POST: "filterLists"])
 
         // ws to obtain values for a specified species guid
-        "/ws/species/$guid**?" (controller: 'webService',action: 'getListItemsForSpecies')
+        "/ws/species/$guid**?" (controller: 'webService', action: 'getListItemsForSpecies')
 
         "/ws/speciesList/unpublished" (controller: 'webService', action: 'getBieUpdates')
 
@@ -39,8 +34,6 @@ class UrlMappings {
         "/ws/speciesListItems/distinct/$field?" (controller: 'webService', action: 'getDistinctValues')
 
         "/ws"(view:'/webService/ws')
-
-        "/ws/checkEmailExists" (controller: 'webService', action: 'checkEmailExists')
 
         "/ws/speciesListItemKvp/$druid" (controller: 'webService') {
             action = [GET: 'getSpeciesListItemKvp']

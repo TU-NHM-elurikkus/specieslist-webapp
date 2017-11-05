@@ -42,7 +42,6 @@ grails.project.dependency.resolution = {
         runtime 'mysql:mysql-connector-java:5.1.18'
     }
 
-
     plugins {
         build(":tomcat:7.0.70",
             ":release:3.0.1") {
@@ -51,10 +50,6 @@ grails.project.dependency.resolution = {
 
         runtime ":cors:1.1.8"
         runtime ":hibernate:3.6.10.15"
-
-        compile (":ala-auth:1.3.2") {
-           exclude "servlet-api"
-        }
         compile ":asset-pipeline:2.14.1"
         compile ':cache:1.1.8'
         compile ':cache-ehcache:1.0.0'

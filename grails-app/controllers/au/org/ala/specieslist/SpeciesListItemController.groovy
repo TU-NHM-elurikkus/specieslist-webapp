@@ -1,6 +1,5 @@
 package au.org.ala.specieslist
 
-import au.org.ala.web.AuthService
 import grails.converters.*
 import au.com.bytecode.opencsv.CSVWriter
 
@@ -9,8 +8,6 @@ class SpeciesListItemController {
     BieService bieService
     LoggerService loggerService
     QueryService queryService
-    LocalAuthService localAuthService
-    AuthService authService
     int maxLengthForFacet = 30 // Note: is length of _name_ of the facet category/field
 
     def index() { }
@@ -18,62 +15,8 @@ class SpeciesListItemController {
     /**
      * Public display of a species list
      */
-    def list(){
+    def list() {
         doListDisplay(params)
-    }
-
-    /**
-     * There is no functional difference between listAuth and list. This method has been retained to support existing
-     * links/bookmarks/etc that may refer to it. Both URLs are in the authenticateOnlyIfLoggedInFilterPattern list
-     * for CAS authentication.
-     */
-    def listAuth() {
-        doListDisplay(params)
-    }
-
-    /**
-     * Special (simple) page for displaying "Australia's Species", linked from homepage.
-     *
-     * @return
-     */
-    def iconicSpecies() {
-        params.id = params.id?:grailsApplication.config.iconicSpecies?.uid?:""
-        params.max = params.max?:25
-
-        if (!params.fq) {
-            redirect(action: 'iconicSpecies', params: [fq:'kvp group:Birds'])
-        }
-        try {
-            def speciesList = SpeciesList.findByDataResourceUid(params.id)
-            if (!speciesList) {
-                flash.message = "${message(code: 'general.not.found.message', args: [message(code: 'speciesList.label', default: 'Species List'), params.id])}"
-                render(view: "iconic-list")
-            } else {
-                params.max = Math.min(params.max ? params.int('max') : 25, 100)
-                params.sort = params.sort ?: "itemOrder"
-                params.fetch = [kvpValues: 'select']
-                def fqs = params.fq ? [params.fq].flatten().findAll { it != null } : null
-                def baseQueryAndParams = params.fq ? queryService.constructWithFacets(" from SpeciesListItem sli ", fqs, params.id) : null
-                //need to get all keys to be included in the table so no need to add the filter.
-                def speciesListItems = params.fq ? SpeciesListItem.executeQuery("select sli " + baseQueryAndParams[0], baseQueryAndParams[1], params) : SpeciesListItem.findAllByDataResourceUid(params.id, params)
-                def totalCount = params.fq ? SpeciesListItem.executeQuery("select count(*) " + baseQueryAndParams[0], baseQueryAndParams[1]).head() : SpeciesListItem.countByDataResourceUid(params.id)
-                def guids = speciesListItems.collect { it.guid }
-                def bieItems = bieService.bulkLookupSpecies(guids)
-                def facets = generateFacetValues(null, baseQueryAndParams)
-                log.debug "speciesListItems = ${speciesListItems as JSON}"
-                render(view: 'iconic-list', model: [
-                        results: speciesListItems,
-                        totalCount: totalCount,
-                        bieItems: bieItems,
-                        facets: facets
-                ])
-            }
-        }  catch (Exception e) {
-            def msg = "Unable to retrieve species list items. Please let us know if this error persists. <br>Error:<br>" + e.getMessage()
-            log.error(msg, e)
-            flash.message = msg
-            render(view: 'iconic-list')
-        }
     }
 
     private doListDisplay(requestParams) {

@@ -1,8 +1,6 @@
 package au.org.ala.specieslist
 
 class SpeciesList {
-    def authService
-
     String listName
     String firstName
     String surname
@@ -66,11 +64,6 @@ class SpeciesList {
         description type:  'text'
         itemsCount formula: "(select count(*) from species_list_item sli where sli.list_id = id)"
         ownerFullName formula: "concat(first_name, ' ', surname)" // derived to allow easier sorting by owner name
-    }
-
-    def String getFullName(){
-        def user = authService.getUserForUserId(username)
-        user?.displayName
     }
 
     def String getLocalizedName(locale) {

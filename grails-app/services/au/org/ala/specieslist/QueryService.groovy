@@ -9,9 +9,6 @@ class QueryService {
 
     public static final String EDITOR_SQL_RESTRICTION = "this_.id in (select species_list_id from species_list_editors e where e.editors_string = ?)"
 
-    def authService
-    def localAuthService
-
     /** A regular expression to split the  */
     public final def filterRegEx = /([a-zA-Z]+):([\x00-\x7F\s]*)/
     /** A map of domain property names to data types */
@@ -116,26 +113,6 @@ class QueryService {
                                 }
                             }
                         }
-                    }
-                }
-            }
-            and {
-                if (authService.getUserId()) {
-                    if (!localAuthService.isAdmin()) {
-                        // the user is not an admin, so only show lists that are not private OR are owned by the user
-                        // OR where the user is an editor
-                        or {
-                            isNull("isPrivate")
-                            eq("isPrivate", false)
-                            eq("userId", authService.getUserId())
-                            sqlRestriction(EDITOR_SQL_RESTRICTION, [authService.getUserId()])
-                        }
-                    }
-                } else {
-                    // if there is no user, do no show any private records
-                    or {
-                        isNull("isPrivate")
-                        eq("isPrivate", false)
                     }
                 }
             }
@@ -362,4 +339,3 @@ class QueryService {
         }
     }
 }
-

@@ -15,7 +15,6 @@
 package au.org.ala.specieslist
 
 import au.com.bytecode.opencsv.CSVReader
-import au.org.ala.web.AuthService
 import grails.converters.*
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.springframework.web.multipart.MultipartHttpServletRequest
@@ -30,7 +29,6 @@ class SpeciesListController {
     private static final String[] ACCEPTED_CONTENT_TYPES = ["text/plain", "text/csv"]
 
     HelperService helperService
-    AuthService authService
     BieService bieService
     BiocacheService biocacheService
     LoggerService loggerService
@@ -54,12 +52,7 @@ class SpeciesListController {
         if(params.id){
             //get the list if it exists and ensure that the user is an admin or the owner
             def list = SpeciesList.findByDataResourceUid(params.id)
-            if(list?.userId == authService.getUserId() || authService.userInRole("ROLE_ADMIN")){
-                render(view: "upload", model: [resourceUid: params.id, list: list, listTypes: ListType.values()])
-            } else {
-                flash.message = "${message(code: 'groovy.permissions', args: [params.id])}"
-                redirect(controller: "public", action:"speciesLists")
-            }
+            render(view: "upload", model: [resourceUid: params.id, list: list, listTypes: ListType.values()])
         } else {
             render(view: "upload", model: [listTypes: ListType.values()])
         }
@@ -170,7 +163,7 @@ class SpeciesListController {
                         [
                              pubDescription: formParams.description,
                              websiteUrl: grailsApplication.config.serverName + url,
-                             techDescription: "This list was first uploaded by " + authService.userDetails()?.userDisplayName + " on the " + (new Date()) + "." + "It contains " + itemCount + " taxa.",
+                             techDescription: "This list was first uploaded by " + "elurikkus-ala" + " on the " + (new Date()) + "." + "It contains " + itemCount + " taxa.",
                              resourceType : "species-list",
                              status : "dataAvailable",
                              contentTypes : '["species list"]'
@@ -244,21 +237,12 @@ class SpeciesListController {
         }
     }
 
-    def list(){
+    def list() {
         //list should be based on the user that is logged in so add the filter condition
-        //def username = authService.getEmail()
-        def userId = authService.getUserId()
-        if (userId){
-            //params['username'] = "eq:"+username
-            params['userId'] = "eq:"+userId
-        }
-
         try {
             def lists = queryService.getFilterListResult(params)
 
             //now remove the params that were added
-            //params.remove('username')
-            params.remove('userId')
             log.debug("lists:" + lists)
 
             render(view: "list", model: [
@@ -274,7 +258,6 @@ class SpeciesListController {
 
     def test(){
         log.debug(helperService.addDataResourceForList("My test List"))
-        log.debug(authService.getEmail())
         //bieService.bulkLookupSpecies(["urn:lsid:biodiversity.org.au:afd.taxon:31a9b8b8-4e8f-4343-a15f-2ed24e0bf1ae"])
         log.debug(loggerService.getReasons())
     }

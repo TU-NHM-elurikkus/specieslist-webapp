@@ -12,7 +12,7 @@
         ${message(code: 'general.owner')}
     </dt>
     <dd class="col-sm-6 col-md-6">
-        ${speciesList.fullName?:speciesList.username?:'&nbsp;'}
+        ${speciesList.username ?: "&nbsp;"}
     </dd>
 
     <dt class="col-sm-6 col-md-6">
@@ -145,14 +145,14 @@
         </g:if>
     </g:if>
 
-    <g:if test="${speciesList.editors}">
+    <%-- <g:if test="${speciesList.editors}">
         <dt class="col-sm-6 col-md-6">
             ${message(code: 'speciesListItem.list.editors')}
         </dt>
         <dd class="col-sm-6 col-md-6">
             ${speciesList.editors.collect{ sl.getFullNameForUserId(userId: it) }?.join(", ")}
         </dd>
-    </g:if>
+    </g:if> --%>
 
     <%-- The link is broken
     <dt class="col-sm-6 col-md-6">
@@ -186,7 +186,7 @@
                 </div>
             </div>
 
-            <div class="control-group">
+            <%-- <div class="control-group">
                 <label class="control-label" for="owner">
                     ${message(code: 'general.owner')}
                 </label>
@@ -202,7 +202,7 @@
                         </g:each>
                     </select>
                 </div>
-            </div>
+            </div> --%>
 
             <div class="control-group">
                 <label class="control-label" for="listType">
