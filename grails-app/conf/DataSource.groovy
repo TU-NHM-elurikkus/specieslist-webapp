@@ -2,44 +2,49 @@ dataSource {
     pooled = true
     logSql = false
     driverClassName = "com.mysql.jdbc.Driver"
-    username = ""
+    username = "root"
     password = ""
-    dialect = org.hibernate.dialect.MySQL5Dialect
+    dialect = org.hibernate.dialect.MySQL5InnoDBDialect
+    dbCreate = "update"
+    url = "jdbc:mysql://localhost:3306/specieslist?autoReconnect=true&connectTimeout=0"
     properties {
-        maxActive = -1
-        minEvictableIdleTimeMillis=1800000
-        timeBetweenEvictionRunsMillis=1800000
-        numTestsPerEvictionRun=3
-        testOnBorrow=true
-        testWhileIdle=true
-        testOnReturn=true
-        validationQuery="SELECT 1"
+        maxActive = 50
+        maxIdle = 25
+        minIdle = 5
+        initialSize = 5
+        minEvictableIdleTimeMillis = 60000
+        timeBetweenEvictionRunsMillis = 60000
+        maxWait = 10000
+        validationQuery = ""
+        numTestsPerEvictionRun = 3
+        testOnBorrow = true
+        testWhileIdle = true
+        testOnReturn = true
+        validationQuery = ""
     }
 }
+
 hibernate {
     cache.use_second_level_cache = true
     cache.use_query_cache = false
-    cache.region.factory_class = 'net.sf.ehcache.hibernate.EhCacheRegionFactory'
+    cache.region.factory_class = "net.sf.ehcache.hibernate.EhCacheRegionFactory"
 }
+
 // environment specific settings
 environments {
     development {
-//        dataSource {
-//            //dialect = org.hibernate.dialect.MySQL5InnoDBDialect
-//            //dbCreate = "update" // one of 'create', 'create-drop', 'update', 'validate', ''
-//            //url = "jdbc:mysql://localhost/specieslist?autoReconnect=true&connectTimeout=0"
-//        }
+        dataSource {
+
+        }
     }
     test {
         dataSource {
-            dialect = "org.hibernate.dialect.H2Dialect"
-            dbCreate = "create-drop"
-            driverClassName = "org.h2.Driver"
-            url = "jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;MODE=MYSQL;DB_CLOSE_ON_EXIT=FALSE;"
+
         }
     }
     production {
-        dbCreate = "update"
-        // must be set via external config
+        dataSource {
+
+        }
     }
 }
