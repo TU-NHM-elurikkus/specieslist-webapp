@@ -6,8 +6,6 @@
         <title>
             <g:message code="general.speciesLists"/>
         </title>
-
-        <asset:stylesheet src="filters.css" />
     </head>
 
     <body>

@@ -20,8 +20,8 @@
             };
         </script>
 
-        <asset:javascript src="list.js" />
-        <asset:stylesheet src="application.css" />
+        <asset:stylesheet src="lists.css" />
+        <asset:javascript src="lists.js" />
 
         <g:layoutHead />
     </head>
