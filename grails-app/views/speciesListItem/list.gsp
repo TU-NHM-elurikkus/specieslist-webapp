@@ -26,6 +26,9 @@
                 window.location.href = window.location.pathname + '?' + paramStr + window.location.hash;
             }
         </script>
+
+        <asset:stylesheet src="list-item.css" />
+        <asset:javascript src="list-item.js" />
     </head>
 
     <body>

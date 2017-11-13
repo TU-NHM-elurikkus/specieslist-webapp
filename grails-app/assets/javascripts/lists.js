@@ -1,8 +1,3 @@
-//= require jquery
-//= require facets
-//= require getQueryParam
-//= require jquery-ui
-//= require ekko-lightbox-5.2.0
 //= require common
 
 var MODAL_FOOTER_FIELDS = ['result-matched-name', 'result-author', 'result-common-name'];
