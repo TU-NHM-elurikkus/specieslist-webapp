@@ -15,12 +15,12 @@ dataSource {
         minEvictableIdleTimeMillis = 60000
         timeBetweenEvictionRunsMillis = 60000
         maxWait = 10000
-        validationQuery = ""
         numTestsPerEvictionRun = 3
+
+        validationQuery = "/* ping */"  // Better than "SELECT 1"
         testOnBorrow = true
-        testWhileIdle = true
         testOnReturn = true
-        validationQuery = ""
+        testWhileIdle = true
     }
 }
 
