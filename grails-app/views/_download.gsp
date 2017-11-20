@@ -72,9 +72,9 @@
                                     <g:message code="download.form.reason.placeholder"/>
                                 </option>
 
-                                <g:each in="${downloadReasons}" var="reason">
-                                    <option value="${reason.key}">
-                                        <g:message code="download.form.reason.${reason.key}" default="${reason.value}"/>
+                                <g:each in="${downloadReasons}">
+                                    <option value="${it.id}">
+                                        <g:message code="download.form.reason.${it.id}" default="${it.name}"/>
                                     </option>
                                 </g:each>
                             </select>
