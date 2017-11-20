@@ -1,7 +1,7 @@
 package au.org.ala.specieslist
 
+import groovy.json.JsonSlurper
 import grails.plugin.cache.Cacheable
-import groovyx.net.http.HTTPBuilder
 
 
 class LoggerService {
@@ -11,22 +11,18 @@ class LoggerService {
     // @Cacheable("loggerCache")
     def getReasons() {
         log.info("Refreshing the download reasons")
-        def http = new HTTPBuilder("${grailsApplication.config.loggerService.baseURL}")
-        http.getClient().getParams().setParameter("http.socket.timeout", new Integer(10000))
 
-        def map = [:]
+        String queryUrl = "${grailsApplication.config.loggerService.baseURL}/service/logger/reasons"
+
         try {
-            def result = http.get(path: "/service/logger/reasons")
+            def queryResponse = new URL(queryUrl).getText("UTF-8")
+            def jslurper = new JsonSlurper()
+            def jsonResponse = jslurper.parseText(queryResponse)
+            return jslurper.parseText(queryResponse)
 
-            result.toArray().each{
-                map.put(it.getAt("id"), it.getAt("name"))
-            }
-            log.debug "download reasons map = ${map}"
-            return map
         } catch(ex) {
-            // TODO return a default list - who's gonna do it? It's been sitting here more than 3 years
-            log.error "Error loading download reasons: ${ex}", ex
-            return map
+            log.error "[lists.LoggerService] Error loading download reasons: ${ex}", ex
+            return [:]
         }
     }
 }
