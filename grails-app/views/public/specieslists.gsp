@@ -36,7 +36,7 @@
                     </g:if>
 
                     <g:if test="${lists && total > 0}">
-                        <section class="search-section">
+                        <div class="search-section">
                             <form class="input-plus">
                                 <input
                                     id="appendedInputButton"
@@ -47,7 +47,7 @@
                                     placeholder="${message(code: 'public.speciesLists.btn.search.placeholder')}"
                                 />
 
-                                <button class="erk-button erk-button--dark input-plus__addon" type="submit">
+                                <button class="erk-button erk-button--dark input-plus__addon">
                                     <span class="fa fa-search"></span>
                                     <g:message code="general.search"/>
                                 </button>
@@ -72,7 +72,7 @@
                                     </span>
                                 </p>
                             </g:if>
-                        </section>
+                        </div>
 
                         <g:render template="/speciesList"/>
                     </g:if>

@@ -92,9 +92,10 @@
                     <table class="table table-bordered table-sm table-striped">
                         <thead>
                             <tr>
-                                <th class="indexCol" width="80%">
+                                <th class="indexCol">
                                     ${taxonRank}
                                 </th>
+
                                 <th style="border-right-style: none;text-align: right;">
                                     <g:message code="speciesListItem.facet.count" />
                                 </th>

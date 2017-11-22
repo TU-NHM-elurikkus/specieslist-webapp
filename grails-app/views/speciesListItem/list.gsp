@@ -91,7 +91,7 @@
                 </div>
             </g:if>
 
-            <section class="search-section">
+            <div class="search-section">
                 <form class="input-plus">
                     <input
                         type="text"
@@ -101,7 +101,6 @@
                         placeholder="${message(code: 'speciesListItem.list.btn.search.placeholder')}"
                     >
                     <button
-                        type="sumbit"
                         class="input-plus__addon erk-button erk-button--dark"
                         onclick="searchByQuery()"
                     >
@@ -185,7 +184,7 @@
                         </div>
                     </div>
                 </g:if>
-            </section>
+            </div>
 
             <div class="row">
                 <%-- Refine info --%>
