@@ -2,7 +2,6 @@
     <g:set var="recId" value="${result.id}" />
     <div class="gallery-thumb">
         <a
-            rel="thumbs"
             href="${result.imageUrl ?: assetPath(src: 'fa-image.svg')}"
             title="${message(code: 'gallery.thumb.title')}"
             data-id="${recId}"
@@ -16,6 +15,7 @@
                     suffix: '__small',
                     defImgUrl: assetPath(src: 'fa-image.svg')
                 )}"
+                alt="${message(code: 'general.thumbnail.alt')}"
             />
         </a>
 

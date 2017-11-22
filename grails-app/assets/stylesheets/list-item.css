@@ -1,3 +1,7 @@
 /*
 *= require ekko-lightbox-5.2.0
 */
+
+.indexCol {
+    width: 80%;
+}

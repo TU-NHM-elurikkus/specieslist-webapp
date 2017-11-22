@@ -92,7 +92,6 @@
 
                     <td id="img_${result.guid}">
                         <a
-                            rel="thumbs"
                             href="${result.imageUrl ?: assetPath(src: 'fa-image.svg')}"
                             data-id="${result.id}"
                             data-toggle="lightbox"
@@ -105,6 +104,7 @@
                                     suffix: '__thumb',
                                     defImgUrl: assetPath(src: 'fa-image.svg')
                                 )}"
+                                alt="${message(code: 'general.thumbnail.alt')}"
                             />
                         </a>
                     </td>

@@ -2,13 +2,11 @@
     class="modal fade"
     id="download-dialog"
     tabindex="-1" role="dialog"
-    aria-labelledby="download-dialog-title"
-    aria-hidden="true"
 >
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="download-dialog-title">
+                <h3>
                     <g:message code="download.title" />
                 </h3>
             </div>
