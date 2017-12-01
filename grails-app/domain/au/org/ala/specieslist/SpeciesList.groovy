@@ -67,15 +67,19 @@ class SpeciesList {
     }
 
     def String getLocalizedName(locale) {
+        def fallback = ""
+
         for(name in names) {
             if(name.locale == locale) {
                 return name.name
+            } else if(name.locale == "en") {
+                fallback = name.name
             }
         }
 
         // Could possibly go with "default to this", but it would really
         // complicate sorting by name. Unless the translated name is expressable
         // as derived property in SQL. TODO: think about it
-        return ""
+        return fallback
     }
 }
