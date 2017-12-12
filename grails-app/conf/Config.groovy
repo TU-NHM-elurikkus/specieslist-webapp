@@ -142,6 +142,7 @@ log4j = {
     root {
         error "tomcatLog", "rollbar"
         warn "tomcatLog"
+        info "stdout"
     }
 
     error  'org.codehaus.groovy.grails.web.servlet',  //  controllers

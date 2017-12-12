@@ -6,8 +6,10 @@ dataSource {
     password = ""
     dialect = org.hibernate.dialect.MySQL5InnoDBDialect
     dbCreate = "update"
-    url = "jdbc:mysql://localhost:3306/specieslist?autoReconnect=true&connectTimeout=0"
+    url = "jdbc:mysql://localhost:3306/specieslist"
     properties {
+        jmxEnabled = true
+
         maxActive = 50
         maxIdle = 25
         minIdle = 5
@@ -21,6 +23,11 @@ dataSource {
         testOnBorrow = true
         testOnReturn = true
         testWhileIdle = true
+
+        dbProperties {
+            autoReconnect = false
+            connectTimeout = 60000
+        }
     }
 }
 
