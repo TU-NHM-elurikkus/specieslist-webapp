@@ -27,17 +27,17 @@ class WebServiceController {
 
     def helperService
     def queryService
-    def beforeInterceptor = [action: this.&prevalidate, only: ['getListDetails']]
+    def beforeInterceptor = [action: this.&prevalidate, only: ["getListDetails"]]
 
-    private def prevalidate(){
+    private def prevalidate() {
         //ensure that the supplied druid is valid
         log.debug("Prevalidating...")
-        if(params.druid){
+        if(params.druid) {
             def list = SpeciesList.findByDataResourceUid(params.druid)
-            if (list){
+            if (list) {
                 params.splist = list
             }
-            else{
+            else {
                 notFound "Unable to locate species list ${params.druid}"
                 return false
             }
@@ -47,16 +47,16 @@ class WebServiceController {
 
     def index() { }
 
-    def getDistinctValues(){
+    def getDistinctValues() {
         def field = params.field
 
-        def props = [fetch: [mylist: 'join']]
+        def props = [fetch: [mylist: "join"]]
         log.debug("Distinct values " + field + " " + params)
         def results = queryService.getFilterListItemResult(props, params, null, null, field )
         helperService.asJson(results, response)
     }
 
-    def getTaxaOnList(){
+    def getTaxaOnList() {
         def druid = params.druid
         def results = SpeciesListItem.executeQuery("select guid from SpeciesListItem where dataResourceUid=?", [druid])
         render results as JSON
@@ -65,8 +65,8 @@ class WebServiceController {
     def getListItemsForSpecies() {
         def guid = params.guid
         def lists = params.dr?.split(",")
-        def isBIE = params.boolean('isBIE')
-        def props = [fetch: [kvpValues: 'join', mylist: 'join']]
+        def isBIE = params.boolean("isBIE")
+        def props = [fetch: [kvpValues: "join", mylist: "join"]]
 
         def results = queryService.getFilterListItemResult(props, params, guid, lists, null)
 
@@ -76,16 +76,16 @@ class WebServiceController {
 
         log.debug("RESULTS: " + results)
 
-        def filteredRecords = results.findAll{ !it.mylist.isPrivate }
+        def filteredRecords = results.findAll { !it.mylist.isPrivate }
 
         if (isBIE) {
             // BIE only want lists with isBIE == true
-            filteredRecords = filteredRecords.findAll{ it.mylist.isBIE }
+            filteredRecords = filteredRecords.findAll { it.mylist.isBIE }
         }
 
         def locale = RequestContextUtils.getLocale(request).toString()
 
-        def listOfRecordMaps = filteredRecords.collect{ li -> // don't output private lists
+        def listOfRecordMaps = filteredRecords.collect { li -> // don't output private lists
             [
                 dataResourceUid: li.dataResourceUid,
                 guid: li.guid,
@@ -95,7 +95,7 @@ class WebServiceController {
                         sds: li.mylist.isSDS ?: false,
                         isBIE: li.mylist.isBIE ?: false
                 ],
-                kvpValues: li.kvpValues.collect{ kvp ->
+                kvpValues: li.kvpValues.collect { kvp ->
                     [
                         key: kvp.key,
                         value: kvp.value,
@@ -104,7 +104,7 @@ class WebServiceController {
                 }
             ]
         }
-        render builder.build{listOfRecordMaps}
+        render builder.build { listOfRecordMaps }
     }
 
     /**
@@ -117,10 +117,10 @@ class WebServiceController {
         log.debug("params" + params)
         if(params.splist) {
             def sl = params.splist
-            log.debug("The speciesList: " +sl)
+            log.debug("The speciesList: " + sl)
             def builder = new JSONBuilder()
 
-            def retValue = builder.build{
+            def retValue = builder.build {
                 dataResourceUid = sl.dataResourceUid
                 listName = sl.listName
                 if(sl.listType) listType = sl?.listType?.toString()
@@ -137,7 +137,7 @@ class WebServiceController {
         } else {
             //we need to return a summary of all lists
             //allowing for customisation in sort order and paging
-            params.fetch = [items: 'lazy']
+            params.fetch = [items: "lazy"]
             if(params.sort)
                 params.user = null
             if(!params.user)
@@ -152,7 +152,7 @@ class WebServiceController {
             def allLists = queryService.getFilterListResult(params)
             def listCounts = allLists.totalCount
             def retValue =[listCount: listCounts, sort: params.sort, order: params.order, max: params.max, offset: params.offset,
-                    lists: allLists.collect{[dataResourceUid: it.dataResourceUid,
+                    lists: allLists.collect { [dataResourceUid: it.dataResourceUid,
                                             listName: it.listName,
                                             listType: it?.listType?.toString(),
                                             dateCreated: it.dateCreated,
@@ -167,7 +167,7 @@ class WebServiceController {
                                             sdsType: it.sdsType,
                                             isAuthoritative: it.isAuthoritative ?: false,
                                             isInvasive: it.isInvasive ?: false,
-                                            isThreatened: it.isThreatened ?: false]}]
+                                            isThreatened: it.isThreatened ?: false] }]
 
             render retValue as JSON
         }
@@ -180,7 +180,7 @@ class WebServiceController {
         if(params.druid) {
             params.sort = params.sort ?: "itemOrder" // default to order the items were imported in
             def list
-            if(!params.q){
+            if(!params.q) {
                 list = params.nonulls ?
                         SpeciesListItem.findAllByDataResourceUidAndGuidIsNotNull(params.druid, params)
                         : SpeciesListItem.findAllByDataResourceUid(params.druid, params)
@@ -189,7 +189,7 @@ class WebServiceController {
                 String query = "%${params.q}%"
                 String druid = params.druid
                 def criteria = SpeciesListItem.createCriteria()
-                if(params.nonulls){
+                if(params.nonulls) {
                     // search among SpeciesListItem that has matched ALA taxonomy
                     list = criteria {
                         isNotNull("guid")
@@ -215,18 +215,18 @@ class WebServiceController {
 
             List newList
             if (params.includeKVP?.toBoolean()) {
-                newList = list.collect({[id: it.id, name: it.rawScientificName, commonName: it.commonName, scientificName: it.matchedName, lsid: it.guid,
-                                        kvpValues: it.kvpValues.collect({[key: it.key, value: it.value]})]})
+                newList = list.collect( { [id: it.id, name: it.rawScientificName, commonName: it.commonName, scientificName: it.matchedName, lsid: it.guid,
+                                        kvpValues: it.kvpValues.collect( { [key: it.key, value: it.value] })] })
             }
             else {
-                newList = list.collect{[id: it.id,name: it.rawScientificName, commonName: it.commonName, scientificName: it.matchedName, lsid: it.guid]}
+                newList = list.collect { [id: it.id,name: it.rawScientificName, commonName: it.commonName, scientificName: it.matchedName, lsid: it.guid] }
             }
             render newList as JSON
         } else {
             //no data resource uid was supplied.
-            def props = [fetch: [kvpValues: 'join']]
+            def props = [fetch: [kvpValues: "join"]]
             def list = queryService.getFilterListItemResult(props, params, null, null, null)
-            render list.collect{[guid: it.guid, name: it.matchedName ?: it.rawScientificName, family: it.family, dataResourceUid: it.dataResourceUid, kvpValues: it.kvpValues?.collect{i -> [key: i.key, value: i.vocabValue ?: i.value]}]} as JSON
+            render list.collect { [guid: it.guid, name: it.matchedName ?: it.rawScientificName, family: it.family, dataResourceUid: it.dataResourceUid, kvpValues: it.kvpValues?.collect { i -> [key: i.key, value: i.vocabValue ?: i.value] }] } as JSON
         }
     }
 
@@ -237,7 +237,7 @@ class WebServiceController {
         if (speciesListDruid) {
             def speciesList = SpeciesListItem.findAllByDataResourceUid(speciesListDruid)
             if (speciesList.size() > 0) {
-                speciesList.each({
+                speciesList.each( {
                     def scientificName = it.rawScientificName
                     if (it.kvpValues) {
                         Map kvps = new HashMap();
@@ -259,13 +259,13 @@ class WebServiceController {
     }
 
     def created = { uid, guids ->
-        response.addHeader 'druid', uid
+        response.addHeader "druid", uid
         response.status = 201
-        def outputMap = [status: 200, message: 'added species list', druid: uid, data: guids]
+        def outputMap = [status: 200, message: "added species list", druid: uid, data: guids]
         render outputMap as JSON
     }
 
-    def badRequest = {text ->
+    def badRequest = { text ->
         render(status: 400, text: text)
     }
 
@@ -273,17 +273,17 @@ class WebServiceController {
         render(status: 404, text: text)
     }
 
-    def markAsPublished(){
+    def markAsPublished() {
         //marks the supplied data resource as published
-        if (params.druid){
-            SpeciesListItem.executeUpdate("update SpeciesListItem set isPublished=true where dataResourceUid='"+params.druid+"'")
+        if (params.druid) {
+            SpeciesListItem.executeUpdate("update SpeciesListItem set isPublished=true where dataResourceUid='" + params.druid + "'")
             render "Species list " + params.druid + " has been published"
         } else {
-            render(view: '../error', model: [message: "No data resource has been supplied"])
+            render(view: "../error", model: [message: "No data resource has been supplied"])
         }
     }
 
-    def getBieUpdates(){
+    def getBieUpdates() {
         //retrieve all the unpublished list items in batches of 100
         def max = 100
         def offset = 0
@@ -291,21 +291,21 @@ class WebServiceController {
         def out = response.outputStream
         //use a criteria so that paging can be supported.
         def criteria = SpeciesListItem.createCriteria()
-        while(hasMore){
-            def results = criteria.list([sort:"guid", max: max, offset:offset, fetch:[kvpValues: 'join']]) {
+        while(hasMore) {
+            def results = criteria.list([sort:"guid", max: max, offset:offset, fetch:[kvpValues: "join"]]) {
                 isNull("isPublished")
                 //order("guid")
             }
-            //def results =SpeciesListItem.findAllByIsPublishedIsNull([sort:"guid",max: max, offset:offset,fetch:[kvpValues: 'join']])
+            //def results =SpeciesListItem.findAllByIsPublishedIsNull([sort:"guid",max: max, offset:offset,fetch:[kvpValues: "join"]])
             results.each {
                 //each of the results are rendered as CSV
                 def sb = ''<<''
-                if(it.kvpValues){
+                if(it.kvpValues) {
                     it.kvpValues.each { kvp ->
-                        sb<<toCsv(it.guid)<<','<<toCsv(it.dataResourceUid)<<','<<toCsv(kvp.key)<<','<<toCsv(kvp.value)<<','<<toCsv(kvp.vocabValue)<<'\n'
+                        sb<<toCsv(it.guid)<<","<<toCsv(it.dataResourceUid)<<","<<toCsv(kvp.key)<<","<<toCsv(kvp.value)<<","<<toCsv(kvp.vocabValue)<<"\n"
                     }
                 } else {
-                    sb << toCsv(it.guid) << ',' << toCsv(it.dataResourceUid) << ',,,\n'
+                    sb << toCsv(it.guid) << "," << toCsv(it.dataResourceUid) << ",,,\n"
                 }
                 out.print(sb.toString())
             }
@@ -314,9 +314,9 @@ class WebServiceController {
         }
         out.close()
     }
-    def toCsv(value){
+    def toCsv(value) {
         if(!value) return ""
-        return '"'+value.replaceAll('"', '~"')+'"'
+        return '"' + value.replaceAll('"', '~"') + '"'
     }
 
     /**
@@ -333,7 +333,7 @@ class WebServiceController {
             List<String> druids = params.druid.split(",")
 
             def kvps = SpeciesListKVP.withCriteria {
-                'in'("dataResourceUid", druids)
+                "in"("dataResourceUid", druids)
 
                 projections {
                     distinct("key")
@@ -351,7 +351,7 @@ class WebServiceController {
      *
      * @param druid one or more DR UIDs (comma-separated if there are more than 1). Mandatory.
      * @param keys one or more KVP keys (comma-separated if there are more than 1). Mandatory.
-     * @param format either 'json' or 'csv'. Optional - defaults to json. Controls the output format.
+     * @param format either "json" or "csv". Optional - defaults to json. Controls the output format.
      *
      * @return if format = json, {scientificName1: [{key: key1, value: value1}, ...], scientificName2: [{key: key1, value: value1}, ...]}. If format = csv, returns a CSV download with columns [ScientificName,Key1,Key2...].
      */
@@ -372,10 +372,10 @@ class WebServiceController {
                     }
                 }
 
-                'in'("dataResourceUid", druids)
+                "in"("dataResourceUid", druids)
 
                 kvpValues {
-                    'in'("key", keys)
+                    "in"("key", keys)
                 }
 
                 order("rawScientificName")
@@ -409,7 +409,7 @@ class WebServiceController {
                     csv.writeNext(line as String[])
                 }
 
-                render(contentType: 'text/csv', text: out.toString())
+                render(contentType: "text/csv", text: out.toString())
             }
         }
     }

@@ -39,17 +39,17 @@ class SpeciesListController {
     Integer BATCH_SIZE
 
     @PostConstruct
-    init(){
-        BATCH_SIZE = Integer.parseInt((grailsApplication.config.batchSize?:200).toString())
+    init() {
+        BATCH_SIZE = Integer.parseInt((grailsApplication.config.batchSize ?: 200).toString())
     }
 
-    static allowedMethods = [uploadList:'POST']
+    static allowedMethods = [uploadList: "POST"]
 
-    def index() { redirect(action: 'upload')}
+    def index() { redirect(action: "upload") }
 
-    def upload(){ /*maps to the upload.gsp */
+    def upload() { /*maps to the upload.gsp */
         log.debug(ListType.values())
-        if(params.id){
+        if(params.id) {
             //get the list if it exists and ensure that the user is an admin or the owner
             def list = SpeciesList.findByDataResourceUid(params.id)
             render(view: "upload", model: [resourceUid: params.id, list: list, listTypes: ListType.values()])
@@ -62,21 +62,21 @@ class SpeciesListController {
      * Current mechanism for deleting a species list
      * @return
      */
-    def delete(){
+    def delete() {
         log.debug("Deleting from collectory...")
         def sl = SpeciesList.get(params.id)
-        if(sl){
+        if(sl) {
             helperService.deleteDataResourceForList(sl.dataResourceUid)
             sl.delete()
         }
-        redirect(action: 'list')
+        redirect(action: "list")
     }
 
     /**
      * OLD delete
      * @return
      */
-    def deleteList(){
+    def deleteList() {
 
         log.debug("Deleting from collectory...")
         helperService.deleteDataResourceForList(params.id)
@@ -89,18 +89,18 @@ class SpeciesListController {
         SpeciesListKVP.findAllByDataResourceUid(params.id)*.delete()
 
         flash.message = "Deleted Species List " + params.id
-        redirect(action:  'upload')
+        redirect(action: "upload")
     }
 
-    def createOrRetrieveDataResourceUid(dataResourceUid, speciesListName){
-        if(!dataResourceUid){
-            def drURL = helperService.addDataResourceForList([name:speciesListName])
+    def createOrRetrieveDataResourceUid(dataResourceUid, speciesListName) {
+        if(!dataResourceUid) {
+            def drURL = helperService.addDataResourceForList([name: speciesListName])
             log.debug(drURL)
-            if(!drURL){
+            if(!drURL) {
                 log.error("Unable to create entry in collectory....")
                 throw new Exception("Problem communicating with collectory. Unable to create resource.")
             } else {
-                drURL.toString().substring(drURL.lastIndexOf('/') +1)
+                drURL.toString().substring(drURL.lastIndexOf("/") + 1)
             }
         } else {
             dataResourceUid
@@ -128,7 +128,7 @@ class SpeciesListController {
                 log.debug("Loading species list " + formParams.speciesListName)
                 def vocabs = formParams.findAll { it.key.startsWith("vocab") && it.value } //map of vocabs
 
-                log.debug("Vocabs: " +vocabs)
+                log.debug("Vocabs: " + vocabs)
                 CSVReader reader
 
                 try {
@@ -139,7 +139,7 @@ class SpeciesListController {
                     }
                     def header = formParams.headers
 
-                    log.debug("Header: " +header)
+                    log.debug("Header: " + header)
                     def itemCount = helperService.loadSpeciesListFromCSV(reader,
                             druid,
                             formParams.speciesListName,
@@ -157,16 +157,16 @@ class SpeciesListController {
                             header.split(","),
                             vocabs)
 
-                    def url = createLink(controller:'speciesListItem', action:'list', id: druid) +"?max=25"
+                    def url = createLink(controller: "speciesListItem", action: "list", id: druid) + "?max=25"
                     //update the URL for the list
                     helperService.updateDataResourceForList(druid,
                         [
                              pubDescription: formParams.description,
                              websiteUrl: grailsApplication.config.serverName + url,
                              techDescription: "This list was first uploaded by " + "elurikkus-ala" + " on the " + (new Date()) + "." + "It contains " + itemCount + " taxa.",
-                             resourceType : "species-list",
-                             status : "dataAvailable",
-                             contentTypes : '["species list"]'
+                             resourceType: "species-list",
+                             status: "dataAvailable",
+                             contentTypes: '["species list"]'
                         ]
                     )
 
@@ -199,41 +199,41 @@ class SpeciesListController {
      *
      * This is the OLD method when supplying a file name
      */
-    def submitList(){
+    def submitList() {
         //ensure that the species list file exists before creating anything
-        def uploadedFile = request.getFile('species_list')
-        if(!uploadedFile.empty){
+        def uploadedFile = request.getFile("species_list")
+        if(!uploadedFile.empty) {
             //create a new temp data resource in the collectory for this species list
             def drURL = helperService.addDataResourceForList(params.speciesListTitle)
-            def druid = drURL.toString().substring(drURL.lastIndexOf('/') +1)
+            def druid = drURL.toString().substring(drURL.lastIndexOf("/") + 1)
             //download the supplied file to the local files system
             def localFilePath = helperService.uploadFile(druid, uploadedFile)
             log.debug("The local file " + localFilePath)
             //create a new species list item for each line of the file
             log.debug(params)
             //set of the columns if necessary
-            def columns = params.findAll { it.key.startsWith("column") && it.value }.sort{it.key.replaceAll("column","") as int }
+            def columns = params.findAll { it.key.startsWith("column") && it.value }.sort { it.key.replaceAll("column","") as int }
             log.debug(columns.toString() + " " + columns.size())
 
-            def header = (columns.size() > 0 && !params.containsKey('rowIndicatesMapping')) ? columns.values().toArray(["",""]) : null
+            def header = (columns.size() > 0 && !params.containsKey("rowIndicatesMapping")) ? columns.values().toArray(["",""]) : null
 
             //sort out the vocabulary
-            def vocabs = !params.containsKey('rowIndicatesMapping')?params.findAll { it.key.startsWith("vocab") && it.value }.sort{it.key.replaceAll("vocab","") as int}:null
+            def vocabs = !params.containsKey("rowIndicatesMapping") ? params.findAll { it.key.startsWith("vocab") && it.value }.sort { it.key.replaceAll("vocab","") as int } : null
             def vocabMap = [:]
-            vocabs?.each{
+            vocabs?.each {
                 int i = it.key.replaceAll("vocab","") as int
-                log.debug("header :" + header[i] + " value: "+ it.value)
+                log.debug("header :" + header[i] + " value: " + it.value)
                 vocabMap.put(header[i] , it.value)
             }
             log.debug(vocabMap)
-            helperService.loadSpeciesListFromFile(params.speciesListTitle,druid,localFilePath,params.containsKey('rowIndicatesMapping'),header,vocabMap)
+            helperService.loadSpeciesListFromFile(params.speciesListTitle,druid,localFilePath,params.containsKey("rowIndicatesMapping"),header,vocabMap)
             //redirect the use to a summary of the records that they submitted - include links to BIE species page
             //also mention that the list will be loaded into BIE overnight.
-            //def speciesListItems =  au.org.ala.specieslist.SpeciesListItem.findAllByDataResourceUid(druid)
+            //def speciesListItems = au.org.ala.specieslist.SpeciesListItem.findAllByDataResourceUid(druid)
             flash.params
             //[max:10, sort:"title", order:"desc", offset:100]
-            //render(view:'list', model:[results: speciesListItems])
-            redirect(controller: "speciesListItem",action: "list",id: druid,params: [max: 25, sort:"id"])//,id: druid, max: 10, sort:"id")
+            //render(view:"list", model:[results: speciesListItems])
+            redirect(controller: "speciesListItem", action: "list", id: druid, params: [max: 25, sort: "id"])//,id: druid, max: 10, sort:"id")
         }
     }
 
@@ -252,89 +252,89 @@ class SpeciesListController {
         } catch(Exception e) {
             log.error "Error requesting species Lists: " ,e
             response.status = 404
-            render(view: '../error', model: [message: "Unable to retrieve species lists. Please let us know if this error persists. <br>Error:<br>" + e.getMessage()])
+            render(view: "../error", model: [message: "Unable to retrieve species lists. Please let us know if this error persists. <br>Error:<br>" + e.getMessage()])
         }
     }
 
-    def test(){
+    def test() {
         log.debug(helperService.addDataResourceForList("My test List"))
         //bieService.bulkLookupSpecies(["urn:lsid:biodiversity.org.au:afd.taxon:31a9b8b8-4e8f-4343-a15f-2ed24e0bf1ae"])
         log.debug(loggerService.getReasons())
     }
 
-    def showList(){
-        try{
+    def showList() {
+        try {
             if (params.message)
                 flash.message = params.message
-            params.max = Math.min(params.max ? params.int('max') : 25, 100)
+            params.max = Math.min(params.max ? params.int("max") : 25, 100)
             params.sort = params.sort ?: "id"
             //force the SpeciesListItem to perform a join on the kvp table.
-            //params.fetch = [kvpValues: 'join'] -- doesn't work for a 1 ro many query because it doesn't correctly obey the "max" param
+            //params.fetch = [kvpValues: "join"] -- doesn't work for a 1 ro many query because it doesn't correctly obey the "max" param
             //params.remove("id")
-            params.fetch= [ kvpValues: 'select' ]
+            params.fetch= [ kvpValues: "select" ]
             log.error(params.toQueryString())
-            def distinctCount = SpeciesListItem.executeQuery("select count(distinct guid) from SpeciesListItem where dataResourceUid='"+params.id+"'").head()
-            def keys = SpeciesListKVP.executeQuery("select distinct key from SpeciesListKVP where dataResourceUid='"+params.id+"'")
-            def speciesListItems =  SpeciesListItem.findAllByDataResourceUid(params.id,params)
+            def distinctCount = SpeciesListItem.executeQuery("select count(distinct guid) from SpeciesListItem where dataResourceUid='" + params.id + "'").head()
+            def keys = SpeciesListKVP.executeQuery("select distinct key from SpeciesListKVP where dataResourceUid='" + params.id + "'")
+            def speciesListItems = SpeciesListItem.findAllByDataResourceUid(params.id,params)
             log.debug("KEYS: " + keys)
-            render(view:'/speciesListItem/list', model:[results: speciesListItems,
-                        totalCount:SpeciesListItem.countByDataResourceUid(params.id),
-                        noMatchCount:SpeciesListItem.countByDataResourceUidAndGuidIsNull(params.id),
-                        distinctCount:distinctCount, keys:keys])
+            render(view: "/speciesListItem/list", model: [results: speciesListItems,
+                        totalCount: SpeciesListItem.countByDataResourceUid(params.id),
+                        noMatchCount: SpeciesListItem.countByDataResourceUidAndGuidIsNull(params.id),
+                        distinctCount: distinctCount, keys: keys])
         }
-        catch(Exception e){
-            render(view: '../error', model: [message: "Unable to retrieve species lists. Please let us know if this error persists. <br>Error:<br>" + e.getMessage()])
+        catch(Exception e) {
+            render(view: "../error", model: [message: "Unable to retrieve species lists. Please let us know if this error persists. <br>Error:<br>" + e.getMessage()])
         }
     }
     /**
      * Downloads the field guid for this species list
      * @return
      */
-    def fieldGuide(){
-        if (params.id){
+    def fieldGuide() {
+        if (params.id) {
             def isdr = params.id.startsWith("dr")
             def guids = getGuidsForList(params.id,grailsApplication.config.downloadLimit)
-            def speciesList = isdr?SpeciesList.findByDataResourceUid(params.id):SpeciesList.get(params.id)
-            if(speciesList){
+            def speciesList = isdr ? SpeciesList.findByDataResourceUid(params.id) : SpeciesList.get(params.id)
+            if(speciesList) {
                 def url = bieService.generateFieldGuide(speciesList.getDataResourceUid(), guids)
                 log.debug("THE URL:: " + url)
                 if(url)
-                    redirect(url:url)
+                    redirect(url: url)
                 else
-                    redirect(controller: "speciesListItem", action: "list", id:params.id)
+                    redirect(controller: "speciesListItem", action: "list", id: params.id)
             }
             else
-                redirect(controller: "speciesListItem", action: "list", id:params.id)
+                redirect(controller: "speciesListItem", action: "list", id: params.id)
         }
     }
 
-    def getGuidsForList(id, limit){
-        def fqs = params.fq?[params.fq].flatten().findAll{ it != null }:null
+    def getGuidsForList(id, limit) {
+        def fqs = params.fq ? [params.fq].flatten().findAll { it != null } : null
         def baseQueryAndParams = queryService.constructWithFacets(" from SpeciesListItem sli ",fqs, params.id)
-        SpeciesListItem.executeQuery("select sli.guid  " + baseQueryAndParams[0] + " and sli.guid is not null", baseQueryAndParams[1] ,[max: limit])
+        SpeciesListItem.executeQuery("select sli.guid " + baseQueryAndParams[0] + " and sli.guid is not null", baseQueryAndParams[1] ,[max: limit])
     }
 
     def getUnmatchedNamesForList(id, limit) {
-        def fqs = params.fq?[params.fq].flatten().findAll{ it != null }:null
+        def fqs = params.fq ? [params.fq].flatten().findAll { it != null } : null
         def baseQueryAndParams = queryService.constructWithFacets(" from SpeciesListItem sli ",fqs, params.id)
         def isdr =id.startsWith("dr")
         //def where = isdr? "dataResourceUid=?":"id = ?"
-        def names = SpeciesListItem.executeQuery("select sli.rawScientificName  " + baseQueryAndParams[0] + " and sli.guid is null", baseQueryAndParams[1] ,[max: limit])
+        def names = SpeciesListItem.executeQuery("select sli.rawScientificName " + baseQueryAndParams[0] + " and sli.guid is null", baseQueryAndParams[1] ,[max: limit])
         return names
     }
 
-    def spatialPortal(){
-        if (params.id && params.type){
+    def spatialPortal() {
+        if (params.id && params.type) {
             def guids = getGuidsForList(params.id, grailsApplication.config.downloadLimit)
             def unMatchedNames = getUnmatchedNamesForList(params.id, grailsApplication.config.downloadLimit)
             def splist = SpeciesList.findByDataResourceUid(params.id)
             def title = "Species List: " + splist.listName
             log.debug "unMatchedNames = " + unMatchedNames
             def qid = biocacheService.getQid(guids, unMatchedNames, title, splist.wkt)
-            if(qid?.status == 200){
-                redirect(url: grailsApplication.config.spatial.baseURL + "/?q=qid:"+qid.result)
+            if(qid?.status == 200) {
+                redirect(url: grailsApplication.config.spatial.baseURL + "/?q=qid:" + qid.result)
             } else {
-                render(view: '../error', model: [message: "Unable to view occurrences records. Please let us know if this error persists."])
+                render(view: "../error", model: [message: "Unable to view occurrences records. Please let us know if this error persists."])
             }
         }
     }
@@ -343,10 +343,10 @@ class SpeciesListController {
      * Either downloads records from biocache or redirects to bicache depending on the type
      * @return
      */
-    def occurrences(){
-        if(biocacheService.isListIndexed(params.id)){
-            redirect(url:biocacheService.getQueryUrlForList(params.id))
-        } else if (params.id && params.type){
+    def occurrences() {
+        if(biocacheService.isListIndexed(params.id)) {
+            redirect(url: biocacheService.getQueryUrlForList(params.id))
+        } else if (params.id && params.type) {
             def guids = getGuidsForList(params.id, grailsApplication.config.downloadLimit)
             def unMatchedNames = getUnmatchedNamesForList(params.id, grailsApplication.config.downloadLimit)
             def splist = SpeciesList.findByDataResourceUid(params.id)
@@ -359,10 +359,10 @@ class SpeciesListController {
 
             def url = biocacheService.performBatchSearchOrDownload(guids, unMatchedNames, downloadDto, title, splist.wkt)
 
-            if(url){
-                redirect(url:url)
+            if(url) {
+                redirect(url: url)
             } else {
-                redirect(controller: "speciesListItem", action: "list", id:params.id)
+                redirect(controller: "speciesListItem", action: "list", id: params.id)
             }
         }
     }
@@ -385,7 +385,7 @@ class SpeciesListController {
                     separator = detectSeparator(file);
                     csvReader = helperService.getCSVReaderForCSVFileUpload(file, separator as char)
                 } else {
-                    render(view: 'parsedData', model: [error: INVALID_FILE_TYPE_MESSAGE])
+                    render(view: "parsedData", model: [error: INVALID_FILE_TYPE_MESSAGE])
                     return
                 }
             } else {
@@ -398,7 +398,7 @@ class SpeciesListController {
         }
         catch (e) {
             log.error("Failed to parse data", e)
-            render(view: 'parsedData', model: [error: "Unable to parse species list data: ${e.getMessage()}"])
+            render(view: "parsedData", model: [error: "Unable to parse species list data: ${e.getMessage()}"])
         }
         finally {
             csvReader?.close()
@@ -412,19 +412,19 @@ class SpeciesListController {
     /**
      * Rematches the scientific names in the supplied list
      */
-    def rematch(){
+    def rematch() {
         log.info("Rematching for " + params.id)
         if (params.id && !params.id.startsWith("dr"))
             params.id = SpeciesList.get(params.id)?.dataResourceUid
         Integer totalRows, offset = 0;
         String id = params.id
-        if(id){
+        if(id) {
             totalRows = SpeciesListItem.countByDataResourceUid(id)
         } else {
             totalRows = SpeciesListItem.count();
         }
 
-        while ( offset < totalRows){
+        while ( offset < totalRows) {
             List items
             List guidBatch = [], sliBatch = []
             if (id) {
@@ -443,7 +443,7 @@ class SpeciesListController {
                     log.debug i + ". Rematching: " + rawName
                     if (rawName && rawName.length() > 0) {
                         helperService.matchNameToSpeciesListItem(rawName, item)
-                        if(item.guid){
+                        if(item.guid) {
                             guidBatch.push(item.guid)
                             sliBatch.push(item)
                         }
@@ -485,17 +485,17 @@ class SpeciesListController {
             try {
                 def listProperties = helperService.parseValues(processedHeader as String[], csvReader, separator)
                 log.debug("names - " + listProperties)
-                render(view: 'parsedData', model: [columnHeaders: processedHeader, dataRows: dataRows,
+                render(view: "parsedData", model: [columnHeaders: processedHeader, dataRows: dataRows,
                                                    listProperties: listProperties, listTypes: ListType.values(),
                                                    nameFound: parsedHeader.nameFound, nameColumns: nameColumns])
             } catch (Exception e) {
                 log.debug(e.getMessage())
-                render(view: 'parsedData', model: [error: e.getMessage()])
+                render(view: "parsedData", model: [error: e.getMessage()])
             }
         } else {
-            render(view: 'parsedData', model: [columnHeaders: processedHeader, dataRows: dataRows,
-                                               listTypes: ListType.values(), nameFound: parsedHeader.nameFound,
-                                               nameColumns: nameColumns])
+            render(view: "parsedData", model: [columnHeaders: processedHeader, dataRows: dataRows,
+                                            listTypes: ListType.values(), nameFound: parsedHeader.nameFound,
+                                            nameColumns: nameColumns])
         }
     }
 

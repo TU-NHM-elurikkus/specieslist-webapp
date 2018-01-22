@@ -11,23 +11,25 @@ class PublicController {
     def index() {
         //redirect to the correct type of list based on whether or not the use is logged in
         try {
-            redirect(action: 'speciesLists')
+            redirect(action: "speciesLists")
         } catch(Exception e) {
-            render(view: '../error', model: [message: "Unable to retrieve species lists. Please let us know if this error persists. <br>Error:<br>" + e.getMessage()])
+            render(
+                view: "../error",
+                model: [message: "Unable to retrieve species lists. Please let us know if this error persists. <br>Error: <br>" + e.getMessage()])
         }
     }
 
     def speciesLists() {
-        if (params.isSDS) {
+        if(params.isSDS) {
             // work around for SDS sub-list
-            redirect(action:'sdsLists')
+            redirect(action: "sdsLists")
             return
         }
 
-        params.max = Math.min(params.max ? params.int('max') : 25, 100)
+        params.max = Math.min(params.max ? params.int("max") : 25, 100)
         params.sort = params.sort ?: "listName"
 
-        if (params.sort == "name") {
+        if(params.sort == "name") {
             params.sort = "listName"
         }
 
@@ -35,20 +37,21 @@ class PublicController {
 
         def locale = LocaleContextHolder.getLocale().getLanguage()
 
-        try{
+        try {
             def lists = queryService.getLists(params, locale)
             def count = lists.size()
 
-            render (view:'specieslists', model:[
-                lists: lists,
-                total: count,
-                locale: locale
-            ])
+            render(
+                view: "specieslists",
+                model: [lists: lists, total: count, locale: locale]
+            )
         }
         catch(Exception e) {
-            log.error "Error requesting species Lists: " ,e
+            log.error "Error requesting species Lists: ", e
             response.status = 404
-            render(view: '../error', model: [message: "Unable to retrieve species lists. Please let us know if this error persists. <br>Error:<br>" + e.getMessage()])
+            render(
+                view: "../error",
+                model: [message: "Unable to retrieve species lists. Please let us know if this error persists. <br>Error: <br>" + e.getMessage()])
         }
     }
 
@@ -57,13 +60,14 @@ class PublicController {
         try {
             def lists = queryService.getFilterListResult(params)
             log.debug("Lists: " + lists)
-            render (view:'specieslists', model:[lists:lists, total:lists.totalCount])
+            render(view: "specieslists", model: [lists: lists, total: lists.totalCount])
         }
-        catch(Exception e){
-            log.error "Error requesting species Lists: " ,e
+        catch(Exception e) {
+            log.error "Error requesting species Lists: ", e
             response.status = 404
-            render(view: '../error', model: [message: "Unable to retrieve species lists. Please let us know if this error persists. <br>Error:<br>" + e.getMessage()])
+            render(
+                view: "../error",
+                model: [message: "Unable to retrieve species lists. Please let us know if this error persists. <br>Error: <br>" + e.getMessage()])
         }
     }
-
 }
