@@ -33,10 +33,10 @@ class SpeciesListItemController {
                         flash.message = requestParams.message
                     }
 
-                    requestParams.max = Math.min(requestParams.max ? requestParams.int('max') : 25, 100)
+                    requestParams.max = Math.min(requestParams.max ? requestParams.int("max") : 25, 100)
                     requestParams.sort = requestParams.sort ?: "itemOrder"
-                    requestParams.offset = requestParams.int('offset') ?: 0
-                    requestParams.fetch = [kvpValues: 'select']
+                    requestParams.offset = requestParams.int("offset") ?: 0
+                    requestParams.fetch = [kvpValues: "select"]
 
                     log.debug(requestParams.toQueryString())
 
@@ -94,7 +94,7 @@ class SpeciesListItemController {
                             baseQuery = "dataResourceUid=? AND raw_scientific_name LIKE ?"
                             baseParams = [requestParams.id, "%" + requestParams.query + "%"]
 
-                            facets = generateFacetValues([requestParams.query], ['FROM SpeciesListItem AS sli WHERE ' + baseQuery, baseParams])
+                            facets = generateFacetValues([requestParams.query], ["FROM SpeciesListItem AS sli WHERE " + baseQuery, baseParams])
                         } else {
                             baseQuery = "dataResourceUid=?"
                             baseParams = [requestParams.id]
@@ -130,7 +130,7 @@ class SpeciesListItemController {
 
                     def downloadReasons = loggerService.getReasons()
 
-                    render(view: 'list', model: [
+                    render(view: "list", model: [
                         speciesList: speciesList,
                         params: requestParams,
                         results: speciesListItems,
@@ -148,7 +148,7 @@ class SpeciesListItemController {
                 }
             } catch (Exception e) {
                 log.error("Unable to view species list items.", e)
-                render(view: '../error', model: [message: "Unable to retrieve species list items. Please let us know if this error persists. <br>Error:<br>" + e.getMessage()])
+                render(view: "../error", model: [message: "Unable to retrieve species list items. Please let us know if this error persists. <br>Error:<br>" + e.getMessage()])
             }
         } else {
             //redirect to the public species list page
@@ -157,7 +157,7 @@ class SpeciesListItemController {
     }
 
     // XXX: Doesn't actually use fqs
-    private def generateFacetValues(List fqs, baseQueryParams){
+    private def generateFacetValues(List fqs, baseQueryParams) {
         def map = [:]
 
         //handle the user defined properties -- this will also make up the facets
@@ -176,7 +176,7 @@ class SpeciesListItemController {
 
             def results = SpeciesListItem.executeQuery(
                 "SELECT kvp.key, kvp.value, kvp.vocabValue, COUNT(sli) AS cnt " +
-                "FROM SpeciesListItem AS sli JOIN sli.kvpValues AS  kvp " +
+                "FROM SpeciesListItem AS sli JOIN sli.kvpValues AS kvp " +
                 "WHERE sli.dataResourceUid=:druid ${ids ? 'and sli.id in (:ids)' : ''} " +
                 "GROUP BY kvp.key, kvp.value, kvp.vocabValue " +
                 "ORDER BY kvp.itemOrder,kvp.key,cnt DESC",
@@ -197,19 +197,19 @@ class SpeciesListItemController {
                 map.family = commonResults
             }
 
-            properties = results.findAll{ it[1].length()<maxLengthForFacet }.groupBy { it[0] }.findAll{ it.value.size()>1}
+            properties = results.findAll { it[1].length() < maxLengthForFacet }.groupBy { it[0] }.findAll { it.value.size() > 1 }
 
         } else {
             def result = SpeciesListItem.executeQuery(
-                'SELECT kvp.key, kvp.value, kvp.vocabValue, count(sli) as cnt ' +
-                'FROM SpeciesListItem AS sli JOIN sli.kvpValues AS kvp ' +
-                'WHERE sli.dataResourceUid=? ' +
-                'GROUP BY kvp.key, kvp.value, kvp.vocabValue ' +
-                'ORDER BY kvp.itemOrder,kvp.key,cnt desc',
+                "SELECT kvp.key, kvp.value, kvp.vocabValue, count(sli) as cnt " +
+                "FROM SpeciesListItem AS sli JOIN sli.kvpValues AS kvp " +
+                "WHERE sli.dataResourceUid=? " +
+                "GROUP BY kvp.key, kvp.value, kvp.vocabValue " +
+                "ORDER BY kvp.itemOrder,kvp.key,cnt desc",
                 params.id
             )
 
-            properties = result.findAll{it[1].length()<maxLengthForFacet}.groupBy{it[0]}.findAll{it.value.size()>1 }
+            properties = result.findAll { it[1].length() < maxLengthForFacet }.groupBy { it[0] }.findAll { it.value.size() > 1 }
 
             //obtain the families from the common list facets
             def commonResults = SpeciesListItem.executeQuery(
@@ -235,14 +235,22 @@ class SpeciesListItemController {
         map
     }
 
-    def facetsvalues(){
-        if(params.id){
-          def result = SpeciesListItem.executeQuery('select kvp.key, kvp.value, kvp.vocabValue, count(sli) as cnt from SpeciesListItem as sli join sli.kvpValues  as kvp where sli.dataResourceUid=? group by kvp.key, kvp.value, kvp.vocabValue order by kvp.key,cnt desc', params.id)
-          //group the same properties keys together
-          def properties = result.groupBy { it[0] }
-          def map = [:]
-          map.listProperties = properties
-          render map as JSON
+    def facetsvalues() {
+        if(params.id) {
+            def result = SpeciesListItem.executeQuery(
+                "SELECT kvp.key, kvp.value, kvp.vocabValue, count(sli) AS cnt " +
+                "FROM SpeciesListItem AS sli " +
+                "JOIN sli.kvpValues AS kvp " +
+                "WHERE sli.dataResourceUid=? " +
+                "GROUP BY kvp.key, kvp.value, kvp.vocabValue " +
+                "ORDER BY kvp.key,cnt desc",
+                params.id
+            )
+            //group the same properties keys together
+            def properties = result.groupBy { it[0] }
+            def map = [:]
+            map.listProperties = properties
+            render map as JSON
         }
         null
     }
@@ -251,35 +259,35 @@ class SpeciesListItemController {
      * Downloads the records for the supplied species list
      * @return
      */
-    def downloadList(){
-        if (params.id){
-            params.fetch = [ kvpValues: 'join' ]
+    def downloadList() {
+        if (params.id) {
+            params.fetch = [ kvpValues: "join" ]
             log.debug("Downloading Species List")
-            def keys = SpeciesListKVP.executeQuery("select distinct key from SpeciesListKVP where dataResourceUid='"+params.id+"'")
-            def fqs = params.fq?[params.fq].flatten().findAll{ it != null } : null
+            def keys = SpeciesListKVP.executeQuery("select distinct key from SpeciesListKVP where dataResourceUid='${params.id}'")
+            def fqs = params.fq ? [params.fq].flatten().findAll { it != null } : null
             def baseQueryAndParams = queryService.constructWithFacets(" from SpeciesListItem sli ",fqs, params.id)
             def sli = SpeciesListItem.executeQuery("Select sli " + baseQueryAndParams[0], baseQueryAndParams[1])
             //def sli =SpeciesListItem.findAllByDataResourceUid(params.id,params)
             def out = new StringWriter()
             def csvWriter = new CSVWriter(out)
-            def header =  ["Supplied Name","guid","scientificName","family","kingdom"]
+            def header = ["Supplied Name", "guid", "scientificName", "family", "kingdom"]
             header.addAll(keys)
             log.debug(header)
             csvWriter.writeNext(header as String[])
             sli.each {
-                def values = keys.collect{key->it.kvpValues.find {kvp -> kvp.key == key}}.collect { kvp -> kvp?.vocabValue?:kvp?.value}
+                def values = keys.collect { key -> it.kvpValues.find { kvp -> kvp.key == key } }.collect { kvp -> kvp?.vocabValue ?: kvp?.value }
                 def row = [it.rawScientificName, it.guid, it.matchedName, it.family, it.kingdom]
                 row.addAll(values)
                 csvWriter.writeNext(row as String[])
             }
             csvWriter.close()
-            def filename = params.file?:"list.csv"
-            if(!filename.toLowerCase().endsWith('.csv')){
-                filename += '.csv'
+            def filename = params.file ?: "list.csv"
+            if(!filename.toLowerCase().endsWith(".csv")) {
+                filename += ".csv"
             }
 
-            response.addHeader("Content-Disposition", "attachment;filename="+filename);
-            render(contentType: 'text/csv', text:out.toString())
+            response.addHeader("Content-Disposition", "attachment;filename=" + filename);
+            render(contentType: "text/csv", text:out.toString())
         }
     }
 
@@ -287,9 +295,9 @@ class SpeciesListItemController {
      * Returns BIE details about the supplied guid
      * @return
      */
-    def itemDetails(){
+    def itemDetails() {
         log.debug("Returning item details for " + params)
-        if(params.guids){
+        if(params.guids) {
             render bieService.bulkLookupSpecies(params.guid) as JSON
         } else {
             null
