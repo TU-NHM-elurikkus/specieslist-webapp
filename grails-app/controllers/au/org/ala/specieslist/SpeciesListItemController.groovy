@@ -3,6 +3,34 @@ package au.org.ala.specieslist
 import grails.converters.*
 import au.com.bytecode.opencsv.CSVWriter
 
+
+class SpeciesListItemCommand {
+    String order
+    String sort
+    int max
+    int offset
+
+    static constraints = {
+        order(
+            blank: true,
+            inList: ["asc", "desc"],
+        )
+        sort(
+            blank: true,
+            inList: ["itemOrder", "matchedName", "imageUrl", "author", "commonName"],
+        )
+        max(
+            blank: true,
+            size: 25..100,
+        )
+        offset(
+            blank: true,
+            min: 0,
+        )
+    }
+}
+
+
 class SpeciesListItemController {
 
     BieService bieService
@@ -10,149 +38,151 @@ class SpeciesListItemController {
     QueryService queryService
     int maxLengthForFacet = 30 // Note: is length of _name_ of the facet category/field
 
-    def index() { }
-
     /**
      * Public display of a species list
      */
-    def list() {
+    def list(SpeciesListItemCommand cmd) {
+        if (cmd.hasErrors()) {
+            if (cmd.errors.hasFieldErrors("order")) {
+                params.order = "asc"
+            }
+            if (cmd.errors.hasFieldErrors("sort")) {
+                params.sort = "itemOrder"
+            }
+            if (cmd.errors.hasFieldErrors("max")) {
+                params.max = 25
+            }
+            if (cmd.errors.hasFieldErrors("offset")) {
+                params.offset = 0
+            }
+        }
+
         doListDisplay(params)
     }
 
     private doListDisplay(requestParams) {
-        if (requestParams.id) {
-            try {
-                //check to see if the list exists
-                def speciesList = SpeciesList.findByDataResourceUid(requestParams.id)
+        try {
+            //check to see if the list exists
+            def speciesList = SpeciesList.findByDataResourceUid(requestParams.id)
 
-                if (!speciesList) {
-                    flash.message = "${message(code: 'general.not.found.message', args: [message(code: 'speciesList.label', default: 'Species List'), requestParams.id])}"
-                    redirect(controller: "public", action: "speciesLists")
-                } else {
-                    if (requestParams.message) {
-                        flash.message = requestParams.message
-                    }
-
-                    requestParams.max = Math.min(requestParams.max ? requestParams.int("max") : 25, 100)
-                    requestParams.sort = requestParams.sort ?: "itemOrder"
-                    requestParams.offset = requestParams.int("offset") ?: 0
-                    requestParams.fetch = [kvpValues: "select"]
-
-                    log.debug(requestParams.toQueryString())
-
-                    //need to get all keys to be included in the table so no need to add the filter.
-                    def keys = SpeciesListKVP.executeQuery("select distinct key from SpeciesListKVP where dataResourceUid=? order by itemOrder", requestParams.id)
-
-                    def fqs, distinctCount, speciesListItems, totalCount, noMatchCount, facets
-
-                    def orderQuery = " ORDER BY ${requestParams.sort} ${requestParams.order ?: 'asc'}"
-
-                    // XXX TODO: Don't fully branch, but merge fq and search query and then
-                    // execute them (can probably merge all three branches). But that will
-                    // require some non-trivial refactoring because related methods are
-                    // very fq-specific and are used in other places
-                    if(requestParams.fq) {
-                        fqs = [requestParams.fq].flatten().findAll { it != null }
-
-                        def baseQueryAndParams = queryService.constructWithFacets(" from SpeciesListItem sli ", fqs, requestParams.id)
-                        def baseQuery = baseQueryAndParams[0]
-                        def baseQueryParams = baseQueryAndParams[1]
-
-                        if(requestParams.query) {
-                            baseQuery += "AND sli.rawScientificName LIKE '%${requestParams.query}%' "
-                        }
-
-                        log.debug("Base query & params:")
-                        log.debug(baseQueryAndParams)
-
-                        speciesListItems = SpeciesListItem.executeQuery(
-                            "select sli " + baseQuery + orderQuery,
-                            baseQueryParams,
-                            requestParams
-                        )
-
-                        distinctCount = SpeciesList.executeQuery(
-                            "select count(distinct guid) " + baseQuery,
-                            baseQueryParams
-                        ).head()
-
-                        totalCount = SpeciesListItem.executeQuery(
-                            "select count(*) " + baseQuery,
-                            baseQueryParams
-                        ).head()
-
-                        noMatchCount = SpeciesListItem.executeQuery(
-                            "select count(*) " + baseQuery + " AND sli.guid is null",
-                            baseQueryParams,
-                        ).head()
-
-                        facets = generateFacetValues(fqs, baseQueryAndParams)
-                    } else {
-                        def baseQuery, baseParams;
-
-                        if(requestParams.query) {
-                            baseQuery = "dataResourceUid=? AND raw_scientific_name LIKE ?"
-                            baseParams = [requestParams.id, "%" + requestParams.query + "%"]
-
-                            facets = generateFacetValues([requestParams.query], ["FROM SpeciesListItem AS sli WHERE " + baseQuery, baseParams])
-                        } else {
-                            baseQuery = "dataResourceUid=?"
-                            baseParams = [requestParams.id]
-
-                            facets = generateFacetValues(null, null)
-                        }
-
-                        speciesListItems = SpeciesListItem.findAll(
-                            "FROM SpeciesListItem WHERE " + baseQuery + orderQuery,
-                            baseParams,
-                            requestParams
-                        )
-
-                        distinctCount = SpeciesListItem.executeQuery(
-                            "SELECT COUNT(DISTINCT guid) FROM SpeciesListItem WHERE " + baseQuery,
-                            baseParams
-                        ).head()
-
-                        totalCount = SpeciesListItem.executeQuery(
-                            "SELECT COUNT(guid) FROM SpeciesListItem WHERE " + baseQuery,
-                            baseParams
-                        ).head()
-
-                        noMatchCount = SpeciesListItem.executeQuery(
-                            "SELECT COUNT(guid) FROM SpeciesListItem WHERE guid IS NOT NULL AND " + baseQuery,
-                            baseParams
-                        ).head()
-                    }
-
-                    def users = SpeciesList.executeQuery("select distinct sl.username from SpeciesList sl")
-
-                    def guids = speciesListItems.collect { it.guid }
-
-                    def downloadReasons = loggerService.getReasons()
-
-                    render(view: "list", model: [
-                        speciesList: speciesList,
-                        params: requestParams,
-                        results: speciesListItems,
-                        totalCount: totalCount,
-                        noMatchCount: noMatchCount,
-                        distinctCount: distinctCount,
-                        hasUnrecognised: noMatchCount > 0,
-                        keys: keys,
-                        downloadReasons: downloadReasons,
-                        users: users,
-                        facets: facets,
-                        fqs : fqs,
-                        query: requestParams.query
-                    ])
-                }
-            } catch (Exception e) {
-                log.error("Unable to view species list items.", e)
-                render(view: "../error", model: [message: "Unable to retrieve species list items. Please let us know if this error persists. <br>Error:<br>" + e.getMessage()])
+            if (!speciesList) {
+                flash.message = message(code: "general.not.found.message", args: [requestParams.id])
+                return redirect(controller: "public", action: "speciesLists")
             }
-        } else {
-            //redirect to the public species list page
-            redirect(controller: "public", action: "speciesLists")
+            if (requestParams.message) {
+                flash.message = requestParams.message
+            }
+
+            log.debug(requestParams.toQueryString())
+
+            //need to get all keys to be included in the table so no need to add the filter.
+            def keys = SpeciesListKVP.executeQuery("select distinct key from SpeciesListKVP where dataResourceUid=? order by itemOrder", requestParams.id)
+
+            def fqs, distinctCount, speciesListItems, totalCount, noMatchCount, facets
+
+            def orderQuery = " ORDER BY ${requestParams.sort} ${requestParams.order}"
+
+            // XXX TODO: Don't fully branch, but merge fq and search query and then
+            // execute them (can probably merge all three branches). But that will
+            // require some non-trivial refactoring because related methods are
+            // very fq-specific and are used in other places
+            if(requestParams.fq) {
+                fqs = [requestParams.fq].flatten().findAll { it != null }
+
+                def baseQueryAndParams = queryService.constructWithFacets(" from SpeciesListItem sli ", fqs, requestParams.id)
+                def baseQuery = baseQueryAndParams[0]
+                def baseQueryParams = baseQueryAndParams[1]
+
+                if (requestParams.query) {
+                    baseQuery += "AND sli.rawScientificName LIKE '%${requestParams.query}%' "
+                }
+
+                log.debug("Base query & params:")
+                log.debug(baseQueryAndParams)
+
+                speciesListItems = SpeciesListItem.executeQuery(
+                    "select sli " + baseQuery + orderQuery,
+                    baseQueryParams,
+                    requestParams
+                )
+
+                distinctCount = SpeciesList.executeQuery(
+                    "select count(distinct guid) " + baseQuery,
+                    baseQueryParams
+                ).head()
+
+                totalCount = SpeciesListItem.executeQuery(
+                    "select count(*) " + baseQuery,
+                    baseQueryParams
+                ).head()
+
+                noMatchCount = SpeciesListItem.executeQuery(
+                    "select count(*) " + baseQuery + " AND sli.guid is null",
+                    baseQueryParams,
+                ).head()
+
+                facets = generateFacetValues(fqs, baseQueryAndParams)
+            } else {
+                def baseQuery, baseParams;
+
+                if (requestParams.query) {
+                    baseQuery = "dataResourceUid=? AND raw_scientific_name LIKE ?"
+                    baseParams = [requestParams.id, "%${requestParams.query}%"]
+
+                    facets = generateFacetValues([requestParams.query], ["FROM SpeciesListItem AS sli WHERE " + baseQuery, baseParams])
+                } else {
+                    baseQuery = "dataResourceUid=?"
+                    baseParams = [requestParams.id]
+
+                    facets = generateFacetValues(null, null)
+                }
+
+                speciesListItems = SpeciesListItem.findAll(
+                    "FROM SpeciesListItem WHERE " + baseQuery + orderQuery,
+                    baseParams,
+                    requestParams
+                )
+
+                distinctCount = SpeciesListItem.executeQuery(
+                    "SELECT COUNT(DISTINCT guid) FROM SpeciesListItem WHERE " + baseQuery,
+                    baseParams
+                ).head()
+
+                totalCount = SpeciesListItem.executeQuery(
+                    "SELECT COUNT(guid) FROM SpeciesListItem WHERE " + baseQuery,
+                    baseParams
+                ).head()
+
+                noMatchCount = SpeciesListItem.executeQuery(
+                    "SELECT COUNT(guid) FROM SpeciesListItem WHERE guid IS NOT NULL AND " + baseQuery,
+                    baseParams
+                ).head()
+            }
+
+            def users = SpeciesList.executeQuery("select distinct sl.username from SpeciesList sl")
+
+            def guids = speciesListItems.collect { it.guid }
+
+            def downloadReasons = loggerService.getReasons()
+
+            render(view: "list", model: [
+                speciesList: speciesList,
+                params: requestParams,
+                results: speciesListItems,
+                totalCount: totalCount,
+                noMatchCount: noMatchCount,
+                distinctCount: distinctCount,
+                hasUnrecognised: noMatchCount > 0,
+                keys: keys,
+                downloadReasons: downloadReasons,
+                users: users,
+                facets: facets,
+                fqs : fqs,
+                query: requestParams.query
+            ])
+        } catch (Exception e) {
+            log.error("Unable to view species list items.", e)
+            render(view: "../error", model: [message: "Unable to retrieve species list items. Please let us know if this error persists. <br>Error:<br>" + e.getMessage()])
         }
     }
 
@@ -165,7 +195,7 @@ class SpeciesListItemController {
 
         def properties = null
 
-        if(fqs) {
+        if (fqs) {
             //get the ids for the query -- this allows correct counts when joins are being performed.
             def ids = SpeciesListItem.executeQuery("SELECT DISTINCT sli.id " + baseQueryParams[0], baseQueryParams[1])
 
@@ -193,7 +223,7 @@ class SpeciesListItemController {
                 queryParameters
             )
 
-            if(commonResults.size() > 1) {
+            if (commonResults.size() > 1) {
                 map.family = commonResults
             }
 
@@ -221,13 +251,13 @@ class SpeciesListItemController {
                 params.id
             )
 
-            if(commonResults.size() > 1) {
+            if (commonResults.size() > 1) {
                 map.family = commonResults
             }
         }
 
         //if there was a facet included in the result we will need to divide the
-        if(properties) {
+        if (properties) {
             map.listProperties = properties
         }
 
@@ -236,7 +266,7 @@ class SpeciesListItemController {
     }
 
     def facetsvalues() {
-        if(params.id) {
+        if (params.id) {
             def result = SpeciesListItem.executeQuery(
                 "SELECT kvp.key, kvp.value, kvp.vocabValue, count(sli) AS cnt " +
                 "FROM SpeciesListItem AS sli " +
@@ -282,7 +312,7 @@ class SpeciesListItemController {
             }
             csvWriter.close()
             def filename = params.file ?: "list.csv"
-            if(!filename.toLowerCase().endsWith(".csv")) {
+            if (!filename.toLowerCase().endsWith(".csv")) {
                 filename += ".csv"
             }
 
@@ -297,7 +327,7 @@ class SpeciesListItemController {
      */
     def itemDetails() {
         log.debug("Returning item details for " + params)
-        if(params.guids) {
+        if (params.guids) {
             render bieService.bulkLookupSpecies(params.guid) as JSON
         } else {
             null
