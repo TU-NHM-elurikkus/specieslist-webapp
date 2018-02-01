@@ -12,19 +12,15 @@ class SpeciesListItemCommand {
 
     static constraints = {
         order(
-            blank: true,
             inList: ["asc", "desc"],
         )
         sort(
-            blank: true,
             inList: ["itemOrder", "matchedName", "imageUrl", "author", "commonName"],
         )
         max(
-            blank: true,
             size: 25..100,
         )
         offset(
-            blank: true,
             min: 0,
         )
     }
@@ -56,6 +52,12 @@ class SpeciesListItemController {
                 params.offset = 0
             }
         }
+
+        // Default values
+        params.order = params.order ?: "asc"
+        params.sort = params.sort ?: "itemOrder"
+        params.max = params.int("max", 25)
+        params.offset = params.int("offset", 0)
 
         doListDisplay(params)
     }
