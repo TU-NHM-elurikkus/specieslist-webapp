@@ -158,7 +158,6 @@ class WebServiceController {
                                             dateCreated: it.dateCreated,
                                             lastUpdated: it.lastUpdated,
                                             username: it.username,
-                                            fullName: it.getFullName(),
                                             itemCount: it.itemsCount,
                                             region: it.region,
                                             category: it.category,
