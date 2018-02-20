@@ -126,7 +126,6 @@ class WebServiceController {
                 if(sl.listType) listType = sl?.listType?.toString()
                 dateCreated = sl.dateCreated
                 username =  sl.username
-                fullName = sl.getFullName()
                 itemCount = sl.itemsCount//SpeciesListItem.countByList(sl)
                 isAuthoritative = sl.isAuthoritative ?: false
                 isInvasive = sl.isInvasive ?: false
