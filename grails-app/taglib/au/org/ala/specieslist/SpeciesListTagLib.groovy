@@ -74,4 +74,26 @@ class SpeciesListTagLib {
                 .replaceAll("\\(", "").replaceAll("\\)", "")
                 .toLowerCase()
     }
+
+    /**
+     * Get facet name from key:value string
+     *
+     * @attr facet REQUIRED
+     */
+    def getFacetName = { attrs, body ->
+        out << attrs.facet.split(":")[0]
+    }
+
+    /**
+     * Get facet value from key:value string
+     *
+     * @attr facet REQUIRED
+     */
+    def getFacetValue = { attrs, body ->
+        def facet = attrs.facet
+
+        if(facet.contains(":")) {
+            out << facet.split(":", 2)[1]
+        }
+    }
 }
