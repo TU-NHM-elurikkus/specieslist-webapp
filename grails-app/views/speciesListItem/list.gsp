@@ -142,7 +142,7 @@
                     <div class="item-search__filter-line vertical-block">
                         <div class="active-filters">
                             <span class="active-filters__title">
-                                <g:message code="speciesListItem.list.filters" />
+                                <g:message code="speciesListItem.list.filters" />:
                             </span>
 
                             <g:if test="${query}">
@@ -162,7 +162,7 @@
                             <g:each in="${fqs}" var="fq">
                                 <span class="active-filters__filter">
                                     <span class="active-filters__label">
-                                        ${fq}
+                                        <g:message code="facet.${sl.getFacetName(facet: fq)}" />: "<sl:getFacetValue facet="${fq}" />"
                                     </span>
 
                                     <span
