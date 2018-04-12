@@ -344,9 +344,7 @@ class SpeciesListController {
      * @return
      */
     def occurrences() {
-        if(biocacheService.isListIndexed(params.id)) {
-            redirect(url: biocacheService.getQueryUrlForList(params.id))
-        } else if (params.id && params.type) {
+        if (params.id && params.type) {
             def guids = getGuidsForList(params.id, grailsApplication.config.downloadLimit)
             def unMatchedNames = getUnmatchedNamesForList(params.id, grailsApplication.config.downloadLimit)
             def splist = SpeciesList.findByDataResourceUid(params.id)
@@ -364,6 +362,8 @@ class SpeciesListController {
             } else {
                 redirect(controller: "speciesListItem", action: "list", id: params.id)
             }
+        } else if(biocacheService.isListIndexed(params.id)) {
+            redirect(url: biocacheService.getQueryUrlForList(params.id))
         }
     }
 
