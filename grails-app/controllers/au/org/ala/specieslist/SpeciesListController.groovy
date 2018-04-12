@@ -344,7 +344,7 @@ class SpeciesListController {
      * @return
      */
     def occurrences() {
-        if (params.id && params?.type.toLowerCase() == "download") {
+        if (params.id && params.type) {
             def guids = getGuidsForList(params.id, grailsApplication.config.downloadLimit)
             def unMatchedNames = getUnmatchedNamesForList(params.id, grailsApplication.config.downloadLimit)
             def splist = SpeciesList.findByDataResourceUid(params.id)
