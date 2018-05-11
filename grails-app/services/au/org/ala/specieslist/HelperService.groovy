@@ -55,8 +55,12 @@ class HelperService {
     // Only permit URLs for added safety
     private final LinkExtractor extractor = LinkExtractor.builder().linkTypes(EnumSet.of(LinkType.URL)).build()
 
+    String COLLECTORY_BACKEND_URL
+
     @PostConstruct
-    init(){
+    init() {
+        COLLECTORY_BACKEND_URL = grailsApplication.config.collectory.internal.url
+
         BATCH_SIZE = Integer.parseInt((grailsApplication.config.batchSize?:200).toString())
         speciesNameColumns = grailsApplication.config.speciesNameColumns ?
                 grailsApplication.config.speciesNameColumns.split(',') : []
@@ -73,7 +77,8 @@ class HelperService {
      * @return
      */
     def addDataResourceForList(map) {
-        if(grailsApplication.config.collectory.enableSync?.toBoolean()){
+        if(grailsApplication.config.collectory.enableSync?.toBoolean()) {
+            // returns location and simpler to leave front's url
             def postUrl = grailsApplication.config.collectory.baseURL + "/ws/dataResource"
             def http = new HTTPBuilder(postUrl)
             http.getClient().getParams().setParameter("http.socket.timeout", new Integer(5000))

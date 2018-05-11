@@ -3,14 +3,23 @@ package au.org.ala.specieslist
 import groovy.json.JsonSlurper
 import groovyx.net.http.HTTPBuilder
 import grails.web.JSONBuilder
+import javax.annotation.PostConstruct
+
 
 class BiocacheService {
     static final int DEFAULT_TIMEOUT_MILLIS = 60000
 
     def grailsApplication
 
-    def getQid(guids, unMatchedNames, title, wkt){
-        def http = new HTTPBuilder(grailsApplication.config.biocacheService.baseURL +"/webportal/params")
+    String BIOCACHE_SERVICE_BACKEND_URL
+
+    @PostConstruct
+    def init() {
+        BIOCACHE_SERVICE_BACKEND_URL = grailsApplication.config.biocacheService.internal.url
+    }
+
+    def getQid(guids, unMatchedNames, title, wkt) {
+        def http = new HTTPBuilder("${}/webportal/params")
 
         def query = ""
 
@@ -60,7 +69,8 @@ class BiocacheService {
      * @return
      */
     String getQueryUrlForList(drUid){
-        grailsApplication.config.biocache.baseURL + "/occurrences/search?q=species_list_uid:" + drUid
+        // front-end url
+        "${grailsApplication.config.biocache.baseURL}/occurrences/search?q=species_list_uid:${drUid}"
     }
 
     /**
@@ -71,7 +81,7 @@ class BiocacheService {
      */
     Boolean isListIndexed(drUid){
         try {
-            def url = grailsApplication.config.biocacheService.baseURL + "/occurrences/search?pageSize=0&facet=off&q=species_list_uid:" + drUid
+            def url = "${BIOCACHE_SERVICE_BACKEND_URL}/occurrences/search?pageSize=0&facet=off&q=species_list_uid:" + drUid
             def jsonText = new URL(url).getText("UTF-8")
             def jsSlurper = new JsonSlurper()
             def json = jsSlurper.parseText(jsonText)
@@ -99,14 +109,16 @@ class BiocacheService {
         } else if (resp?.status == 200) {
             log.debug "200 OK response"
             def qid = resp.result
+
+            // Front-end url
             def returnUrl = ""
             switch ( downloadDto.type ) {
                 case "Search":
-                    returnUrl = grailsApplication.config.biocache.baseURL + "/occurrences/search?q=qid:" + qid
+                    returnUrl = "${grailsApplication.config.biocache.baseURL}/occurrences/search?q=qid:${qid}"
                     break
                 case "Download":
-                    returnUrl = grailsApplication.config.biocacheService.baseURL + "/occurrences/index/download?q=qid:" + qid + "&file=" + downloadDto.file
-                    returnUrl += "&reasonTypeId=" + downloadDto.reasonTypeId + "&email=" + downloadDto.email
+                    returnUrl = "${grailsApplication.config.biocacheService.baseURL}/occurrences/index/download?q=qid:${qid}&file=${downloadDto.file}"
+                    returnUrl += "&reasonTypeId=${downloadDto.reasonTypeId}&email=${downloadDto.email}"
                     break
             }
             returnUrl
@@ -116,7 +128,7 @@ class BiocacheService {
     }
 
     //Location	http://biocache.ala.org.au/occurrences/search?q=qid:1344230443917
-    def createJsonForBatch(guids){
+    def createJsonForBatch(guids) {
         def builder = new JSONBuilder()
 
         def result = builder.build{

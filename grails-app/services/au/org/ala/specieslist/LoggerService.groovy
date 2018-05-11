@@ -2,17 +2,25 @@ package au.org.ala.specieslist
 
 import groovy.json.JsonSlurper
 import grails.plugin.cache.Cacheable
+import javax.annotation.PostConstruct
 
 
 class LoggerService {
 
     def grailsApplication
 
+    String LOGGER_SERVICE_BACKEND_URL
+
+    @PostConstruct
+    def init() {
+        LOGGER_SERVICE_BACKEND_URL = "${grailsApplication.config.loggerService.internal.url}/service"
+    }
+
     // @Cacheable("loggerCache")
     def getReasons() {
         log.info("Refreshing the download reasons")
 
-        String queryUrl = "${grailsApplication.config.loggerService.baseURL}/service/logger/reasons"
+        String queryUrl = "${LOGGER_SERVICE_BACKEND_URL}/logger/reasons"
 
         try {
             def queryResponse = new URL(queryUrl).getText("UTF-8")

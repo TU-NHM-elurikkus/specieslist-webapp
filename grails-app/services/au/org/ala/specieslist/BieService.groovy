@@ -2,10 +2,20 @@ package au.org.ala.specieslist
 import grails.converters.JSON
 import grails.web.JSONBuilder
 import groovyx.net.http.HTTPBuilder
+import javax.annotation.PostConstruct
+
 
 class BieService {
 
     def grailsApplication
+
+    String BIE_SERVICE_BACKEND_URL, LISTS_BACKEND_URL
+
+    @PostConstruct
+    def init() {
+        BIE_SERVICE_BACKEND_URL = grailsApplication.config.bieService.internal.url
+        LISTS_BACKEND_URL = grailsApplication.config.lists.internal.url
+    }
 
     def bulkLookupSpecies(list) {
         Map map = [:]
@@ -24,7 +34,7 @@ class BieService {
     }
 
     public List bulkSpeciesLookupWithGuids(list) {
-        def http = new HTTPBuilder(grailsApplication.config.bieService.baseURL + "/species/guids/bulklookup.json")
+        def http = new HTTPBuilder("${BIE_SERVICE_BACKEND_URL}/species/guids/bulklookup.json")
         http.getClient().getParams().setParameter("http.socket.timeout", new Integer(8000))
         def jsonBody = (list as JSON).toString()
         try {
@@ -38,8 +48,7 @@ class BieService {
 
     def updateBieIndex(List<Map> guidImageList) {
         def response
-        //"http://dev.ala.org.au:8089/bie-index/updateImages"
-        def http = new HTTPBuilder(grailsApplication.config.bieService.baseURL + "/updateImages")
+        def http = new HTTPBuilder("${BIE_SERVICE_BACKEND_URL}/updateImages")
         http.setHeaders(["Authorization": grailsApplication.config.bieApiKey])
         def jsonBody = (guidImageList as JSON).toString()
         try {
@@ -53,11 +62,12 @@ class BieService {
 
     def generateFieldGuide(druid,guids){
         def title = "The field guide for " + druid
-        def link = grailsApplication.config.grails.serverURL + "/speciesListItems/list/" + druid
+        def link = "${LISTS_BACKEND_URL}/speciesListItems/list/${druid}"
         try {
-            def http = new HTTPBuilder(grailsApplication.config.fieldGuide.baseURL+"/generate")
-            def response = http.post(body:  createJsonForFieldGuide(title, link, guids), requestContentType:groovyx.net.http.ContentType.JSON){ resp ->
-                def responseURL = grailsApplication.config.fieldGuide.baseURL +"/guide/"+ resp.headers['fileId'].getValue()
+            // fieldGuide.baseURL is empty though
+            def http = new HTTPBuilder(grailsApplication.config.fieldGuide.baseURL + "/generate")
+            def response = http.post(body: createJsonForFieldGuide(title, link, guids), requestContentType:groovyx.net.http.ContentType.JSON){ resp ->
+                def responseURL = grailsApplication.config.fieldGuide.baseURL + "/guide/" + resp.headers['fileId'].getValue()
                 log.debug(responseURL)
                 return responseURL
             }
