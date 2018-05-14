@@ -19,7 +19,7 @@ class BiocacheService {
     }
 
     def getQid(guids, unMatchedNames, title, wkt) {
-        def http = new HTTPBuilder("${}/webportal/params")
+        def http = new HTTPBuilder("${BIOCACHE_SERVICE_BACKEND_URL}/webportal/params")
 
         def query = ""
 
