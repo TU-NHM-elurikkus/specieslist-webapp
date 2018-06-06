@@ -231,7 +231,7 @@
                                 <div class="inline-controls__group">
                                     <a
                                         class="erk-button erk-button-link erk-button--dark"
-                                        href="${grailsApplication.config.occurrences.ui.url}/occurrences/search?lang=en&fq=species_list_uid:${params.id}"
+                                        href="${grailsApplication.config.occurrences.ui.url}/occurrences/search?fq=species_list_uid:${params.id}"
                                     >
                                         <span class="fa fa-list"></span>
                                         <g:message code="speciesListItem.list.viewOccurrence" />
