@@ -285,10 +285,18 @@ class QueryService {
                         .append(".value=?")
 
                     queryparams.addAll([key, value])
-                } else {
-                    //must be a facet with the same table
-                    String key = facet.substring(0,facet.indexOf(":"))
-                    String value = facet.substring(facet.indexOf(":")+1)
+                } else if (facet.length() > 0) {
+                    // must be a facet with the same table
+                    String key = ""
+                    String value = ""
+                    col_index = facet.indexOf(":")
+                    if (col_index == -1) {
+                        key = facet
+                        value = "null"
+                    } else {
+                        key = facet.substring(0, col_index)
+                        value = facet.substring(col_index + 1)
+                    }
 
                     whereBuilder.append( "AND sli.").append(key)
 
