@@ -289,7 +289,7 @@ class QueryService {
                     // must be a facet with the same table
                     String key = ""
                     String value = ""
-                    String col_index = facet.indexOf(":")
+                    Integer col_index = facet.indexOf(":")
                     if (col_index == -1) {
                         key = facet
                         value = "null"
