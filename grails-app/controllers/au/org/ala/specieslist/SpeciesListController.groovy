@@ -47,16 +47,16 @@ class SpeciesListController {
 
     def index() { redirect(action: "upload") }
 
-    def upload() { /*maps to the upload.gsp */
-        log.debug(ListType.values())
-        if(params.id) {
-            //get the list if it exists and ensure that the user is an admin or the owner
-            def list = SpeciesList.findByDataResourceUid(params.id)
-            render(view: "upload", model: [resourceUid: params.id, list: list, listTypes: ListType.values()])
-        } else {
-            render(view: "upload", model: [listTypes: ListType.values()])
-        }
-    }
+    /* Comment out as it doesn't seem to be used by us */
+    // def upload() { /* maps to the upload.gsp */
+    //     if(params.id) {
+    //         // get the list if it exists and ensure that the user is an admin or the owner
+    //         def list = SpeciesList.findByDataResourceUid(params.id)
+    //         render(view: "upload", model: [resourceUid: params.id, list: list, listTypes: ListType.values()])
+    //     } else {
+    //         render(view: "upload", model: [listTypes: ListType.values()])
+    //     }
+    // }
 
     /**
      * Current mechanism for deleting a species list
@@ -237,24 +237,25 @@ class SpeciesListController {
         }
     }
 
-    def list() {
-        //list should be based on the user that is logged in so add the filter condition
-        try {
-            def lists = queryService.getFilterListResult(params)
-
-            //now remove the params that were added
-            log.debug("lists:" + lists)
-
-            render(view: "list", model: [
-                lists: lists,
-                total: lists.totalCount
-            ])
-        } catch(Exception e) {
-            log.error "Error requesting species Lists: " ,e
-            response.status = 404
-            render(view: "../error", model: [message: "Unable to retrieve species lists. Please let us know if this error persists. <br>Error:<br>" + e.getMessage()])
-        }
-    }
+    /* Comment out as it doesn't seem to be used by us */
+    // def list() {
+    //     //list should be based on the user that is logged in so add the filter condition
+    //     try {
+    //         def lists = queryService.getFilterListResult(params)
+    //
+    //         //now remove the params that were added
+    //         log.debug("lists:" + lists)
+    //
+    //         render(view: "list", model: [
+    //             lists: lists,
+    //             total: lists.totalCount
+    //         ])
+    //     } catch(Exception e) {
+    //         log.error "Error requesting species Lists: ", e
+    //         response.status = 404
+    //         render(view: "../error", model: [message: "Unable to retrieve species lists. Please let us know if this error persists. <br>Error:<br>" + e.getMessage()])
+    //     }
+    // }
 
     def test() {
         log.debug(helperService.addDataResourceForList("My test List"))
