@@ -1,5 +1,5 @@
 <!doctype html>
-<g:set var="bieUrl" value="${grailsApplication.config.bie.baseURL}" />
+<g:set var="bieUrl" value="${grailsApplication.config.bie.ui.url}" />
 <g:set var="collectoryUrl" value="${grailsApplication.config.collectory.baseURL}" />
 
 <html>

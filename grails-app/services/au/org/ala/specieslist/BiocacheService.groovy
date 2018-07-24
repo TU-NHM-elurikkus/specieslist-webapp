@@ -70,7 +70,7 @@ class BiocacheService {
      */
     String getQueryUrlForList(drUid){
         // front-end url
-        "${grailsApplication.config.biocache.baseURL}/occurrences/search?q=species_list_uid:${drUid}"
+        "${grailsApplication.config.occurrences.ui.url}/occurrences/search?q=species_list_uid:${drUid}"
     }
 
     /**
@@ -114,7 +114,7 @@ class BiocacheService {
             def returnUrl = ""
             switch ( downloadDto.type ) {
                 case "Search":
-                    returnUrl = "${grailsApplication.config.biocache.baseURL}/occurrences/search?q=qid:${qid}"
+                    returnUrl = "${grailsApplication.config.occurrences.ui.url}/occurrences/search?q=qid:${qid}"
                     break
                 case "Download":
                     returnUrl = "${grailsApplication.config.biocacheService.baseURL}/occurrences/index/download?q=qid:${qid}&file=${downloadDto.file}"
@@ -135,7 +135,7 @@ class BiocacheService {
             queries = guids.join(",")
             field = "lsid"
             separator = ","
-            redirectBase = grailsApplication.config.biocache.baseURL
+            redirectBase = grailsApplication.config.occurrences.ui.url
         }
         log.debug(result.toString(true))
         result.toString(false)
