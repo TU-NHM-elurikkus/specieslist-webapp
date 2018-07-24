@@ -40,8 +40,12 @@ class BieService {
         try {
             Map jsonResponse =  http.post(body: jsonBody, requestContentType:groovyx.net.http.ContentType.JSON)
             jsonResponse?.searchDTOList
-        } catch(ex) {
-            log.error("Unable to obtain species details from BIE - " + ex.getMessage(), ex)
+        } catch(FileNotFoundException fnf_ex) {
+            // netowork error most likely. no need to send errors everywhere
+            log.info("Unable to obtain species details from BIE - ${fnf_ex.getMessage()}", fnf_ex)
+            []
+        } catch(Exception ex) {
+            log.error("Unable to obtain species details from BIE - ${ex.getMessage()}", ex)
             []
         }
     }
@@ -54,7 +58,7 @@ class BieService {
         try {
             response =  http.post(body: jsonBody, requestContentType:groovyx.net.http.ContentType.JSON)
         } catch(ex) {
-            log.error("Unable to obtain species details from BIE - " + ex.getMessage(), ex)
+            log.error("Unable to obtain species details from BIE - ${ex.getMessage()}", ex)
 
         }
         response
@@ -72,7 +76,7 @@ class BieService {
                 return responseURL
             }
         } catch(ex) {
-            log.error("Unable to generate field guide " ,ex)
+            log.error("Unable to generate field guide " , ex)
             return null
         }
     }
