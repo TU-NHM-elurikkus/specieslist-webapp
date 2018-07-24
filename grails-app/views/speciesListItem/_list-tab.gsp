@@ -81,7 +81,7 @@
                                 </a>
                                 <g:message code="speciesListItem.list.or" />
                                 <a
-                                    href="${grailsApplication.config.biocache.baseURL}/occurrences/search?q=${fieldValue(bean: result, field: 'rawScientificName').trim()}"
+                                    href="${grailsApplication.config.biocacheService.ui.url}/occurrences/search?q=${fieldValue(bean: result, field: 'rawScientificName').trim()}"
                                     target="biocache"
                                 >
                                     <g:message code="speciesListItem.list.occurrences" />
