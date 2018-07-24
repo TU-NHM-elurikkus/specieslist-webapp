@@ -40,12 +40,9 @@ class BieService {
         try {
             Map jsonResponse =  http.post(body: jsonBody, requestContentType:groovyx.net.http.ContentType.JSON)
             jsonResponse?.searchDTOList
-        } catch(FileNotFoundException fnf_ex) {
+        } catch (IOException | FileNotFoundException | Exception err) {
             // netowork error most likely. no need to send errors everywhere
-            log.info("Unable to obtain species details from BIE - ${fnf_ex.getMessage()}", fnf_ex)
-            []
-        } catch(Exception ex) {
-            log.error("Unable to obtain species details from BIE - ${ex.getMessage()}", ex)
+            log.info("Unable to obtain species details from BIE - ${ex.getMessage()}", ex)
             []
         }
     }
