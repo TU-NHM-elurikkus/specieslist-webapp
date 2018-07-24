@@ -298,7 +298,14 @@ class SpeciesListItemController {
             def keys = SpeciesListKVP.executeQuery("select distinct key from SpeciesListKVP where dataResourceUid='${params.id}'")
             def fqs = params.fq ? [params.fq].flatten().findAll { it != null } : null
             def baseQueryAndParams = queryService.constructWithFacets(" from SpeciesListItem sli ",fqs, params.id)
-            def sli = SpeciesListItem.executeQuery("Select sli " + baseQueryAndParams[0], baseQueryAndParams[1])
+            try {
+                def sli = SpeciesListItem.executeQuery("Select sli " + baseQueryAndParams[0], baseQueryAndParams[1])
+            } catch(Exception qEx) {
+                log.error("SpeciesListItemController.downloadList() | " +
+                          "query: 'Select sli ${baseQueryAndParams[0]}' '${baseQueryAndParams[1]}' | " +
+                          "error: ${qEx}")
+                render(view: "error", model: [exception: qEx], status: 400)
+            }
             //def sli =SpeciesListItem.findAllByDataResourceUid(params.id,params)
             def out = new StringWriter()
             def csvWriter = new CSVWriter(out)
@@ -319,7 +326,7 @@ class SpeciesListItemController {
             }
 
             response.addHeader("Content-Disposition", "attachment;filename=" + filename);
-            render(contentType: "text/csv", text:out.toString())
+            render(contentType: "text/csv", text: out.toString())
         }
     }
 
