@@ -298,8 +298,9 @@ class SpeciesListItemController {
             def keys = SpeciesListKVP.executeQuery("select distinct key from SpeciesListKVP where dataResourceUid='${params.id}'")
             def fqs = params.fq ? [params.fq].flatten().findAll { it != null } : null
             def baseQueryAndParams = queryService.constructWithFacets(" from SpeciesListItem sli ",fqs, params.id)
+            def sli
             try {
-                def sli = SpeciesListItem.executeQuery("Select sli " + baseQueryAndParams[0], baseQueryAndParams[1])
+                sli = SpeciesListItem.executeQuery("Select sli " + baseQueryAndParams[0], baseQueryAndParams[1])
             } catch(Exception qEx) {
                 log.error("SpeciesListItemController.downloadList() | " +
                           "query: 'Select sli ${baseQueryAndParams[0]}' '${baseQueryAndParams[1]}' | " +
