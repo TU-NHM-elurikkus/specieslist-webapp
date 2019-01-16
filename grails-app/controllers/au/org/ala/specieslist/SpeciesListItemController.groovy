@@ -18,7 +18,7 @@ class SpeciesListItemCommand {
             inList: ["itemOrder", "matchedName", "imageUrl", "author", "commonName"],
         )
         max(
-            size: 25..100,
+            size: 10..100,
         )
         offset(
             min: 0,
